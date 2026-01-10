@@ -1,0 +1,17 @@
+{
+  "name": "api-proyectos",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Api para mi proyectos personales HM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis Enrique Hernandez Marin",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1"
+  }
+}

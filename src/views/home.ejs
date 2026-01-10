@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Documentación de la API</title>
+    <style>
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #06163d, #000308);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .header p {
+            color: #bbc0ca;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* Project card */
+        .project-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-header h2 {
+            font-size: 1.4rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-header p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        /* Endpoints */
+        .endpoint-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .endpoint-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.75rem 1rem;
+            align-items: center;
+            background: #f9fafb;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+        }
+
+        /* HTTP method badge */
+        .method {
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 999px;
+            color: white;
+            width: fit-content;
+        }
+
+        .method.get {
+            background: #22c55e;
+        }
+
+        .method.post {
+            background: #3b82f6;
+        }
+
+        .method.put {
+            background: #f59e0b;
+        }
+
+        .method.delete {
+            background: #ef4444;
+        }
+
+        /* Path */
+        .path {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #111827;
+        }
+
+        /* Description */
+        .description {
+            grid-column: 2;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .endpoint-item {
+                grid-template-columns: 1fr;
+            }
+
+            .description {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>📦 Documentación de la API</h1>
+        <p>Listado de proyectos y sus endpoints disponibles</p>
+    </header>
+
+    <main class="container">
+        <% projects.forEach(project=> { %>
+            <section class="project-card">
+                <header class="project-header">
+                    <h2>
+                        <%= project.name %>
+                    </h2>
+                    <p>
+                        <%= project.description %>
+                    </p>
+                </header>
+
+                <ul class="endpoint-list">
+                    <% project.endpoints.forEach(ep=> { %>
+                        <li class="endpoint-item">
+                            <span class="method <%= ep.method.toLowerCase() %>">
+                                <%= ep.method %>
+                            </span>
+
+                            <span class="path">
+                                <%= ep.path %>
+                            </span>
+
+                            <span class="description">
+                                <%= ep.description %>
+                            </span>
+                        </li>
+                        <% }) %>
+                </ul>
+            </section>
+            <% }) %>
+    </main>
+
+    <footer class="footer">
+        <span>⚡ API Docs</span>
+    </footer>
+
+</body>
+
+</html>
