@@ -1,10 +1,6 @@
 import { Router } from "express";
-import { getProjects } from "../utils/projects.js";
+import { homeController } from "../controllers/home.controller.js";
 
 export const viewRoutes = Router();
 
-viewRoutes.get("/", (_req, res) => {
-    res.render("home", {
-        projects: getProjects(),
-    });
-});
+viewRoutes.get("/", homeController.getHome);
