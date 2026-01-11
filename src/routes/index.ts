@@ -1,8 +1,7 @@
 import { Router } from "express";
 import { viewRoutes } from "./view.routes.js";
 
-const router = Router();
+export const homeRouter = Router();
 
-router.use("/", viewRoutes);
+homeRouter.use("/", viewRoutes);
 
-export default router;
