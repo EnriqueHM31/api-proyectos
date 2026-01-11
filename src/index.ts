@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import { PORT } from "./config/index.js";
@@ -7,7 +7,6 @@ import { SRC_ROOT } from "./utils/index.js";
 import { geoIpRouter } from "./routes/geoIp.routes.js";
 
 /*------------------ ENV ------------------*/
-dotenv.config();
 
 /*------------------ APP ------------------*/
 const app = express();
