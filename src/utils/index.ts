@@ -1,5 +1,13 @@
-import { fileURLToPath } from "url";
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+// Ruta del archivo actual
 const __filename = fileURLToPath(import.meta.url);
-export const __dirname = path.dirname(__filename);
+
+// Directorio del archivo actual
+const __dirname = path.dirname(__filename);
+
+// 👉 Raíz de src
+const SRC_ROOT = path.resolve(__dirname, "..");
+
+export { __filename, __dirname, SRC_ROOT };
