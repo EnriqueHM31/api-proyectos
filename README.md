@@ -164,11 +164,3 @@ Actualmente no hay pruebas unitarias incluidas. Recomendación:
 **Luis Enrique Hernandez Marin**
 
 ---
-
-## 📄 Licencia
-
-ISC
-
----
-
-Si quieres, puedo añadir ejemplos concretos de respuestas, snippets de código cliente (JS/Python/Postman) o documentar el contrato JSON de `ipgeolocation.io` con más detalle. ¿Quieres que incluya ejemplos reales de respuesta (truncados) para cada módulo (`location`, `network`, `security`, etc.)?
