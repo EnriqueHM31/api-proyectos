@@ -38,12 +38,10 @@ export class IpController {
 
             // 5️⃣ Parseo seguro
             const data = await response.json();
-            console.log({ data });
 
             res.status(200).json(data);
 
         } catch (error) {
-            console.error("IpController.getIp:", error);
 
             // Evita responder dos veces
             if (!res.headersSent) {
