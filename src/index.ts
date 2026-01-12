@@ -5,11 +5,18 @@ import { PORT } from "./config/index.js";
 import { homeRouter } from "./routes/index.js";
 import { SRC_ROOT } from "./utils/index.js";
 import { geoIpRouter } from "./routes/geoIp.routes.js";
-
+import cors from "cors";
 /*------------------ ENV ------------------*/
 
 /*------------------ APP ------------------*/
 const app = express();
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+}));
 app.use(express.json());
 
 /*------------------ VIEWS ------------------*/
