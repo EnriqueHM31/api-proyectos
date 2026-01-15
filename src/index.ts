@@ -5,6 +5,7 @@ import { PORT } from "./config/index.js";
 import { homeRouter } from "./routes/index.js";
 import { SRC_ROOT } from "./utils/index.js";
 import { geoIpRouter } from "./routes/geoIp.routes.js";
+import { climaRouter } from "./routes/clima.routes.js";
 import cors from "cors";
 /*------------------ ENV ------------------*/
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(SRC_ROOT, "public")));
 /*------------------ ROUTES ------------------*/
 app.use(homeRouter);
 app.use("/geolocalizacion", geoIpRouter);
+app.use("/clima", climaRouter);
 
 /*------------------ LISTEN ------------------*/
 app.listen(PORT, () => {
