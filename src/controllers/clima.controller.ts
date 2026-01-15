@@ -19,7 +19,7 @@ export class ClimaController {
             }
 
 
-            const url = `${this.urlClima}&q=${encodeURIComponent(lugar as string)}&days=${days}`;
+            const url = `${this.urlClima}&q=${encodeURIComponent(lugar as string)}&days=${encodeURIComponent(days as string)}`;
 
             // 3️⃣ Llamada a API externa
             const response = await fetch(url);
@@ -37,7 +37,7 @@ export class ClimaController {
             }
 
             // 5️⃣ Parseo seguro
-            const data = await response.json();
+            const data = await response.json() as { forecast: any };
 
             res.status(200).json(data);
 
