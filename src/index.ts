@@ -7,6 +7,7 @@ import { corsMiddleware } from "./middleware/cors.middleware.js";
 import { climaRouter } from "./routes/clima.routes.js";
 import { geoIpRouter } from "./routes/geoIp.routes.js";
 import { homeRouter } from "./routes/home.routes.js";
+import { httpCodesRouter } from "./routes/http-codes.routes.js";
 
 /*------------------ APP ------------------*/
 const app = express();
@@ -21,6 +22,7 @@ setupStatic(app);
 app.use(homeRouter);
 app.use("/geolocalizacion", geoIpRouter);
 app.use("/clima", climaRouter);
+app.use("/http-codes", httpCodesRouter);
 
 /*------------------ LISTEN ------------------*/
 app.listen(PORT, () => {
