@@ -19,7 +19,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 7231, Section 6.2.1"
+        "specification": "RFC 7231, Section 6.2.1",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768596503/404_1_sctakm.png",
+                "alt": "Imagen que representa el nombre del código 100 Continue"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595465/404-removebg-preview_hlqljp.png",
+                "alt": "Imagen del código 100 Continue"
+            }
+        ]
     },
     {
         "code": 101,
@@ -41,7 +51,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 7231, Section 6.2.2"
+        "specification": "RFC 7231, Section 6.2.2",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": ""
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595404/1-removebg-preview_wxojpe.png",
+                "alt": "Imagen del código 101 Switching Protocols"
+            }
+        ]
     },
     {
         "code": 102,
@@ -63,7 +83,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 2518 (WebDAV)"
+        "specification": "RFC 2518 (WebDAV)",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": ""
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595396/2-removebg-preview_x2uckm.png",
+                "alt": "Imagen del código 102 Processing"
+            }
+        ]
     },
     {
         "code": 103,
@@ -85,7 +115,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 8297"
+        "specification": "RFC 8297",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": ""
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595394/3-removebg-preview_qyvwqw.png",
+                "alt": "Imagen del código 103 Early Hints"
+            }
+        ]
     },
     {
         "code": 200,
