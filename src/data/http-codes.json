@@ -1,0 +1,481 @@
+[
+    {
+        "code": 100,
+        "status": "Continue",
+        "category": "Informational",
+        "description": "El código 100 Continue es una respuesta provisional que indica que el cliente debe continuar con su solicitud o ignorar esta respuesta si la solicitud ya ha sido completada. Este código se utiliza principalmente en escenarios donde el cliente necesita enviar un cuerpo de solicitud grande y quiere verificar primero si el servidor está dispuesto a aceptarlo antes de enviar todos los datos. El cliente envía los encabezados de la solicitud con un encabezado 'Expect: 100-continue', y el servidor responde con 100 Continue si está listo para recibir el cuerpo de la solicitud. Esto es especialmente útil para optimizar el ancho de banda y evitar enviar grandes cantidades de datos que podrían ser rechazados por el servidor. Por ejemplo, si un cliente intenta subir un archivo de 500MB, puede primero enviar los encabezados para verificar la autenticación y validación antes de transmitir todo el archivo. Si el servidor responde con 100 Continue, el cliente procede a enviar el cuerpo completo. Si el servidor responde con un código de error (como 401 Unauthorized), el cliente puede abortar la transmisión sin haber desperdiciado ancho de banda enviando el archivo completo.",
+        "useCases": [
+            "Upload de archivos grandes donde se necesita validación previa",
+            "APIs que requieren verificación de autenticación antes de procesar cuerpos de solicitud pesados",
+            "Optimización de ancho de banda en conexiones lentas",
+            "Sistemas de streaming donde se necesita confirmación del servidor antes de enviar datos"
+        ],
+        "examples": [
+            {
+                "scenario": "Upload de archivo grande",
+                "request": "POST /upload HTTP/1.1\nHost: example.com\nExpect: 100-continue\nContent-Length: 524288000\nContent-Type: application/octet-stream",
+                "response": "HTTP/1.1 100 Continue",
+                "explanation": "El servidor acepta recibir el archivo, el cliente procede a enviar los 500MB"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.2.1"
+    },
+    {
+        "code": 101,
+        "status": "Switching Protocols",
+        "category": "Informational",
+        "description": "El código 101 Switching Protocols indica que el servidor está cambiando de protocolo según lo solicitado por el cliente a través del encabezado 'Upgrade'. Este mecanismo permite que una conexión establecida inicialmente con HTTP evolucione a un protocolo diferente, como WebSocket, HTTP/2, o cualquier otro protocolo compatible. El servidor envía este código para confirmar que acepta cambiar al protocolo solicitado en el encabezado Upgrade de la solicitud del cliente. Después de enviar esta respuesta, el servidor abandona el protocolo HTTP/1.1 y comienza a comunicarse usando el nuevo protocolo especificado. Este código es fundamental para la implementación de WebSockets, que permite comunicación bidireccional en tiempo real sobre una única conexión TCP. El proceso típico involucra una solicitud HTTP inicial que solicita el upgrade, el servidor responde con 101, y a partir de ese momento la conexión opera bajo el nuevo protocolo. Esto es especialmente valioso en aplicaciones que requieren comunicación en tiempo real, como chats, juegos multijugador, dashboards en vivo, o aplicaciones colaborativas. Es importante notar que no todos los proxies o intermediarios soportan este mecanismo, por lo que la implementación debe considerar compatibilidad.",
+        "useCases": [
+            "Establecimiento de conexiones WebSocket para comunicación bidireccional en tiempo real",
+            "Upgrade de HTTP/1.1 a HTTP/2 para mejorar el rendimiento",
+            "Implementación de Server-Sent Events (SSE) en algunos casos",
+            "Protocolos personalizados que necesitan una conexión HTTP inicial"
+        ],
+        "examples": [
+            {
+                "scenario": "Upgrade a WebSocket",
+                "request": "GET /chat HTTP/1.1\nHost: example.com\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\nSec-WebSocket-Version: 13",
+                "response": "HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=",
+                "explanation": "El servidor acepta el upgrade a WebSocket y la conexión ahora usa el protocolo WebSocket"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.2.2"
+    },
+    {
+        "code": 102,
+        "status": "Processing",
+        "category": "Informational",
+        "description": "El código 102 Processing es una respuesta provisional que indica que el servidor ha recibido y está procesando la solicitud, pero aún no tiene una respuesta disponible. Este código se utiliza principalmente en el contexto de WebDAV (Web Distributed Authoring and Versioning) para prevenir que el cliente agote el tiempo de espera en operaciones que requieren mucho tiempo de procesamiento. Cuando un servidor WebDAV recibe una solicitud que puede tomar tiempo significativo para completarse (como copiar una gran estructura de directorios, realizar operaciones complejas en múltiples recursos, o procesar transformaciones de archivos grandes), envía este código intermedio para mantener la conexión activa y asegurar al cliente que la solicitud no se ha perdido o estancado. El cliente, al recibir este código, puede resetear su temporizador de timeout y continuar esperando. Es particularmente útil en operaciones como PROPFIND sobre grandes colecciones de recursos, operaciones COPY o MOVE masivas, o cualquier operación que involucre procesamiento extensivo en el servidor. A diferencia de 100 Continue que es sobre el envío de datos, 102 Processing es sobre la ejecución de la operación solicitada.",
+        "useCases": [
+            "Operaciones WebDAV que toman tiempo significativo (PROPFIND, COPY, MOVE)",
+            "Procesamiento de grandes estructuras de archivos en sistemas de gestión de contenido",
+            "Operaciones batch sobre múltiples recursos",
+            "Transformaciones o conversiones de archivos que requieren tiempo de procesamiento extenso"
+        ],
+        "examples": [
+            {
+                "scenario": "Copia masiva de directorios en WebDAV",
+                "request": "COPY /documents/folder1/ HTTP/1.1\nHost: webdav.example.com\nDestination: /documents/folder2/\nDepth: infinity",
+                "response": "HTTP/1.1 102 Processing",
+                "explanation": "El servidor informa que está copiando los archivos recursivamente y el cliente debe seguir esperando"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 2518 (WebDAV)"
+    },
+    {
+        "code": 103,
+        "status": "Early Hints",
+        "category": "Informational",
+        "description": "El código 103 Early Hints es una respuesta informativa relativamente nueva que permite al servidor enviar encabezados HTTP preliminares antes de que la respuesta final esté lista. Su propósito principal es mejorar el rendimiento de carga de páginas web al permitir que el navegador comience a pre-cargar recursos críticos mientras el servidor aún está preparando la respuesta completa. Esto es especialmente valioso cuando el servidor necesita tiempo para generar contenido dinámico pero ya sabe qué recursos adicionales (CSS, JavaScript, fuentes, imágenes) serán necesarios. El servidor puede enviar encabezados Link con rel=preload o rel=preconnect, permitiendo que el navegador inicie la descarga de estos recursos en paralelo mientras espera la respuesta HTML principal. Por ejemplo, si un servidor de aplicación necesita consultar una base de datos para generar una página pero ya sabe que necesitará ciertos archivos CSS y JavaScript, puede enviar 103 Early Hints inmediatamente con referencias a esos recursos. Esto reduce significativamente el tiempo de carga percibido y mejora métricas como First Contentful Paint (FCP) y Largest Contentful Paint (LCP). Es particularmente efectivo en sitios con tiempos de procesamiento del servidor variables o consultas de base de datos complejas.",
+        "useCases": [
+            "Precarga de recursos estáticos (CSS, JS, fuentes) mientras se genera contenido dinámico",
+            "Establecimiento anticipado de conexiones a dominios de terceros (CDNs, APIs)",
+            "Optimización del rendimiento web y mejora de Core Web Vitals",
+            "Reducción del tiempo de carga en aplicaciones con procesamiento del servidor intensivo"
+        ],
+        "examples": [
+            {
+                "scenario": "Precarga de recursos críticos",
+                "request": "GET /dashboard HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 103 Early Hints\nLink: </styles/critical.css>; rel=preload; as=style\nLink: </scripts/app.js>; rel=preload; as=script\nLink: <https://cdn.example.com>; rel=preconnect\n\n[... el servidor continúa procesando ...]\n\nHTTP/1.1 200 OK\nContent-Type: text/html\n\n<!DOCTYPE html>...",
+                "explanation": "El navegador recibe instrucciones para precargar CSS y JS mientras el servidor genera el HTML del dashboard"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 8297"
+    },
+    {
+        "code": 200,
+        "status": "OK",
+        "category": "Success",
+        "description": "El código 200 OK es la respuesta de éxito estándar y más común en HTTP. Indica que la solicitud ha sido procesada exitosamente y el servidor está devolviendo el resultado solicitado. El significado específico de 'éxito' varía según el método HTTP utilizado: para GET significa que el recurso ha sido recuperado y se transmite en el cuerpo del mensaje; para POST indica que el recurso que describe el resultado de la acción se transmite en el cuerpo del mensaje; para PUT o PATCH significa que el recurso ha sido modificado exitosamente; para DELETE indica que el recurso ha sido eliminado. Este código es el caballo de batalla de las APIs REST y aplicaciones web. La respuesta 200 típicamente incluye el cuerpo del mensaje con el contenido solicitado (HTML, JSON, XML, archivos binarios, etc.) junto con encabezados relevantes como Content-Type, Content-Length, Cache-Control, ETag, entre otros. Es importante notar que 200 no siempre es la respuesta más semántica - por ejemplo, una creación exitosa debería usar 201 Created, y una eliminación exitosa sin contenido debería usar 204 No Content. El uso apropiado de códigos de estado hace que las APIs sean más expresivas y fáciles de consumir.",
+        "useCases": [
+            "Recuperación exitosa de recursos (GET requests)",
+            "Respuestas exitosas de búsquedas o consultas",
+            "Actualizaciones parciales exitosas (PATCH)",
+            "Cualquier operación exitosa que devuelve contenido en el cuerpo",
+            "Respuestas de APIs que devuelven datos JSON o XML"
+        ],
+        "examples": [
+            {
+                "scenario": "GET request a una API REST",
+                "request": "GET /api/users/123 HTTP/1.1\nHost: api.example.com\nAccept: application/json",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Length: 145\nCache-Control: max-age=3600\nETag: \"33a64df551425fcc55e4d42a148795d9f25f89d4\"\n\n{\n  \"id\": 123,\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"created_at\": \"2024-01-15T10:30:00Z\"\n}",
+                "explanation": "El servidor devuelve exitosamente los datos del usuario solicitado en formato JSON"
+            },
+            {
+                "scenario": "POST request que procesa datos",
+                "request": "POST /api/search HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\"query\": \"javascript tutorials\"}",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n  \"results\": [\n    {\"title\": \"JS Basics\", \"url\": \"https://example.com/js-basics\"},\n    {\"title\": \"Advanced JS\", \"url\": \"https://example.com/advanced-js\"}\n  ],\n  \"count\": 2\n}",
+                "explanation": "La búsqueda se procesó exitosamente y devuelve los resultados"
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.3.1"
+    },
+    {
+        "code": 201,
+        "status": "Created",
+        "category": "Success",
+        "description": "El código 201 Created indica que la solicitud ha sido exitosa y ha resultado en la creación de uno o más recursos nuevos. Este código es semánticamente más apropiado que 200 OK cuando se crea un nuevo recurso, típicamente en respuesta a solicitudes POST o PUT. La respuesta 201 debe incluir un encabezado Location que contenga la URI del recurso recién creado, permitiendo al cliente acceder directamente al nuevo recurso sin necesidad de búsquedas adicionales. Opcionalmente, el cuerpo de la respuesta puede contener una representación del recurso creado o una descripción del estado de la creación. Este código es fundamental en APIs RESTful bien diseñadas, donde la creación de recursos es una operación común. Por ejemplo, cuando se crea un nuevo usuario, una nueva publicación de blog, un nuevo pedido de compra, o cualquier entidad en el sistema, 201 es la respuesta apropiada. La inclusión del encabezado Location es crucial porque permite a los clientes saber inmediatamente dónde encontrar el recurso recién creado, especialmente útil cuando el servidor genera IDs automáticamente. Algunas implementaciones también incluyen el recurso completo en el cuerpo de la respuesta para evitar que el cliente tenga que hacer una solicitud GET adicional.",
+        "useCases": [
+            "Creación de nuevos usuarios en un sistema",
+            "Publicación de nuevos contenidos (artículos, posts, comentarios)",
+            "Creación de pedidos o transacciones",
+            "Registro de nuevas entidades en bases de datos mediante APIs",
+            "Upload de archivos o recursos que generan nuevas entradas"
+        ],
+        "examples": [
+            {
+                "scenario": "Creación de un nuevo usuario",
+                "request": "POST /api/users HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"securepass123\"\n}",
+                "response": "HTTP/1.1 201 Created\nLocation: /api/users/456\nContent-Type: application/json\n\n{\n  \"id\": 456,\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane@example.com\",\n  \"created_at\": \"2024-01-16T14:22:00Z\",\n  \"profile_url\": \"/api/users/456\"\n}",
+                "explanation": "El usuario fue creado exitosamente, el servidor asignó el ID 456 y devuelve la ubicación del nuevo recurso"
+            },
+            {
+                "scenario": "Creación de un post en blog",
+                "request": "POST /api/posts HTTP/1.1\nHost: blog.example.com\nContent-Type: application/json\nAuthorization: Bearer token123\n\n{\n  \"title\": \"Introduction to HTTP Status Codes\",\n  \"content\": \"HTTP status codes are...\",\n  \"tags\": [\"http\", \"web\", \"tutorial\"]\n}",
+                "response": "HTTP/1.1 201 Created\nLocation: /api/posts/789\nContent-Type: application/json\n\n{\n  \"id\": 789,\n  \"title\": \"Introduction to HTTP Status Codes\",\n  \"slug\": \"introduction-to-http-status-codes\",\n  \"author_id\": 123,\n  \"created_at\": \"2024-01-16T14:25:00Z\",\n  \"status\": \"published\"\n}",
+                "explanation": "El post fue creado y publicado, incluyendo metadatos generados por el servidor como slug y timestamps"
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.3.2"
+    },
+    {
+        "code": 202,
+        "status": "Accepted",
+        "category": "Success",
+        "description": "El código 202 Accepted indica que la solicitud ha sido aceptada para procesamiento, pero el procesamiento aún no se ha completado. Este código es especialmente útil para operaciones asíncronas donde el servidor acepta la solicitud pero la procesará más tarde, en segundo plano. La respuesta 202 es no-comprometida, lo que significa que el servidor acepta la solicitud pero no garantiza que será procesada exitosamente - el procesamiento real podría fallar posteriormente. Este código es ideal para operaciones de larga duración como procesamiento de archivos grandes, conversiones de video, operaciones batch, envío de emails masivos, generación de reportes complejos, o cualquier tarea que no puede completarse inmediatamente dentro del tiempo de respuesta HTTP típico. La respuesta debería incluir información sobre el estado del procesamiento y cómo el cliente puede verificar el progreso, típicamente mediante un encabezado Location que apunta a un recurso de estado o mediante un cuerpo de respuesta que incluye un ID de tarea que puede ser consultado posteriormente. Muchas APIs modernas usan este patrón para operaciones pesadas, proporcionando endpoints separados para verificar el estado de las tareas en progreso.",
+        "useCases": [
+            "Procesamiento asíncrono de archivos (conversión de video, compresión de imágenes)",
+            "Operaciones batch que toman tiempo significativo",
+            "Envío de emails masivos o notificaciones",
+            "Generación de reportes complejos o exports de datos",
+            "Operaciones que requieren aprobación manual posterior",
+            "Tareas en cola que serán procesadas por workers en background"
+        ],
+        "examples": [
+            {
+                "scenario": "Upload y procesamiento de video",
+                "request": "POST /api/videos HTTP/1.1\nHost: media.example.com\nContent-Type: multipart/form-data\n\n[video file data]",
+                "response": "HTTP/1.1 202 Accepted\nLocation: /api/jobs/video-process-999\nContent-Type: application/json\n\n{\n  \"job_id\": \"video-process-999\",\n  \"status\": \"queued\",\n  \"message\": \"Video upload accepted. Processing will begin shortly.\",\n  \"status_url\": \"/api/jobs/video-process-999\",\n  \"estimated_completion\": \"2024-01-16T15:30:00Z\"\n}",
+                "explanation": "El video fue recibido y está en cola para procesamiento. El cliente puede verificar el estado usando la URL proporcionada"
+            },
+            {
+                "scenario": "Generación de reporte complejo",
+                "request": "POST /api/reports/generate HTTP/1.1\nHost: analytics.example.com\nContent-Type: application/json\n\n{\n  \"type\": \"annual_sales\",\n  \"year\": 2024,\n  \"format\": \"pdf\",\n  \"include_charts\": true\n}",
+                "response": "HTTP/1.1 202 Accepted\nContent-Type: application/json\n\n{\n  \"task_id\": \"report-gen-12345\",\n  \"status\": \"processing\",\n  \"progress_url\": \"/api/tasks/report-gen-12345/status\",\n  \"webhook_url\": null,\n  \"message\": \"Report generation started. You will be notified when complete.\"\n}",
+                "explanation": "El servidor acepta la solicitud de generación de reporte y la procesa en background"
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.3.3"
+    },
+    {
+        "code": 203,
+        "status": "Non-Authoritative Information",
+        "category": "Success",
+        "description": "El código 203 Non-Authoritative Information indica que la solicitud fue exitosa pero la información incluida en la respuesta proviene de una copia local o de terceros, no del servidor origen original. Este código es utilizado principalmente por proxies HTTP o cachés que modifican o transforman la respuesta del servidor origen. Aunque la respuesta es exitosa (similar a 200 OK), el código 203 advierte al cliente que los metadatos (encabezados) pueden haber sido modificados por un intermediario y pueden no ser exactamente los mismos que el servidor origen habría proporcionado. El cuerpo de la entidad puede ser idéntico al de una respuesta 200, pero los encabezados podrían ser diferentes. Este código es poco común en la práctica moderna pero es útil en escenarios donde proxies realizan transformaciones, como conversión de formatos de imagen, compresión adicional, añadir encabezados de seguridad, o modificar metadatos. Por ejemplo, un proxy de optimización podría comprimir imágenes antes de enviarlas al cliente y usar 203 para indicar que aunque el contenido es válido, ha sido procesado. También puede ser usado en escenarios de mirror servers o CDNs que sirven contenido desde múltiples ubicaciones y quieren indicar que la respuesta no viene directamente del servidor origen.",
+        "useCases": [
+            "Respuestas servidas por proxies que modifican metadatos",
+            "CDNs o mirrors que sirven contenido almacenado en caché con encabezados modificados",
+            "Proxies de transformación que optimizan contenido (compresión de imágenes, minificación)",
+            "Sistemas de caché que añaden encabezados adicionales a las respuestas",
+            "Servicios de agregación que combinan datos de múltiples fuentes"
+        ],
+        "examples": [
+            {
+                "scenario": "Proxy que modifica encabezados de imagen",
+                "request": "GET /images/photo.jpg HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 203 Non-Authoritative Information\nContent-Type: image/jpeg\nContent-Length: 45000\nX-Proxy-Optimized: true\nX-Original-Size: 120000\nVia: 1.1 proxy.example.com\n\n[compressed image data]",
+                "explanation": "Un proxy interceptó la imagen, la comprimió, y modificó los encabezados para reflejar el nuevo tamaño"
+            },
+            {
+                "scenario": "CDN sirviendo contenido con metadatos adicionales",
+                "request": "GET /api/data HTTP/1.1\nHost: api.example.com",
+                "response": "HTTP/1.1 203 Non-Authoritative Information\nContent-Type: application/json\nX-Cache: HIT\nX-CDN-Server: edge-server-42\nAge: 3600\n\n{\"data\": \"cached content\"}",
+                "explanation": "El CDN sirve contenido en caché y añade encabezados propios que no venían del servidor origen"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.3.4"
+    },
+    {
+        "code": 204,
+        "status": "No Content",
+        "category": "Success",
+        "description": "El código 204 No Content indica que el servidor ha procesado exitosamente la solicitud pero no devuelve ningún contenido en el cuerpo de la respuesta. Este código es semánticamente diferente de 200 OK en que explícitamente comunica que no hay contenido para devolver, lo cual es la intención, no un error. La respuesta 204 no debe contener un cuerpo de mensaje - el mensaje termina después de los encabezados. Este código es extremadamente útil en APIs REST para operaciones que modifican el estado del servidor pero no necesitan devolver datos al cliente, como eliminaciones exitosas, actualizaciones donde el cliente ya tiene todos los datos necesarios, o acciones que simplemente cambian el estado sin generar nueva información. Es también común en solicitudes PUT o PATCH donde el cliente envía la representación completa del recurso y no necesita que el servidor la devuelva. El código 204 ahorra ancho de banda al no enviar cuerpos de respuesta innecesarios y hace que las APIs sean más eficientes. En aplicaciones web, una respuesta 204 típicamente no causa que el navegador actualice la página actual, lo cual es útil para operaciones AJAX que modifican datos en el servidor sin necesitar recargar la interfaz.",
+        "useCases": [
+            "Eliminación exitosa de recursos (DELETE requests)",
+            "Actualizaciones que no requieren devolver el recurso modificado",
+            "Operaciones de guardado automático donde no se necesita confirmación con datos",
+            "Acciones que cambian estado del servidor sin generar nueva información",
+            "Heartbeats o keep-alive requests",
+            "Operaciones batch donde solo importa el éxito, no los detalles"
+        ],
+        "examples": [
+            {
+                "scenario": "Eliminación de un recurso",
+                "request": "DELETE /api/users/789 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer token123",
+                "response": "HTTP/1.1 204 No Content\nDate: Tue, 16 Jan 2024 15:00:00 GMT",
+                "explanation": "El usuario fue eliminado exitosamente, no hay contenido adicional que devolver"
+            },
+            {
+                "scenario": "Actualización de preferencias de usuario",
+                "request": "PUT /api/users/123/preferences HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"theme\": \"dark\",\n  \"language\": \"es\",\n  \"notifications\": true\n}",
+                "response": "HTTP/1.1 204 No Content",
+                "explanation": "Las preferencias fueron actualizadas exitosamente, el cliente ya tiene los datos que envió"
+            },
+            {
+                "scenario": "Guardado automático de documento",
+                "request": "PATCH /api/documents/456/autosave HTTP/1.1\nHost: docs.example.com\nContent-Type: application/json\n\n{\n  \"content\": \"Updated document content...\",\n  \"last_modified\": \"2024-01-16T15:05:00Z\"\n}",
+                "response": "HTTP/1.1 204 No Content",
+                "explanation": "El documento fue guardado automáticamente sin necesidad de respuesta con contenido"
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.3.5"
+    },
+    {
+        "code": 205,
+        "status": "Reset Content",
+        "category": "Success",
+        "description": "El código 205 Reset Content indica que el servidor ha procesado exitosamente la solicitud y está instruyendo al agente de usuario (típicamente un navegador) a resetear la vista del documento que causó la solicitud a su estado original. A diferencia de 204 No Content, que simplemente no devuelve contenido, 205 específicamente solicita que el cliente reinicie la interfaz de usuario. Este código es particularmente útil en aplicaciones de formularios web donde, después de enviar datos exitosamente, se desea limpiar el formulario para permitir al usuario ingresar nuevos datos sin necesidad de recargar la página completa. Por ejemplo, en un formulario de entrada de datos repetitiva (como ingreso de inventario, registro de múltiples transacciones, o captura de datos en serie), después de cada envío exitoso, el servidor puede responder con 205 para resetear el formulario automáticamente. Al igual que 204, la respuesta 205 no debe contener un cuerpo de mensaje. La diferencia clave es la semántica: 204 dice 'éxito, sin más información', mientras que 205 dice 'éxito, y por favor resetea tu interfaz'. En la práctica moderna, este código es poco utilizado ya que muchas aplicaciones manejan el reseteo de formularios directamente en el cliente con JavaScript, pero sigue siendo válido y útil para aplicaciones tradicionales basadas en formularios HTML.",
+        "useCases": [
+            "Formularios de entrada de datos repetitiva donde se quiere limpiar campos después del envío",
+            "Aplicaciones de encuestas o cuestionarios que permiten múltiples respuestas",
+            "Sistemas de captura de datos en serie (inventario, transacciones, registros)",
+            "Formularios de búsqueda donde se quiere limpiar los criterios después de ejecutar la búsqueda",
+            "Interfaces de administración con formularios que se usan repetidamente"
+        ],
+        "examples": [
+            {
+                "scenario": "Formulario de entrada de inventario",
+                "request": "POST /inventory/add HTTP/1.1\nHost: warehouse.example.com\nContent-Type: application/x-www-form-urlencoded\n\nproduct_id=ABC123&quantity=50&location=warehouse-a",
+                "response": "HTTP/1.1 205 Reset Content\nDate: Tue, 16 Jan 2024 15:10:00 GMT",
+                "explanation": "El item fue agregado al inventario y el navegador debe limpiar el formulario para la siguiente entrada"
+            },
+            {
+                "scenario": "Formulario de comentarios/feedback",
+                "request": "POST /feedback/submit HTTP/1.1\nHost: example.com\nContent-Type: application/json\n\n{\n  \"rating\": 5,\n  \"comment\": \"Excellent service!\",\n  \"category\": \"support\"\n}",
+                "response": "HTTP/1.1 205 Reset Content",
+                "explanation": "El feedback fue registrado y el formulario debe resetearse para permitir otro envío"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.3.6"
+    },
+    {
+        "code": 206,
+        "status": "Partial Content",
+        "category": "Success",
+        "description": "El código 206 Partial Content indica que el servidor está entregando solo una parte del recurso solicitado debido a un encabezado Range enviado por el cliente. Este código es fundamental para la descarga de archivos grandes, streaming de video/audio, y para permitir la reanudación de descargas interrumpidas. Cuando un cliente solicita un rango específico de bytes de un recurso (por ejemplo, bytes 0-1023 de un archivo de 100MB), el servidor responde con 206 y solo los bytes solicitados. La respuesta debe incluir encabezados Content-Range que especifican qué porción del recurso se está enviando y el tamaño total del recurso, y Content-Length que indica el tamaño de la porción actual. Este mecanismo es esencial para aplicaciones de streaming donde el cliente puede solicitar chunks específicos de un video o audio, para administradores de descargas que dividen archivos grandes en múltiples segmentos para descargar en paralelo, y para reanudar descargas interrumpidas solicitando solo la porción faltante. Los navegadores modernos y reproductores de video utilizan extensivamente este código para permitir la búsqueda dentro de videos (cuando mueves la barra de progreso), para cargar solo las porciones visibles de archivos PDF grandes, o para implementar lazy loading eficiente de recursos multimedia.",
+        "useCases": [
+            "Streaming de video y audio (permitiendo seek/skip)",
+            "Descarga resumible de archivos grandes",
+            "Descarga paralela de archivos en múltiples segmentos",
+            "Visualización de porciones específicas de documentos grandes (PDFs)",
+            "Optimización de ancho de banda cargando solo lo necesario",
+            "Implementación de lazy loading para contenido multimedia"
+        ],
+        "examples": [
+            {
+                "scenario": "Solicitud de rango de bytes de un video",
+                "request": "GET /videos/movie.mp4 HTTP/1.1\nHost: cdn.example.com\nRange: bytes=1000000-2999999",
+                "response": "HTTP/1.1 206 Partial Content\nContent-Type: video/mp4\nContent-Length: 2000000\nContent-Range: bytes 1000000-2999999/500000000\nAccept-Ranges: bytes\n\n[2MB de datos de video]",
+                "explanation": "El servidor envía 2MB específicos del video (del byte 1M al byte 3M) de un total de 500MB"
+            },
+            {
+                "scenario": "Reanudación de descarga interrumpida",
+                "request": "GET /downloads/software.zip HTTP/1.1\nHost: downloads.example.com\nRange: bytes=50000000-",
+                "response": "HTTP/1.1 206 Partial Content\nContent-Type: application/zip\nContent-Length: 50000000\nContent-Range: bytes 50000000-99999999/100000000\nAccept-Ranges: bytes\n\n[50MB restantes del archivo]",
+                "explanation": "La descarga se reanuda desde el byte 50M hasta el final del archivo de 100MB"
+            },
+            {
+                "scenario": "Descarga paralela con múltiples rangos",
+                "request": "GET /files/large-dataset.dat HTTP/1.1\nHost: data.example.com\nRange: bytes=0-10485759,10485760-20971519",
+                "response": "HTTP/1.1 206 Partial Content\nContent-Type: multipart/byteranges; boundary=BOUNDARY_STRING\nContent-Length: 20971520\n\n--BOUNDARY_STRING\nContent-Type: application/octet-stream\nContent-Range: bytes 0-10485759/1073741824\n\n[primeros 10MB]\n--BOUNDARY_STRING\nContent-Type: application/octet-stream\nContent-Range: bytes 10485760-20971519/1073741824\n\n[siguientes 10MB]\n--BOUNDARY_STRING--",
+                "explanation": "El cliente solicita dos rangos simultáneos para descarga paralela"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7233, Section 4.1"
+    },
+    {
+        "code": 207,
+        "status": "Multi-Status",
+        "category": "Success",
+        "description": "El código 207 Multi-Status es utilizado principalmente en el contexto de WebDAV (Web Distributed Authoring and Versioning) para transmitir información sobre múltiples recursos cuando la operación sobre varios recursos puede tener resultados variados. A diferencia de otros códigos de estado que aplican a toda la respuesta, 207 indica que el cuerpo del mensaje contiene un documento XML con múltiples códigos de estado de respuesta, uno para cada recurso o sub-operación involucrada. Esto es esencial cuando se realizan operaciones sobre colecciones de recursos donde algunos pueden tener éxito y otros fallar. Por ejemplo, al intentar eliminar una carpeta con 10 archivos, 5 podrían eliminarse exitosamente (200), 3 podrían estar bloqueados (423), y 2 podrían no existir (404). El código 207 permite comunicar todos estos estados diferentes en una sola respuesta estructurada. El cuerpo de la respuesta típicamente contiene XML con elementos <response> para cada recurso, cada uno con su propio <status> y potencialmente <propstat> para propiedades. Esto hace que las operaciones batch sean más eficientes y permite al cliente manejar éxitos y fallos parciales de manera granular sin necesidad de múltiples requests individuales.",
+        "useCases": [
+            "Operaciones WebDAV sobre múltiples archivos o carpetas (PROPFIND, COPY, MOVE, DELETE)",
+            "Operaciones batch en APIs que procesan múltiples recursos",
+            "Sincronización de colecciones de recursos donde algunos pueden fallar",
+            "Consultas de propiedades sobre múltiples recursos simultáneamente",
+            "Operaciones de backup o restauración de múltiples archivos"
+        ],
+        "examples": [
+            {
+                "scenario": "PROPFIND sobre una colección de archivos",
+                "request": "PROPFIND /documents/ HTTP/1.1\nHost: webdav.example.com\nDepth: 1\nContent-Type: application/xml\n\n<?xml version=\"1.0\"?>\n<propfind xmlns=\"DAV:\">\n  <prop>\n    <getcontentlength/>\n    <getlastmodified/>\n  </prop>\n</propfind>",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/xml; charset=\"utf-8\"\nContent-Length: 1234\n\n<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<multistatus xmlns=\"DAV:\">\n  <response>\n    <href>/documents/file1.pdf</href>\n    <propstat>\n      <prop>\n        <getcontentlength>4500</getcontentlength>\n        <getlastmodified>Mon, 15 Jan 2024 12:00:00 GMT</getlastmodified>\n      </prop>\n      <status>HTTP/1.1 200 OK</status>\n    </propstat>\n  </response>\n  <response>\n    <href>/documents/file2.docx</href>\n    <propstat>\n      <prop>\n        <getcontentlength>15000</getcontentlength>\n        <getlastmodified>Tue, 16 Jan 2024 09:30:00 GMT</getlastmodified>\n      </prop>\n      <status>HTTP/1.1 200 OK</status>\n    </propstat>\n  </response>\n  <response>\n    <href>/documents/protected.txt</href>\n    <propstat>\n      <status>HTTP/1.1 403 Forbidden</status>\n    </propstat>\n  </response>\n</multistatus>",
+                "explanation": "El servidor devuelve propiedades de múltiples archivos, algunos exitosos (200) y uno con acceso denegado (403)"
+            },
+            {
+                "scenario": "Operación COPY batch sobre múltiples recursos",
+                "request": "COPY /source-folder/ HTTP/1.1\nHost: webdav.example.com\nDestination: /backup-folder/\nDepth: infinity",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/xml\n\n<?xml version=\"1.0\"?>\n<multistatus xmlns=\"DAV:\">\n  <response>\n    <href>/source-folder/document1.txt</href>\n    <status>HTTP/1.1 201 Created</status>\n  </response>\n  <response>\n    <href>/source-folder/document2.txt</href>\n    <status>HTTP/1.1 201 Created</status>\n  </response>\n  <response>\n    <href>/source-folder/locked-file.dat</href>\n    <status>HTTP/1.1 423 Locked</status>\n  </response>\n</multistatus>",
+                "explanation": "Algunos archivos se copiaron exitosamente mientras uno estaba bloqueado"
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 4918 (WebDAV), Section 11.1"
+    },
+    {
+        "code": 208,
+        "status": "Already Reported",
+        "category": "Success",
+        "description": "El código 208 Already Reported es utilizado exclusivamente en el contexto de WebDAV (Web Distributed Authoring and Versioning) para evitar la enumeración repetida de recursos internos en respuestas Multi-Status. Este código representa una optimización crítica cuando se trabaja con bindings WebDAV, que son esencialmente referencias o enlaces a recursos que pueden aparecer en múltiples ubicaciones dentro de una jerarquía de carpetas. Cuando un cliente realiza una operación PROPFIND con profundidad infinita sobre una colección que contiene múltiples bindings (enlaces, referencias, o aliases) apuntando al mismo recurso subyacente, sin el código 208 la respuesta incluiría información completa del mismo recurso múltiples veces, una por cada binding. Esto no solo infla innecesariamente el tamaño de la respuesta XML sino que también consume recursos de procesamiento tanto en el servidor como en el cliente. El código 208 permite al servidor reportar el recurso completo la primera vez que lo encuentra durante el traversal de la jerarquía, y luego usar 208 Already Reported para las referencias subsecuentes al mismo recurso. Esto es análogo a cómo los lenguajes de programación manejan referencias circulares en estructuras de datos - la primera vez que encuentras un objeto lo procesas completamente, las siguientes veces solo indicas 'ya vimos esto'. En sistemas de archivos modernos con soporte para hard links, enlaces simbólicos, o sistemas distribuidos donde el mismo archivo puede ser accesible desde múltiples rutas virtuales, este código es esencial para mantener las respuestas manejables. La implementación correcta de 208 requiere que el servidor mantenga un registro de qué recursos ya ha incluido en la respuesta actual para evitar duplicación. Es importante notar que este código solo tiene sentido en el contexto de una respuesta 207 Multi-Status y específicamente en operaciones WebDAV que pueden atravesar colecciones con múltiples referencias.",
+        "useCases": [
+            "Operaciones PROPFIND recursivas sobre colecciones con bindings WebDAV duplicados",
+            "Prevención de duplicación en listados de recursos en sistemas con hard links",
+            "Optimización de respuestas en traversal de jerarquías con enlaces simbólicos",
+            "Reducción del tamaño de respuestas XML en operaciones sobre estructuras complejas de carpetas",
+            "Sistemas de archivos distribuidos donde el mismo recurso tiene múltiples rutas de acceso",
+            "Implementaciones de versionado donde múltiples versiones pueden compartir contenido subyacente"
+        ],
+        "examples": [
+            {
+                "scenario": "PROPFIND recursivo con bindings duplicados",
+                "request": "PROPFIND /workspace/projects/ HTTP/1.1\nHost: webdav.example.com\nDepth: infinity\nContent-Type: application/xml\n\n<?xml version=\"1.0\"?>\n<propfind xmlns=\"DAV:\">\n  <prop>\n    <displayname/>\n    <getcontentlength/>\n    <getcontenttype/>\n    <resourcetype/>\n  </prop>\n</propfind>",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/xml; charset=\"utf-8\"\n\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<multistatus xmlns=\"DAV:\">\n  <response>\n    <href>/workspace/projects/shared-library/utils.js</href>\n    <propstat>\n      <prop>\n        <displayname>utils.js</displayname>\n        <getcontentlength>45000</getcontentlength>\n        <getcontenttype>application/javascript</getcontenttype>\n        <resourcetype/>\n      </prop>\n      <status>HTTP/1.1 200 OK</status>\n    </propstat>\n  </response>\n  <response>\n    <href>/workspace/projects/project-a/lib/utils.js</href>\n    <status>HTTP/1.1 208 Already Reported</status>\n  </response>\n  <response>\n    <href>/workspace/projects/project-b/dependencies/utils.js</href>\n    <status>HTTP/1.1 208 Already Reported</status>\n  </response>\n  <response>\n    <href>/workspace/projects/project-c/shared/utils.js</href>\n    <status>HTTP/1.1 208 Already Reported</status>\n  </response>\n</multistatus>",
+                "explanation": "El archivo utils.js es compartido por múltiples proyectos mediante bindings. Se reporta completamente solo la primera vez, las subsecuentes referencias usan 208 para evitar duplicación innecesaria de datos."
+            },
+            {
+                "scenario": "Traversal de sistema con hard links",
+                "request": "PROPFIND /storage/backups/ HTTP/1.1\nHost: dav.example.com\nDepth: infinity",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/xml\n\n<?xml version=\"1.0\"?>\n<multistatus xmlns=\"DAV:\">\n  <response>\n    <href>/storage/backups/2024-01/database.dump</href>\n    <propstat>\n      <prop>\n        <displayname>database.dump</displayname>\n        <getcontentlength>524288000</getcontentlength>\n        <getlastmodified>Mon, 15 Jan 2024 02:00:00 GMT</getlastmodified>\n        <resourcetype/>\n      </prop>\n      <status>HTTP/1.1 200 OK</status>\n    </propstat>\n  </response>\n  <response>\n    <href>/storage/backups/2024-02/database.dump</href>\n    <status>HTTP/1.1 208 Already Reported</status>\n  </response>\n  <response>\n    <href>/storage/backups/latest/database.dump</href>\n    <status>HTTP/1.1 208 Already Reported</status>\n  </response>\n</multistatus>",
+                "explanation": "El mismo archivo de backup está vinculado en múltiples directorios mediante hard links para deduplicación. Solo se reporta una vez con sus propiedades completas."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 5842, Section 7.1",
+        "relatedCodes": [
+            207
+        ],
+        "technicalNotes": "Este código solo es válido dentro del contexto de una respuesta 207 Multi-Status. El servidor debe implementar lógica para rastrear qué recursos ya han sido reportados durante el traversal de la jerarquía actual. No debe usarse fuera del contexto WebDAV."
+    },
+    {
+        "code": 214,
+        "status": "Transformation Applied",
+        "category": "Success (Warning Code)",
+        "description": "El código 214 Transformation Applied es un código de advertencia HTTP que se transmite a través del encabezado Warning, no como código de estado HTTP principal. Los códigos de advertencia proporcionan información adicional sobre el estado de la respuesta que puede no ser evidente solo con el código de estado. El 214 específicamente informa al cliente que un intermediario (proxy, gateway, CDN) ha aplicado alguna transformación al contenido del mensaje antes de entregarlo. Estas transformaciones pueden ser dramáticas o sutiles: desde conversión de formatos de imagen (JPEG a WebP), transcodificación de video para diferentes dispositivos, compresión agresiva, minificación de código, aplicación de filtros de contenido, hasta modificación de resoluciones o tasas de bits. A diferencia del código de estado 203 Non-Authoritative Information que indica modificación de metadatos (encabezados), el código 214 se enfoca específicamente en transformaciones del cuerpo del mensaje. El formato del encabezado Warning es: 'Warning: 214 agent \"Transformation Applied\" \"descripción detallada\"' donde 'agent' identifica el intermediario que aplicó la transformación y la descripción explica qué se modificó. Esto es crucial para transparencia, debugging, y cumplimiento de políticas de contenido. Por ejemplo, un desarrollador depurando por qué una imagen se ve diferente en producción vs desarrollo puede ver el warning 214 y entender que un CDN está optimizando las imágenes. O un sistema de validación de contenido puede verificar que las transformaciones aplicadas cumplen con políticas corporativas. Los proxies modernos de optimización web, CDNs con procesamiento inteligente de assets, y gateways de adaptación de contenido para diferentes tipos de red (3G, 4G, 5G, WiFi) utilizan extensivamente este mecanismo. Es especialmente importante en contextos móviles donde los operadores de red pueden aplicar optimizaciones agresivas para reducir consumo de datos.",
+        "useCases": [
+            "Proxies de optimización que comprimen imágenes para reducir ancho de banda en redes lentas",
+            "CDNs que convierten formatos de imagen a WebP o AVIF para navegadores compatibles",
+            "Transcodificación automática de video según capacidades del dispositivo cliente",
+            "Minificación y bundling de archivos JavaScript/CSS por intermediarios",
+            "Aplicación de filtros de contenido corporativos o gubernamentales",
+            "Adaptación de resolución de imágenes según tipo de conexión (WiFi vs móvil)",
+            "Compresión adicional aplicada por operadores móviles en redes congestionadas",
+            "Conversión de documentos a formatos más ligeros (por ejemplo, reducir calidad de PDFs)"
+        ],
+        "examples": [
+            {
+                "scenario": "CDN optimizando imagen para móvil",
+                "request": "GET /assets/hero-image.jpg HTTP/1.1\nHost: example.com\nUser-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 15_0...)\nAccept: image/webp,image/jpeg,*/*",
+                "response": "HTTP/1.1 200 OK\nContent-Type: image/webp\nContent-Length: 28000\nWarning: 214 cdn.example.com \"Transformation Applied\" \"Original JPEG (150KB) converted to WebP format and compressed to 28KB for mobile optimization\"\nVary: Accept, User-Agent\nX-Original-Format: image/jpeg\nX-Original-Size: 153600\nVia: 1.1 cdn.example.com\n\n[WebP image data]",
+                "explanation": "El CDN detectó un iPhone con soporte para WebP, convirtió la imagen original JPEG, aplicó compresión agresiva, y notificó la transformación mediante Warning 214."
+            },
+            {
+                "scenario": "Proxy de operador móvil comprimiendo contenido",
+                "request": "GET /download/whitepaper.pdf HTTP/1.1\nHost: docs.example.com\nVia: 1.1 mobile-proxy.carrier.com",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/pdf\nContent-Length: 450000\nWarning: 214 mobile-proxy.carrier.com \"Transformation Applied\" \"PDF images recompressed to reduce file size from 2.5MB to 450KB for data saving on mobile network\"\nX-Data-Saver-Applied: true\nX-Original-Size: 2621440\n\n[compressed PDF data]",
+                "explanation": "El proxy del operador móvil aplicó compresión agresiva al PDF para ahorrar datos del plan del usuario."
+            },
+            {
+                "scenario": "Transcodificación de video adaptativa",
+                "request": "GET /videos/tutorial.mp4 HTTP/1.1\nHost: media.example.com\nUser-Agent: Mozilla/5.0 (Linux; Android 12...)",
+                "response": "HTTP/1.1 200 OK\nContent-Type: video/mp4\nContent-Length: 15000000\nWarning: 214 video-gateway.example.com \"Transformation Applied\" \"Video transcoded from 1080p H.265 to 480p H.264 for Android device with limited bandwidth\"\nX-Original-Resolution: 1920x1080\nX-Original-Codec: hevc\nX-Transcoded-Resolution: 854x480\nX-Transcoded-Codec: h264\n\n[transcoded video data]",
+                "explanation": "El gateway de video detectó un dispositivo Android en una conexión lenta y transcodificó el video a menor resolución y codec más compatible."
+            },
+            {
+                "scenario": "Minificación de JavaScript por proxy corporativo",
+                "request": "GET /js/app.js HTTP/1.1\nHost: cdn.example.com\nVia: 1.1 corporate-proxy.company.com",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/javascript\nContent-Length: 85000\nWarning: 214 corporate-proxy.company.com \"Transformation Applied\" \"JavaScript minified and comments removed, reduced from 245KB to 85KB\"\nX-Original-Size: 250880\nX-Minified: true\n\n[minified JavaScript code]",
+                "explanation": "Un proxy corporativo minificó automáticamente el JavaScript para optimizar el ancho de banda de la red empresarial."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7234, Section 5.5",
+        "headerFormat": "Warning: 214 agent \"Transformation Applied\" \"detailed description\"",
+        "relatedHeaders": [
+            "Via",
+            "X-Original-Size",
+            "X-Transformed-By",
+            "Vary"
+        ],
+        "technicalNotes": "Este es un código de advertencia (Warning code), no un código de estado HTTP. Se transmite mediante el encabezado Warning. Múltiples advertencias pueden estar presentes en una sola respuesta. Los códigos de advertencia en el rango 2xx indican que no hubo error pero hay información adicional importante."
+    },
+    {
+        "code": 226,
+        "status": "IM Used",
+        "category": "Success",
+        "description": "El código 226 IM Used (Instance Manipulation Used) indica que el servidor ha cumplido exitosamente con una solicitud GET para un recurso, pero en lugar de devolver la representación completa del recurso, está devolviendo el resultado de aplicar una o más manipulaciones de instancia (Instance Manipulations o IM) a la instancia actual del recurso. Este código es parte del framework de delta encoding especificado en RFC 3229, un mecanismo sofisticado diseñado para optimizar dramáticamente el uso de ancho de banda cuando los clientes solicitan recursos que han cambiado solo parcialmente desde una versión anterior que ya poseen. El concepto fundamental es simple pero poderoso: si tienes la versión 1 de un documento de 10MB y el servidor tiene la versión 2, en lugar de descargar los 10MB completos nuevamente, el servidor puede enviar solo un 'delta' (diferencia) de quizás 500KB que describe los cambios. El cliente entonces aplica este delta a su versión local para reconstruir la versión 2. El encabezado A-IM (Accept Instance Manipulation) en la solicitud especifica qué tipos de deltas o manipulaciones el cliente puede procesar (por ejemplo: vcdiff, gdiff, diffe, gzip). El servidor responde con 226 y el encabezado IM indica qué manipulación fue aplicada, mientras que Delta-Base identifica la versión base usada para calcular el delta. Este mecanismo es especialmente valioso para documentos grandes que evolucionan incrementalmente: bases de datos, archivos de configuración extensos, imágenes satelitales con actualizaciones periódicas, datasets científicos, o código fuente versionado. Aunque técnicamente poderoso, 226 es raramente implementado en la web moderna porque requiere soporte sofisticado tanto del cliente como del servidor, incluyendo algoritmos de diff/patch, gestión de versiones, y lógica de fallback. Muchos desarrolladores prefieren soluciones más simples como versionado de recursos con ETags para cacheo, o dividir recursos grandes en chunks más pequeños.",
+        "useCases": [
+            "Sincronización eficiente de archivos grandes con cambios incrementales (bases de datos, logs)",
+            "Actualización de datasets científicos o geoespaciales que cambian parcialmente",
+            "Distribución de actualizaciones de software mediante deltas en lugar de instaladores completos",
+            "APIs que sirven documentos versionados donde el cliente probablemente tiene versiones anteriores",
+            "Sistemas de colaboración en documentos grandes con control de versiones",
+            "Optimización de ancho de banda en enlaces satelitales o conexiones lentas costosas",
+            "Sincronización de repositorios de código fuente sobre HTTP (similar a Git pero vía HTTP puro)"
+        ],
+        "examples": [
+            {
+                "scenario": "Delta encoding con formato vcdiff",
+                "request": "GET /datasets/weather-data.csv HTTP/1.1\nHost: data.example.com\nA-IM: vcdiff, diffe\nIf-None-Match: \"v2024-01-15-abc123\"\nAccept-Encoding: gzip",
+                "response": "HTTP/1.1 226 IM Used\nETag: \"v2024-01-16-def456\"\nIM: vcdiff\nDelta-Base: \"v2024-01-15-abc123\"\nContent-Type: application/x-vcdiff\nContent-Encoding: gzip\nContent-Length: 125000\nCache-Control: private, must-revalidate\n\n[gzipped vcdiff delta data]",
+                "explanation": "El cliente tiene los datos meteorológicos del 15 de enero. El servidor envía solo los cambios del 16 de enero usando formato vcdiff comprimido con gzip, reduciendo la transferencia de 50MB completos a solo 125KB de delta."
+            },
+            {
+                "scenario": "Actualización incremental de documento JSON grande",
+                "request": "GET /api/products-catalog.json HTTP/1.1\nHost: api.example.com\nA-IM: json-patch, json-merge-patch\nIf-None-Match: \"catalog-v105\"",
+                "response": "HTTP/1.1 226 IM Used\nETag: \"catalog-v106\"\nIM: json-patch\nDelta-Base: \"catalog-v105\"\nContent-Type: application/json-patch+json\nContent-Length: 3500\n\n[\n  {\"op\": \"replace\", \"path\": \"/products/42/price\", \"value\": 29.99},\n  {\"op\": \"replace\", \"path\": \"/products/42/stock\", \"value\": 150},\n  {\"op\": \"add\", \"path\": \"/products/999\", \"value\": {\n    \"id\": 999,\n    \"name\": \"New Product\",\n    \"price\": 49.99,\n    \"stock\": 50\n  }},\n  {\"op\": \"remove\", \"path\": \"/products/123\"}\n]",
+                "explanation": "En lugar de enviar todo el catálogo de productos (5MB), el servidor envía un JSON Patch (3.5KB) con solo los cambios: actualizaciones de precio/stock de un producto, adición de un producto nuevo, y eliminación de un producto descontinuado."
+            },
+            {
+                "scenario": "Sincronización de base de datos SQLite",
+                "request": "GET /db/application.db HTTP/1.1\nHost: sync.example.com\nA-IM: gdiff\nIf-None-Match: \"db-snapshot-20240115-120000\"\nRange: bytes=0-",
+                "response": "HTTP/1.1 226 IM Used\nETag: \"db-snapshot-20240116-140000\"\nIM: gdiff\nDelta-Base: \"db-snapshot-20240115-120000\"\nContent-Type: application/x-gdiff\nContent-Length: 450000\n\n[gdiff binary delta data]",
+                "explanation": "El cliente sincroniza una base de datos SQLite de 250MB. Solo han cambiado algunas tablas (nuevas filas, actualizaciones). El servidor calcula un delta binario de 450KB usando gdiff, evitando transferir los 250MB completos."
+            },
+            {
+                "scenario": "Fallback cuando delta no es posible",
+                "request": "GET /documents/report.pdf HTTP/1.1\nHost: docs.example.com\nA-IM: vcdiff\nIf-None-Match: \"report-v1\"",
+                "response": "HTTP/1.1 200 OK\nETag: \"report-v5\"\nContent-Type: application/pdf\nContent-Length: 2500000\nVary: A-IM, If-None-Match\n\n[complete PDF file]",
+                "explanation": "El cliente tiene la versión 1 pero la versión actual es 5. Los cambios son tan extensos que el delta sería casi tan grande como el archivo completo, o el servidor no tiene la versión intermedia. Se envía el archivo completo con código 200 en lugar de 226."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 3229, Section 10.4.1",
+        "relatedHeaders": [
+            "A-IM (Accept-Instance-Manipulation)",
+            "IM (Instance-Manipulation)",
+            "Delta-Base",
+            "If-None-Match",
+            "ETag"
+        ],
+        "deltaFormats": {
+            "vcdiff": "Binary delta encoding format (RFC 3284), muy eficiente para archivos binarios",
+            "gdiff": "Generic diff format, usado para diferencias binarias",
+            "diffe": "Ed-style diff, basado en comandos de edición",
+            "json-patch": "RFC 6902, para documentos JSON estructurados",
+            "json-merge-patch": "RFC 7396, merge patches para JSON"
+        },
+        "technicalNotes": "El servidor debe almacenar versiones anteriores o calcular deltas on-the-fly. La implementación requiere algoritmos sofisticados de diff/patch. Si calcular el delta es más costoso que enviar el recurso completo, el servidor debe usar 200 OK. Los clientes deben implementar lógica de fallback para cuando 200 se recibe en lugar de 226."
+    }
+]
