@@ -54,8 +54,8 @@
         "specification": "RFC 7231, Section 6.2.2",
         "images": [
             {
-                "imageCover": "",
-                "alt": ""
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768597106/1_ltkyhn.png",
+                "alt": "Imagen que representa el nombre del código 101 Switching Protocols"
             },
             {
                 "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595404/1-removebg-preview_wxojpe.png",
@@ -86,8 +86,8 @@
         "specification": "RFC 2518 (WebDAV)",
         "images": [
             {
-                "imageCover": "",
-                "alt": ""
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768597104/2_gptmes.png",
+                "alt": "Imagen que representa el nombre del código 102 Processing"
             },
             {
                 "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595396/2-removebg-preview_x2uckm.png",
@@ -118,8 +118,8 @@
         "specification": "RFC 8297",
         "images": [
             {
-                "imageCover": "",
-                "alt": ""
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768597108/3_av4aj8.png",
+                "alt": "Imagen que representa el nombre del código 103 Early Hints  "
             },
             {
                 "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595394/3-removebg-preview_qyvwqw.png",
