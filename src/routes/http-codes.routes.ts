@@ -6,4 +6,6 @@ export const httpCodesRouter = Router();
 
 const httpCodesController = new HttpCodesController();
 
-httpCodesRouter.get("/", httpCodesController.getHttpCodes);
+httpCodesRouter.get("/", httpCodesController.getHttpCodesAll);
+
+httpCodesRouter.get("/:code", httpCodesController.getHttpCode);
