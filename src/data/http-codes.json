@@ -26,7 +26,7 @@
                 "alt": "Imagen que representa el nombre del código 100 Continue"
             },
             {
-                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595465/404-removebg-preview_hlqljp.png",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768618710/1-removebg-preview_tkp4yz.png",
                 "alt": "Imagen del código 100 Continue"
             }
         ]
@@ -58,7 +58,7 @@
                 "alt": "Imagen que representa el nombre del código 101 Switching Protocols"
             },
             {
-                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595404/1-removebg-preview_wxojpe.png",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768618707/2-removebg-preview_jjwrov.png",
                 "alt": "Imagen del código 101 Switching Protocols"
             }
         ]
@@ -90,7 +90,7 @@
                 "alt": "Imagen que representa el nombre del código 102 Processing"
             },
             {
-                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595396/2-removebg-preview_x2uckm.png",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768618704/3-removebg-preview_cj1fzy.png",
                 "alt": "Imagen del código 102 Processing"
             }
         ]
@@ -122,7 +122,7 @@
                 "alt": "Imagen que representa el nombre del código 103 Early Hints  "
             },
             {
-                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768595394/3-removebg-preview_qyvwqw.png",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768618702/4-removebg-preview_gkrmuw.png",
                 "alt": "Imagen del código 103 Early Hints"
             }
         ]
@@ -157,11 +157,11 @@
         "specification": "RFC 7231, Section 6.3.1",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613634/1_bikeld.png",
                 "alt": "Imagen que representa el nombre del código 200 OK"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619787/5-removebg-preview_wc1wto.png",
                 "alt": "Imagen del código 200 OK"
             }
         ]
@@ -193,7 +193,17 @@
             }
         ],
         "httpVersion": "HTTP/1.0+",
-        "specification": "RFC 7231, Section 6.3.2"
+        "specification": "RFC 7231, Section 6.3.2",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613643/2_hapb2d.png",
+                "alt": "Imagen que representa el nombre del código 201 Created"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619783/6-removebg-preview_ytp56u.png",
+                "alt": "Imagen del codigo 201 Created"
+            }
+        ]
     },
     {
         "code": 202,
@@ -223,7 +233,17 @@
             }
         ],
         "httpVersion": "HTTP/1.0+",
-        "specification": "RFC 7231, Section 6.3.3"
+        "specification": "RFC 7231, Section 6.3.3",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613646/3_clmvyi.png",
+                "alt": "Imagen que representa el nombre del código 202 Accepted"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619780/7-removebg-preview_mh2ybs.png",
+                "alt": "Imagen del código 202 Accepted"
+            }
+        ]
     },
     {
         "code": 203,
@@ -252,7 +272,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 7231, Section 6.3.4"
+        "specification": "RFC 7231, Section 6.3.4",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613641/4_jesleh.png",
+                "alt": "Imagen que representa el nombre del código 203 Non-Authoritative Information"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619769/8-removebg-preview_cd7hdi.png",
+                "alt": "Imagen del código 203 Non-Authoritative Information"
+            }
+        ]
     },
     {
         "code": 204,
@@ -288,7 +318,17 @@
             }
         ],
         "httpVersion": "HTTP/1.0+",
-        "specification": "RFC 7231, Section 6.3.5"
+        "specification": "RFC 7231, Section 6.3.5",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613653/5_efixbc.png",
+                "alt": "Imagen que representa el nombre del código 204 No Content"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619773/9-removebg-preview_wavvrt.png",
+                "alt": "Imagen del código 204 No Content"
+            }
+        ]
     },
     {
         "code": 205,
@@ -317,7 +357,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 7231, Section 6.3.6"
+        "specification": "RFC 7231, Section 6.3.6",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613651/6_blwgmz.png",
+                "alt": "Imagen que representa el nombre del código 205 Reset Content"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619776/10-removebg-preview_lt16pz.png",
+                "alt": "Imagen del código 205 Reset Content"
+            }
+        ]
     },
     {
         "code": 206,
@@ -353,7 +403,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 7233, Section 4.1"
+        "specification": "RFC 7233, Section 4.1",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613659/7_ts5rgr.png",
+                "alt": "Imagen que representa el nombre del código 206 Partial Content"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619763/11-removebg-preview_krzu2a.png",
+                "alt": "Imagen del código 206 Partial Content"
+            }
+        ]
     },
     {
         "code": 207,
@@ -382,7 +442,17 @@
             }
         ],
         "httpVersion": "HTTP/1.1",
-        "specification": "RFC 4918 (WebDAV), Section 11.1"
+        "specification": "RFC 4918 (WebDAV), Section 11.1",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613656/8_gh0rl4.png",
+                "alt": "Imagen que representa el nombre del código 207 Multi-Status"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619797/13-removebg-preview_snc3fy.png",
+                "alt": "Imagen del código 207 Multi-Status"
+            }
+        ]
     },
     {
         "code": 208,
@@ -416,7 +486,17 @@
         "relatedCodes": [
             207
         ],
-        "technicalNotes": "Este código solo es válido dentro del contexto de una respuesta 207 Multi-Status. El servidor debe implementar lógica para rastrear qué recursos ya han sido reportados durante el traversal de la jerarquía actual. No debe usarse fuera del contexto WebDAV."
+        "technicalNotes": "Este código solo es válido dentro del contexto de una respuesta 207 Multi-Status. El servidor debe implementar lógica para rastrear qué recursos ya han sido reportados durante el traversal de la jerarquía actual. No debe usarse fuera del contexto WebDAV.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613636/9_vly4qs.png",
+                "alt": "Imagen que representa el nombre del código 208 Already Reported"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619797/13-removebg-preview_snc3fy.png",
+                "alt": "Imagen del código 208 Already Reported"
+            }
+        ]
     },
     {
         "code": 214,
@@ -468,7 +548,17 @@
             "X-Transformed-By",
             "Vary"
         ],
-        "technicalNotes": "Este es un código de advertencia (Warning code), no un código de estado HTTP. Se transmite mediante el encabezado Warning. Múltiples advertencias pueden estar presentes en una sola respuesta. Los códigos de advertencia en el rango 2xx indican que no hubo error pero hay información adicional importante."
+        "technicalNotes": "Este es un código de advertencia (Warning code), no un código de estado HTTP. Se transmite mediante el encabezado Warning. Múltiples advertencias pueden estar presentes en una sola respuesta. Los códigos de advertencia en el rango 2xx indican que no hubo error pero hay información adicional importante.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613638/10_rezx3u.png",
+                "alt": "Imagen que representa el nombre del código 214 Transformation Applied"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619790/14-removebg-preview_ypwtjm.png",
+                "alt": "Imagen del código 214 Transformation Applied"
+            }
+        ]
     },
     {
         "code": 226,
@@ -526,6 +616,16 @@
             "json-patch": "RFC 6902, para documentos JSON estructurados",
             "json-merge-patch": "RFC 7396, merge patches para JSON"
         },
-        "technicalNotes": "El servidor debe almacenar versiones anteriores o calcular deltas on-the-fly. La implementación requiere algoritmos sofisticados de diff/patch. Si calcular el delta es más costoso que enviar el recurso completo, el servidor debe usar 200 OK. Los clientes deben implementar lógica de fallback para cuando 200 se recibe en lugar de 226."
+        "technicalNotes": "El servidor debe almacenar versiones anteriores o calcular deltas on-the-fly. La implementación requiere algoritmos sofisticados de diff/patch. Si calcular el delta es más costoso que enviar el recurso completo, el servidor debe usar 200 OK. Los clientes deben implementar lógica de fallback para cuando 200 se recibe en lugar de 226.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768613648/11_ozqx4y.png",
+                "alt": "Imagen que representa el nombre del código 226 IM Used"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768619794/15-removebg-preview_yxl4gy.png",
+                "alt": "Imagen del código 226 IM Used"
+            }
+        ]
     }
 ]
