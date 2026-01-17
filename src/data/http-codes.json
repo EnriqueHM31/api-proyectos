@@ -627,5 +627,454 @@
                 "alt": "Imagen del código 226 IM Used"
             }
         ]
+    },
+    {
+        "code": 300,
+        "status": "Multiple Choices",
+        "category": "Redirection",
+        "description": "El código 300 Multiple Choices indica que el recurso solicitado corresponde a múltiples representaciones diferentes, cada una con su propia ubicación específica, y se está proporcionando información para que el agente de usuario (o el usuario final) pueda seleccionar una representación preferida y redirigir su solicitud a esa ubicación. Este código representa una situación de negociación de contenido donde el servidor no puede o no quiere tomar automáticamente la decisión sobre cuál variante servir. Es fundamentalmente diferente de otros códigos de redirección porque no impone una única redirección, sino que ofrece opciones. La respuesta debe incluir una lista de las alternativas disponibles junto con sus ubicaciones y características distintivas, permitiendo que el cliente (o usuario) haga una elección informada. Por ejemplo, un documento podría estar disponible en múltiples formatos (PDF, HTML, DOCX), idiomas (inglés, español, francés), o versiones (para principiantes, intermedio, avanzado). El servidor podría responder con 300 y proporcionar enlaces a todas estas variantes. El cuerpo de la respuesta típicamente contiene un documento HTML con enlaces a las diferentes opciones, o puede usar el encabezado Location para sugerir una opción preferida mientras lista otras alternativas en el cuerpo. En la práctica moderna, 300 es raramente utilizado porque los servidores generalmente implementan negociación de contenido automática basada en encabezados Accept, Accept-Language, Accept-Encoding del cliente, eligiendo la mejor representación y devolviéndola directamente con código 200 OK, o usando redirecciones 302/303 para dirigir automáticamente a una variante específica. Sin embargo, 300 sigue siendo útil en escenarios donde la elección tiene implicaciones significativas que no pueden ser determinadas automáticamente, como diferentes niveles de detalle de documentación, versiones con diferentes licencias, o formatos que requieren diferentes aplicaciones.",
+        "useCases": [
+            "Documentos disponibles en múltiples formatos que requieren elección explícita del usuario",
+            "Contenido multilingüe donde el servidor no puede determinar automáticamente el idioma preferido",
+            "Diferentes versiones de un recurso (simplificada, completa, técnica) donde la elección depende del contexto",
+            "Recursos con múltiples licencias donde el usuario debe seleccionar términos específicos",
+            "APIs que ofrecen múltiples endpoints para la misma funcionalidad con diferentes características",
+            "Contenido disponible en diferentes niveles de calidad o resolución",
+            "Archivos disponibles desde múltiples servidores mirror donde el usuario debe elegir el más cercano"
+        ],
+        "examples": [
+            {
+                "scenario": "Documento en múltiples formatos",
+                "request": "GET /documentation/user-guide HTTP/1.1\nHost: docs.example.com\nAccept: */*",
+                "response": "HTTP/1.1 300 Multiple Choices\nLocation: /documentation/user-guide.html\nContent-Type: text/html; charset=utf-8\nVary: Accept\n\n<!DOCTYPE html>\n<html>\n<head><title>Multiple Formats Available</title></head>\n<body>\n  <h1>User Guide - Multiple Formats</h1>\n  <p>This documentation is available in several formats:</p>\n  <ul>\n    <li><a href=\"/documentation/user-guide.html\">HTML Version</a></li>\n    <li><a href=\"/documentation/user-guide.pdf\">PDF Version</a></li>\n    <li><a href=\"/documentation/user-guide.epub\">EPUB Version</a></li>\n    <li><a href=\"/documentation/user-guide.docx\">DOCX Version</a></li>\n  </ul>\n</body>\n</html>",
+                "explanation": "El servidor ofrece el mismo contenido en cuatro formatos diferentes. El encabezado Location sugiere HTML como opción predeterminada, pero el usuario puede elegir cualquier formato según sus necesidades."
+            },
+            {
+                "scenario": "Contenido multilingüe sin preferencia clara",
+                "request": "GET /welcome HTTP/1.1\nHost: www.example.com\nAccept-Language: *",
+                "response": "HTTP/1.1 300 Multiple Choices\nContent-Type: text/html; charset=utf-8\nVary: Accept-Language\n\n<!DOCTYPE html>\n<html>\n<head><title>Language Selection</title></head>\n<body>\n  <h1>Please select your language</h1>\n  <ul>\n    <li><a href=\"/welcome?lang=en\" hreflang=\"en\">English</a></li>\n    <li><a href=\"/welcome?lang=es\" hreflang=\"es\">Español</a></li>\n    <li><a href=\"/welcome?lang=fr\" hreflang=\"fr\">Français</a></li>\n    <li><a href=\"/welcome?lang=de\" hreflang=\"de\">Deutsch</a></li>\n  </ul>\n</body>\n</html>",
+                "explanation": "El cliente no especificó una preferencia clara de idioma, por lo que el servidor presenta todas las opciones de idioma disponibles para que el usuario elija."
+            },
+            {
+                "scenario": "API con múltiples versiones",
+                "request": "GET /api/data HTTP/1.1\nHost: api.example.com",
+                "response": "HTTP/1.1 300 Multiple Choices\nContent-Type: application/json\nLocation: /api/v3/data\n\n{\n  \"message\": \"Multiple API versions available\",\n  \"versions\": [\n    {\n      \"version\": \"v1\",\n      \"url\": \"/api/v1/data\",\n      \"status\": \"deprecated\"\n    },\n    {\n      \"version\": \"v2\",\n      \"url\": \"/api/v2/data\",\n      \"status\": \"stable\"\n    },\n    {\n      \"version\": \"v3\",\n      \"url\": \"/api/v3/data\",\n      \"status\": \"recommended\"\n    }\n  ]\n}",
+                "explanation": "El endpoint base de la API devuelve información sobre todas las versiones disponibles, permitiendo que el cliente elija según sus necesidades de estabilidad versus características nuevas."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.4.1",
+        "relatedHeaders": [
+            "Location",
+            "Vary",
+            "Content-Type",
+            "Link"
+        ],
+        "technicalNotes": "Aunque especificado en HTTP/1.0, es raramente usado en la práctica moderna. La mayoría de los servidores implementan content negotiation automática usando encabezados Accept-* y devuelven 200 OK con la mejor representación, o usan 302/303 para redirigir automáticamente.",
+        "images": []
+    },
+    {
+        "code": 301,
+        "status": "Moved Permanently",
+        "category": "Redirection",
+        "description": "El código 301 Moved Permanently indica que el recurso solicitado ha sido movido permanentemente a una nueva ubicación URI, y todas las referencias futuras a este recurso deben usar una de las URIs devueltas. Este es uno de los códigos de redirección más importantes y ampliamente utilizados en HTTP, fundamental para SEO, mantenimiento de sitios web, y reorganización de estructuras de URLs. La palabra clave aquí es 'permanentemente' - este código comunica tanto a navegadores como a motores de búsqueda que el cambio es definitivo y no temporal. Los motores de búsqueda como Google, cuando encuentran un 301, transferirán el 'link juice' (valor SEO) del URL antiguo al nuevo, actualizarán sus índices, y eventualmente dejarán de rastrear el URL antiguo. Los navegadores típicamente almacenan en caché redirecciones 301, lo que significa que en visitas futuras pueden ir directamente al nuevo URL sin siquiera consultar el servidor sobre el URL antiguo. La respuesta debe incluir un encabezado Location con la nueva URI del recurso. Es crucial usar 301 correctamente: solo debe usarse cuando estás absolutamente seguro de que el movimiento es permanente. Si hay alguna posibilidad de que el recurso regrese al URL original en el futuro, usa 302 o 307 en su lugar. Las aplicaciones comunes incluyen: migración de HTTP a HTTPS, cambio de nombres de dominio, reestructuración de sitios web, consolidación de contenido duplicado, normalización de URLs (con/sin www, con/sin trailing slash), y redirección de páginas antiguas a nuevas versiones. Un uso inadecuado de 301 puede causar problemas graves: si rediriges permanentemente y luego intentas restaurar el URL original, los navegadores con caché pueden seguir redirigiendo automáticamente incluso después de que hayas eliminado la redirección del servidor.",
+        "useCases": [
+            "Migración permanente de HTTP a HTTPS para todo un sitio web",
+            "Cambio de nombre de dominio (example.com a newbrand.com)",
+            "Reestructuración de URLs (/old-page.html a /new-structure/page)",
+            "Consolidación de contenido duplicado hacia una URL canónica",
+            "Normalización de URLs (www.example.com a example.com o viceversa)",
+            "Redirección de trailing slash (/page a /page/ o viceversa)",
+            "Movimiento permanente de recursos a CDN o subdominios",
+            "Redirección de páginas de productos discontinuados a categorías o alternativas",
+            "Migración de plataformas (WordPress a Jamstack, cambio de CMS)",
+            "Internacionalización (example.com/page a example.com/en/page)"
+        ],
+        "examples": [
+            {
+                "scenario": "Migración HTTP a HTTPS",
+                "request": "GET /secure-page HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 301 Moved Permanently\nLocation: https://example.com/secure-page\nContent-Type: text/html; charset=UTF-8\n\n<html>\n<head><title>301 Moved Permanently</title></head>\n<body>\n<h1>Moved Permanently</h1>\n<p>The document has moved <a href=\"https://example.com/secure-page\">here</a>.</p>\n</body>\n</html>",
+                "explanation": "El sitio ha migrado permanentemente a HTTPS. Todas las solicitudes HTTP son redirigidas a sus equivalentes HTTPS. Los motores de búsqueda actualizarán sus índices para usar HTTPS."
+            },
+            {
+                "scenario": "Cambio de nombre de dominio",
+                "request": "GET /products/widget-x HTTP/1.1\nHost: oldcompany.com",
+                "response": "HTTP/1.1 301 Moved Permanently\nLocation: https://newcompany.com/products/widget-x\nCache-Control: max-age=31536000, immutable",
+                "explanation": "La empresa cambió de nombre y dominio. Redirección permanente con caché de 1 año para maximizar eficiencia. Los motores de búsqueda transferirán el valor SEO al nuevo dominio."
+            },
+            {
+                "scenario": "Reestructuración de URLs SEO-friendly",
+                "request": "GET /page.php?id=123&category=electronics HTTP/1.1\nHost: shop.example.com",
+                "response": "HTTP/1.1 301 Moved Permanently\nLocation: https://shop.example.com/electronics/products/smartphone-pro-123\nVary: Accept-Language\n\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Page Moved</title>\n  <link rel=\"canonical\" href=\"https://shop.example.com/electronics/products/smartphone-pro-123\">\n</head>\n<body>\n  <h1>This page has moved permanently</h1>\n  <p>New URL: <a href=\"https://shop.example.com/electronics/products/smartphone-pro-123\">Smartphone Pro</a></p>\n</body>\n</html>",
+                "explanation": "URLs antiguas con parámetros query son redirigidas permanentemente a URLs amigables para SEO. Incluye canonical tag para reforzar la URL correcta."
+            },
+            {
+                "scenario": "Normalización www vs non-www",
+                "request": "GET / HTTP/1.1\nHost: www.example.com",
+                "response": "HTTP/1.1 301 Moved Permanently\nLocation: https://example.com/\nStrict-Transport-Security: max-age=31536000; includeSubDomains",
+                "explanation": "Normalización permanente hacia versión sin www. Incluye HSTS para forzar HTTPS en futuras visitas y mejorar la seguridad."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.4.2",
+        "relatedHeaders": [
+            "Location",
+            "Cache-Control",
+            "Vary",
+            "Link",
+            "Deprecation",
+            "Sunset"
+        ],
+        "technicalNotes": "En HTTP/1.0, la especificación permitía que navegadores cambiaran el método de POST a GET al seguir un 301. HTTP/1.1 clarificó que el método debe preservarse, pero muchos navegadores aún cambian POST a GET por compatibilidad histórica. Para comportamiento predecible con POST requests, usa 308 en su lugar. Los navegadores cachean 301 agresivamente incluso sin Cache-Control explícito.",
+        "images": []
+    },
+    {
+        "code": 302,
+        "status": "Found",
+        "category": "Redirection",
+        "description": "El código 302 Found (originalmente 'Moved Temporarily' en HTTP/1.0) indica que el recurso solicitado reside temporalmente bajo una URI diferente. A diferencia de 301 que señala un cambio permanente, 302 comunica que el recurso puede volver a su ubicación original en el futuro, o que su ubicación temporal puede cambiar. Esta distinción es crucial tanto para navegadores como para motores de búsqueda. Los navegadores generalmente NO cachean redirecciones 302 de forma agresiva, lo que significa que seguirán consultando el URL original en futuras visitas. Los motores de búsqueda mantienen el URL original en sus índices y continúan rastreándolo, no transfieren el 'link juice' al URL de destino. El encabezado Location especifica la URI temporal donde el recurso puede encontrarse actualmente. El código 302 es históricamente ambiguo en cuanto al manejo del método HTTP: aunque la especificación HTTP/1.1 dice que el método de solicitud no debe cambiar al seguir la redirección, en la práctica la mayoría de los navegadores cambian POST a GET cuando siguen un 302. Esta inconsistencia llevó a la creación de códigos más específicos: 303 See Other (explícitamente cambia a GET) y 307 Temporary Redirect (explícitamente preserva el método). Sin embargo, 302 sigue siendo extremadamente común en la web moderna y es el código de redirección temporal por defecto en muchos frameworks y servidores web. Los casos de uso típicos incluyen: redirecciones post-login, redirecciones después de operaciones POST (pattern Post-Redirect-Get), mantenimiento temporal de sitios, A/B testing, distribución de carga entre servidores, redirecciones basadas en geolocalización, y páginas temporales de campaña de marketing.",
+        "useCases": [
+            "Redirección post-login a dashboard o página de perfil",
+            "Patrón Post-Redirect-Get (PRG) para prevenir reenvíos de formularios",
+            "Mantenimiento temporal del sitio (redirigir a página de mantenimiento)",
+            "A/B testing y experimentos de usuario",
+            "Redirecciones basadas en geolocalización o detección de idioma",
+            "Páginas temporales de campaña de marketing o eventos",
+            "Distribución temporal de carga entre servidores espejo",
+            "Redirecciones condicionales basadas en cookies, sesión, o headers",
+            "URLs cortas temporales para campañas (bit.ly, tinyurl)",
+            "Redirección durante migraciones graduales (canary deployments)"
+        ],
+        "examples": [
+            {
+                "scenario": "Redirección post-login",
+                "request": "POST /login HTTP/1.1\nHost: example.com\nContent-Type: application/x-www-form-urlencoded\n\nusername=john&password=secret123",
+                "response": "HTTP/1.1 302 Found\nLocation: https://example.com/dashboard\nSet-Cookie: session_id=abc123xyz; HttpOnly; Secure; SameSite=Lax\nCache-Control: no-store, no-cache, must-revalidate",
+                "explanation": "Después de autenticación exitosa, el usuario es redirigido temporalmente a su dashboard. Se establece una cookie de sesión y se previene el cacheo de la redirección."
+            },
+            {
+                "scenario": "Patrón Post-Redirect-Get (PRG)",
+                "request": "POST /orders/create HTTP/1.1\nHost: shop.example.com\nContent-Type: application/json\n\n{\n  \"product_id\": 456,\n  \"quantity\": 2\n}",
+                "response": "HTTP/1.1 302 Found\nLocation: https://shop.example.com/orders/confirmation/789\nX-Order-ID: 789\nCache-Control: no-cache\n\n{\n  \"status\": \"created\",\n  \"order_id\": 789\n}",
+                "explanation": "Después de crear la orden (POST), el servidor redirige a una página de confirmación (GET). Esto previene que el usuario reenvíe la orden accidentalmente al refrescar la página."
+            },
+            {
+                "scenario": "Página de mantenimiento temporal",
+                "request": "GET /products/electronics HTTP/1.1\nHost: shop.example.com",
+                "response": "HTTP/1.1 302 Found\nLocation: https://shop.example.com/maintenance\nRetry-After: 3600\nCache-Control: no-cache, no-store\n\n<!DOCTYPE html>\n<html>\n<head><title>Temporary Maintenance</title></head>\n<body>\n  <h1>Scheduled Maintenance</h1>\n  <p>We're performing system upgrades. Please check back in 1 hour.</p>\n</body>\n</html>",
+                "explanation": "Durante mantenimiento, las páginas redirigen temporalmente a una página de mantenimiento. Retry-After sugiere cuándo reintentar. La redirección es temporal porque las páginas normales volverán después del mantenimiento."
+            },
+            {
+                "scenario": "Redirección basada en geolocalización",
+                "request": "GET / HTTP/1.1\nHost: www.globalshop.com\nAccept-Language: es-MX\nX-Forwarded-For: 189.203.10.5",
+                "response": "HTTP/1.1 302 Found\nLocation: https://www.globalshop.com/mx/\nVary: Accept-Language, X-Forwarded-For\nSet-Cookie: geo_region=mx; Path=/; Max-Age=86400\nCache-Control: private, no-cache",
+                "explanation": "El servidor detecta que el usuario está en México y redirige temporalmente a la versión mexicana del sitio. La redirección es temporal porque el usuario podría estar viajando o usando VPN."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.4.3",
+        "relatedHeaders": [
+            "Location",
+            "Cache-Control",
+            "Retry-After",
+            "Vary",
+            "Set-Cookie"
+        ],
+        "technicalNotes": "302 es históricamente ambiguo: la especificación dice preservar el método, pero la mayoría de los navegadores cambian POST a GET. Para comportamiento explícito: usa 303 (fuerza GET) o 307 (preserva método). Las redirecciones 302 generalmente NO se cachean agresivamente. Los motores de búsqueda mantienen el URL original en índices y no transfieren SEO value.",
+        "images": []
+    },
+    {
+        "code": 303,
+        "status": "See Other",
+        "category": "Redirection",
+        "description": "El código 303 See Other indica que el servidor está redirigiendo al cliente a un recurso diferente, identificado por el URI en el encabezado Location, y que la respuesta a la solicitud original puede ser encontrada allí usando una solicitud GET. La característica distintiva y crucial de 303 es que SIEMPRE requiere que el cliente use el método GET para la solicitud redirigida, sin importar qué método HTTP se usó en la solicitud original. Esto lo hace perfectamente adecuado para el patrón Post-Redirect-Get (PRG), una de las mejores prácticas más importantes en desarrollo web. El código 303 fue introducido en HTTP/1.1 específicamente para eliminar la ambigüedad del código 302, que teóricamente debería preservar el método pero en la práctica los navegadores lo cambian a GET. Con 303, este comportamiento está explícitamente codificado en la especificación: si un servidor responde con 303 a una solicitud POST, el navegador DEBE hacer una solicitud GET al URL en el encabezado Location. Esto resuelve el problema clásico de 'duplicación de envíos de formularios' donde un usuario envía un formulario (POST), ve la página de confirmación, y luego al refrescar el navegador, se le pregunta si quiere reenviar el formulario. Con 303, el flujo es: (1) usuario envía formulario con POST, (2) servidor procesa y responde 303 con Location a página de confirmación, (3) navegador hace GET a esa página de confirmación, (4) usuario ve confirmación y puede refrescar sin problemas porque ahora es un GET simple. El código 303 es semánticamente diferente de 302 y 307: mientras que 302 es ambiguo y 307 preserva explícitamente el método, 303 explícitamente cambia a GET. Es la elección correcta para cualquier situación donde procesas una operación de modificación de estado (POST, PUT, DELETE) y quieres redirigir al usuario a una representación del resultado.",
+        "useCases": [
+            "Implementación del patrón Post-Redirect-Get (PRG) después de envíos de formularios",
+            "Redirección después de operaciones POST, PUT, DELETE en APIs REST",
+            "Confirmaciones de operaciones que modifican estado (creación, actualización, eliminación)",
+            "Redirección después de procesamiento de pagos o transacciones",
+            "Redirigir desde endpoint de acción a vista de recurso",
+            "Prevenir reenvíos accidentales de formularios al refrescar navegador",
+            "Redirección de operaciones asíncronas completadas a página de resultados",
+            "Upload de archivos seguido de redirección a página de vista previa"
+        ],
+        "examples": [
+            {
+                "scenario": "Patrón Post-Redirect-Get clásico",
+                "request": "POST /contact HTTP/1.1\nHost: example.com\nContent-Type: application/x-www-form-urlencoded\n\nname=John+Doe&email=john%40example.com&message=Hello",
+                "response": "HTTP/1.1 303 See Other\nLocation: https://example.com/contact/thank-you\nCache-Control: no-cache, no-store, must-revalidate\nX-Message-ID: msg_123456\n\n<!DOCTYPE html>\n<html>\n<head><title>Message Sent</title></head>\n<body>\n  <p>Your message has been sent successfully.</p>\n  <p>Redirecting to confirmation page...</p>\n</body>\n</html>",
+                "explanation": "Después de procesar el formulario de contacto (POST), el servidor redirige con 303 a una página de agradecimiento. El navegador hará GET a /contact/thank-you. Si el usuario refresca, solo re-hace el GET, no reenvía el formulario."
+            },
+            {
+                "scenario": "Creación de recurso en API REST",
+                "request": "POST /api/articles HTTP/1.1\nHost: blog.example.com\nContent-Type: application/json\nAuthorization: Bearer token_abc123\n\n{\n  \"title\": \"Understanding HTTP 303\",\n  \"content\": \"The 303 status code is...\",\n  \"tags\": [\"http\", \"web\", \"tutorial\"]\n}",
+                "response": "HTTP/1.1 303 See Other\nLocation: https://blog.example.com/api/articles/789\nX-Article-ID: 789\nCache-Control: no-cache\n\n{\n  \"status\": \"created\",\n  \"message\": \"Article published successfully\",\n  \"article_id\": 789,\n  \"view_url\": \"/api/articles/789\"\n}",
+                "explanation": "El artículo fue creado exitosamente. En lugar de devolver 201 Created, el servidor usa 303 para indicar que el cliente debe hacer GET a /api/articles/789 para ver el recurso completo. Esto separa claramente la operación de creación (POST) de la recuperación (GET)."
+            },
+            {
+                "scenario": "Procesamiento de pago con redirección",
+                "request": "POST /checkout/process-payment HTTP/1.1\nHost: shop.example.com\nContent-Type: application/json\n\n{\n  \"payment_method\": \"credit_card\",\n  \"card_token\": \"tok_visa_1234\",\n  \"cart_id\": \"cart_xyz789\"\n}",
+                "response": "HTTP/1.1 303 See Other\nLocation: https://shop.example.com/orders/confirmation/ord_456\nX-Order-ID: ord_456\nX-Transaction-ID: txn_789xyz\nSet-Cookie: cart_id=; Max-Age=0; Path=/\nCache-Control: no-store, no-cache\n\n{\n  \"status\": \"payment_successful\",\n  \"order_id\": \"ord_456\",\n  \"confirmation_url\": \"/orders/confirmation/ord_456\"\n}",
+                "explanation": "Después de procesar el pago exitosamente, el servidor redirige con 303 a la página de confirmación de orden. Esto previene que el usuario accidentalmente procese el pago dos veces si refresca la página."
+            },
+            {
+                "scenario": "Eliminación de recurso con redirección a lista",
+                "request": "DELETE /api/users/123 HTTP/1.1\nHost: admin.example.com\nAuthorization: Bearer admin_token_xyz\nX-Confirm-Delete: true",
+                "response": "HTTP/1.1 303 See Other\nLocation: https://admin.example.com/api/users\nX-Deleted-User-ID: 123\nCache-Control: no-cache\n\n{\n  \"status\": \"deleted\",\n  \"message\": \"User account deleted successfully\",\n  \"deleted_user_id\": 123,\n  \"redirect_to\": \"/api/users\"\n}",
+                "explanation": "Después de eliminar el usuario (DELETE), el servidor redirige con 303 a la lista de usuarios. El cliente hará GET a /api/users para ver la lista actualizada sin el usuario eliminado."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.4.4",
+        "relatedHeaders": [
+            "Location",
+            "Cache-Control",
+            "X-Request-ID",
+            "X-Resource-ID"
+        ],
+        "technicalNotes": "303 fue introducido en HTTP/1.1 para resolver la ambigüedad de 302. El método SIEMPRE cambia a GET - esto no es un bug, es la característica principal. Los navegadores SIEMPRE cambian el método a GET cuando siguen una redirección 303, sin importar el método original (POST, PUT, DELETE). Si necesitas preservar el método, usa 307 en su lugar.",
+        "images": []
+    },
+    {
+        "code": 304,
+        "status": "Not Modified",
+        "category": "Redirection",
+        "description": "El código 304 Not Modified es un código de estado especial que indica que el recurso no ha sido modificado desde la versión especificada por los encabezados de solicitud condicional del cliente (If-Modified-Since, If-None-Match), y por lo tanto el cliente puede usar su copia en caché. Este código es fundamental para la optimización del rendimiento web y el ahorro de ancho de banda. A diferencia de otros códigos de redirección, 304 no redirige a una ubicación diferente, sino que instruye al cliente a usar la copia que ya tiene almacenada localmente. El flujo típico funciona así: (1) cliente hace una solicitud inicial GET y recibe 200 OK con el recurso completo más encabezados ETag y/o Last-Modified, (2) cliente almacena el recurso en caché junto con estos validadores, (3) en solicitudes subsecuentes, cliente incluye If-None-Match (con el ETag) y/o If-Modified-Since (con la fecha), (4) servidor verifica si el recurso cambió comparando con los validadores, (5) si NO cambió, servidor responde 304 sin cuerpo de mensaje - solo headers, (6) cliente usa su versión cacheada. Esto ahorra ancho de banda significativo porque solo se transmiten headers (aproximadamente 200-500 bytes) en lugar del recurso completo (que podría ser megabytes). La respuesta 304 NUNCA debe contener un cuerpo de mensaje - el mensaje termina inmediatamente después de los encabezados. Debe incluir headers que habrían sido enviados con 200 OK si el recurso hubiera sido modificado, específicamente: Date, ETag, Cache-Control, Expires, Vary. El código 304 es esencial para: carga eficiente de sitios web con muchos assets estáticos, APIs que sirven datos que cambian infrecuentemente, distribución de contenido mediante CDNs, reducción de carga en servidores de origen, mejora de velocidad percibida por usuarios, y optimización de consumo de datos en dispositivos móviles.",
+        "useCases": [
+            "Validación de caché para assets estáticos (imágenes, CSS, JavaScript)",
+            "APIs que sirven datos que cambian infrecuentemente",
+            "Verificación de actualizaciones de recursos sin transferir todo el contenido",
+            "Optimización de rendimiento en sitios web con muchos recursos",
+            "Reducción de ancho de banda en aplicaciones móviles",
+            "Implementación de polling eficiente para verificar cambios",
+            "CDN edge caching y validación con servidores origen",
+            "Sincronización eficiente de recursos entre cliente y servidor"
+        ],
+        "examples": [
+            {
+                "scenario": "Validación con ETag - recurso no modificado",
+                "request": "GET /assets/logo.png HTTP/1.1\nHost: cdn.example.com\nIf-None-Match: \"33a64df551425fcc55e4d42a148795d9f25f89d4\"\nCache-Control: max-age=0",
+                "response": "HTTP/1.1 304 Not Modified\nDate: Tue, 16 Jan 2024 19:00:00 GMT\nETag: \"33a64df551425fcc55e4d42a148795d9f25f89d4\"\nCache-Control: public, max-age=31536000, immutable\nVary: Accept-Encoding\nX-Cache: HIT",
+                "explanation": "El cliente tiene logo.png con ETag específico. El servidor verifica que el archivo no ha cambiado (mismo ETag) y responde 304. El navegador usa su copia cacheada. No se transmite la imagen, ahorrando ancho de banda significativo."
+            },
+            {
+                "scenario": "Validación con Last-Modified - recurso no modificado",
+                "request": "GET /api/products.json HTTP/1.1\nHost: api.example.com\nIf-Modified-Since: Mon, 15 Jan 2024 10:00:00 GMT\nAccept: application/json",
+                "response": "HTTP/1.1 304 Not Modified\nDate: Tue, 16 Jan 2024 19:05:00 GMT\nLast-Modified: Mon, 15 Jan 2024 10:00:00 GMT\nCache-Control: private, must-revalidate, max-age=3600\nVary: Accept",
+                "explanation": "El cliente pregunta si products.json cambió desde el 15 de enero. No ha cambiado, entonces el servidor responde 304. Cliente usa su copia cacheada, ahorrando potencialmente varios MB de datos JSON."
+            },
+            {
+                "scenario": "Validación con ETag - recurso SÍ modificado",
+                "request": "GET /news/latest-article HTTP/1.1\nHost: blog.example.com\nIf-None-Match: \"old-etag-abc123\"\nAccept: text/html",
+                "response": "HTTP/1.1 200 OK\nDate: Tue, 16 Jan 2024 19:10:00 GMT\nETag: \"new-etag-xyz789\"\nLast-Modified: Tue, 16 Jan 2024 18:00:00 GMT\nContent-Type: text/html; charset=utf-8\nCache-Control: public, max-age=600\n\n<!DOCTYPE html>\n<html>\n<head><title>Breaking News Updated!</title></head>\n<body>\n  <article>\n    <h1>Major Update to Story</h1>\n    <p>New information has emerged...</p>\n  </article>\n</body>\n</html>",
+                "explanation": "El artículo fue actualizado (ETag diferente), entonces el servidor responde 200 OK con el contenido completo actualizado y nuevo ETag. El cliente reemplaza su caché con la nueva versión."
+            },
+            {
+                "scenario": "API polling eficiente",
+                "request": "GET /api/notifications HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer token_xyz\nIf-None-Match: W/\"notifications-hash-abc\"\nX-Polling-Interval: 30",
+                "response": "HTTP/1.1 304 Not Modified\nDate: Tue, 16 Jan 2024 19:20:00 GMT\nETag: W/\"notifications-hash-abc\"\nCache-Control: private, no-cache, must-revalidate\nX-Poll-Interval: 30",
+                "explanation": "Cliente hace polling cada 30 segundos para notificaciones. No hay nuevas notificaciones, entonces 304. Esto es muchísimo más eficiente que transferir la lista completa de notificaciones en cada poll."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7232, Section 4.1",
+        "relatedHeaders": [
+            "If-Modified-Since",
+            "If-None-Match",
+            "ETag",
+            "Last-Modified",
+            "Date",
+            "Cache-Control",
+            "Expires",
+            "Vary"
+        ],
+        "technicalNotes": "La respuesta 304 NUNCA debe incluir un cuerpo de mensaje. DEBE incluir Date header. DEBE incluir ETag y/o Last-Modified si estaban en la respuesta 200 original. DEBE incluir Cache-Control y Expires si aplican. NO debe incluir Content-Length porque no hay cuerpo. Los navegadores automáticamente incluyen If-None-Match/If-Modified-Since cuando revalidan recursos cacheados.",
+        "images": []
+    },
+    {
+        "code": 305,
+        "status": "Use Proxy",
+        "category": "Redirection",
+        "description": "El código 305 Use Proxy indica que el recurso solicitado debe ser accedido a través de un proxy especificado en el encabezado Location. Este código fue definido en versiones anteriores de la especificación HTTP pero ha sido DEPRECADO en HTTP/1.1 debido a serias preocupaciones de seguridad. El código 305 fue diseñado originalmente para permitir que los servidores indiquen a los clientes que deben acceder a un recurso específico a través de un proxy particular. Sin embargo, esta funcionalidad presentaba riesgos significativos de seguridad ya que permitía que servidores potencialmente maliciosos obligaran a los clientes a enrutar su tráfico a través de proxies no confiables, lo que podría resultar en ataques man-in-the-middle, interceptación de datos sensibles, modificación de contenido, o redirección a sitios maliciosos. Debido a estos riesgos, la mayoría de los navegadores modernos y clientes HTTP ignoran completamente el código 305 y nunca lo implementaron correctamente. El código fue formalmente deprecado y las implementaciones modernas NO deben usarlo ni responder a él. En lugar de 305, las configuraciones de proxy deben ser manejadas a nivel de sistema operativo, configuración de red, o mediante configuración explícita del usuario en la aplicación cliente (como las configuraciones de proxy en navegadores). La especificación HTTP/1.1 revisada recomienda explícitamente NO usar este código bajo ninguna circunstancia. Si un servidor necesita comunicar información sobre proxies, debe hacerlo a través de otros mecanismos más seguros como encabezados informativos personalizados, documentación fuera de banda, o configuración manual del cliente. El código 305 representa un ejemplo importante en la evolución de HTTP de cómo consideraciones de seguridad pueden llevar a la deprecación de características que parecían útiles pero resultaron ser vectores de ataque potenciales.",
+        "useCases": [
+            "NINGUNO - Este código está DEPRECADO y NO debe ser usado",
+            "Históricamente fue diseñado para indicar uso de proxy, pero fue abandonado por riesgos de seguridad",
+            "No tiene casos de uso válidos en implementaciones modernas"
+        ],
+        "examples": [
+            {
+                "scenario": "Ejemplo histórico (NO usar en producción)",
+                "request": "GET /resource HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 305 Use Proxy\nLocation: http://proxy.example.com:8080\n\n[Este código está DEPRECADO y no debe ser usado]",
+                "explanation": "Este es solo un ejemplo histórico de cómo se habría usado 305. En la práctica moderna, este código NUNCA debe ser usado debido a graves riesgos de seguridad. Los navegadores modernos lo ignoran completamente."
+            },
+            {
+                "scenario": "Respuesta moderna correcta (usar configuración de proxy apropiada)",
+                "request": "GET /resource HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/json\nX-Proxy-Info: For proxy configuration, see https://example.com/proxy-setup\n\n{\n  \"message\": \"Resource accessed successfully\",\n  \"proxy_documentation\": \"https://example.com/proxy-setup\"\n}",
+                "explanation": "En lugar de usar 305 deprecado, proporciona información sobre configuración de proxy a través de documentación o headers informativos. La configuración de proxy debe manejarse a nivel de cliente, no mediante respuestas HTTP."
+            }
+        ],
+        "httpVersion": "HTTP/1.1 (DEPRECADO)",
+        "specification": "RFC 7231, Section 6.4.5 (marcado como deprecado)",
+        "relatedHeaders": [
+            "Location"
+        ],
+        "technicalNotes": "Este código está OFICIALMENTE DEPRECADO desde HTTP/1.1. Fue removido de la especificación debido a serias preocupaciones de seguridad. Los navegadores modernos NO lo implementan y lo ignoran. Representaba un vector de ataque para man-in-the-middle. NUNCA debe ser usado en implementaciones nuevas. Las configuraciones de proxy deben manejarse a nivel de sistema operativo, configuración de red del usuario, o PAC (Proxy Auto-Config) files, NO mediante respuestas HTTP.",
+        "images": []
+    },
+    {
+        "code": 306,
+        "status": "Switch Proxy",
+        "category": "Redirection",
+        "description": "El código 306 Switch Proxy es un código de estado que ya no se utiliza en las especificaciones HTTP modernas y está completamente OBSOLETO. Este código fue definido en una versión preliminar de la especificación HTTP/1.1 pero nunca llegó a ser parte del estándar oficial final. Originalmente, el código 306 estaba destinado a indicar que las solicitudes subsecuentes deben usar el proxy especificado, similar en concepto al deprecado 305 Use Proxy, pero con la intención de que fuera utilizado en solicitudes futuras en lugar de la solicitud actual. Sin embargo, debido a las mismas preocupaciones graves de seguridad que llevaron a la deprecación del código 305, el código 306 fue eliminado completamente de la especificación antes de su finalización. El código 306 nunca fue ampliamente implementado por navegadores o servidores web, y hoy en día no tiene ningún significado definido en HTTP. Si un servidor envía un código 306, los clientes modernos no sabrán cómo manejarlo correctamente. En la especificación oficial RFC 7231 de HTTP/1.1, el código 306 simplemente está marcado como '(Unused)' - no utilizado. El espacio del código 306 fue reservado pero nunca se le asignó un significado oficial, y permanece sin uso en todas las versiones modernas de HTTP. Esto representa un caso interesante en el desarrollo de estándares donde un código fue propuesto, asignado un número, pero luego abandonado antes de la ratificación final del estándar. A diferencia del 305 que fue oficialmente deprecado después de ser parte del estándar, el 306 simplemente nunca llegó a existir oficialmente. En implementaciones modernas, este código no debe ser usado bajo ninguna circunstancia y si se encuentra en respuestas, debe ser tratado como un error desconocido o no válido.",
+        "useCases": [
+            "NINGUNO - Este código está completamente OBSOLETO y nunca fue parte del estándar oficial",
+            "No tiene significado definido en HTTP moderno",
+            "Fue abandonado antes de la finalización de HTTP/1.1",
+            "No debe ser usado en ninguna implementación"
+        ],
+        "examples": [
+            {
+                "scenario": "Código obsoleto sin uso oficial",
+                "request": "GET /resource HTTP/1.1\nHost: example.com",
+                "response": "HTTP/1.1 306 (Unused)\n\n[Este código NO tiene significado oficial y NO debe ser usado]",
+                "explanation": "El código 306 nunca fue oficialmente definido en el estándar HTTP final. Si un servidor responde con 306, los clientes modernos no sabrán cómo manejarlo. Este código simplemente no debe ser usado."
+            },
+            {
+                "scenario": "Manejo correcto en cliente moderno",
+                "request": "GET /resource HTTP/1.1\nHost: example.com",
+                "response": "Si un cliente recibe 306:\n- Debe tratarlo como un código de estado desconocido\n- Puede registrar un error o advertencia\n- No debe intentar interpretarlo como una redirección válida\n- Debería fallar la solicitud o usar comportamiento de fallback",
+                "explanation": "Los clientes modernos correctamente implementados no tienen lógica especial para manejar 306 porque nunca fue parte del estándar. Si se encuentra, indica un problema de configuración del servidor."
+            }
+        ],
+        "httpVersion": "HTTP/1.1 (NUNCA OFICIALIZADO)",
+        "specification": "RFC 7231 - marcado como '(Unused)' / Sin uso oficial",
+        "relatedHeaders": [],
+        "technicalNotes": "El código 306 fue propuesto en borradores tempranos de HTTP/1.1 pero fue eliminado antes de la especificación final. En RFC 7231, aparece listado como '306 (Unused)' indicando que el número está reservado pero sin significado asignado. A diferencia del 305 que fue deprecado después de uso, el 306 simplemente nunca existió oficialmente. NO debe ser implementado ni usado en sistemas modernos. Su presencia en listados de códigos HTTP es puramente histórica.",
+        "images": []
+    },
+    {
+        "code": 307,
+        "status": "Temporary Redirect",
+        "category": "Redirection",
+        "description": "El código 307 Temporary Redirect indica que el recurso solicitado reside temporalmente bajo una URI diferente, y el cliente DEBE usar el mismo método HTTP en la solicitud redirigida que usó en la solicitud original. Esta es la diferencia crítica y el propósito principal del código 307: garantizar que el método HTTP se preserve durante la redirección. Mientras que el código 302 Found es históricamente ambiguo (la especificación dice preservar el método, pero los navegadores cambian POST a GET en la práctica), el código 307 elimina toda ambigüedad al requerir explícitamente que el método se mantenga idéntico. Si la solicitud original fue POST, la solicitud redirigida también debe ser POST. Si fue DELETE, la redirigida también debe ser DELETE. Esto es esencial en escenarios donde el método HTTP tiene significado semántico importante y cambiarlo podría causar comportamiento incorrecto o inseguro. Por ejemplo, si un cliente envía una solicitud POST con datos importantes a un servidor que responde con redirección, es crucial que esos datos sean enviados al nuevo destino también con POST, no convertidos a GET (que podría perder los datos del cuerpo o exponerlos en la URL). El código 307 fue introducido en HTTP/1.1 específicamente para proporcionar una versión sin ambigüedades del 302 que preserve el método. Al igual que 302, el 307 indica que la redirección es temporal, no permanente, por lo que los motores de búsqueda deben mantener el URL original en sus índices y los navegadores no deben cachear la redirección de forma agresiva. Los casos de uso comunes incluyen: mantenimiento temporal donde se necesita redirigir solicitudes POST, balanceo de carga que preserva el método de la solicitud, redirecciones de API donde el método es crítico para la semántica de la operación, y cualquier escenario de redirección temporal donde cambiar el método HTTP sería semánticamente incorrecto o podría causar pérdida de datos.",
+        "useCases": [
+            "Redirecciones temporales donde preservar el método HTTP es crítico",
+            "Mantenimiento temporal de APIs que manejan POST, PUT, DELETE",
+            "Balanceo de carga entre servidores manteniendo el método original",
+            "Redirecciones de APIs RESTful donde el método define la operación",
+            "Migración gradual de endpoints preservando semántica del método",
+            "Redirección temporal de uploads (POST con archivos)",
+            "Failover entre servidores sin cambiar la naturaleza de la solicitud",
+            "Testing A/B de APIs donde el método debe mantenerse consistente"
+        ],
+        "examples": [
+            {
+                "scenario": "Redirección POST preservando el método",
+                "request": "POST /api/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nContent-Length: 156\n\n{\n  \"product_id\": 789,\n  \"quantity\": 3,\n  \"customer_id\": 456,\n  \"shipping_address\": \"123 Main St\"\n}",
+                "response": "HTTP/1.1 307 Temporary Redirect\nLocation: https://api-backup.example.com/api/orders\nRetry-After: 120\nCache-Control: no-cache, no-store\nX-Redirect-Reason: primary_server_maintenance\n\n{\n  \"message\": \"Primary server under maintenance\",\n  \"redirect_to\": \"https://api-backup.example.com/api/orders\",\n  \"note\": \"Your request will be resubmitted automatically\"\n}",
+                "explanation": "El servidor principal está en mantenimiento temporal. La redirección 307 asegura que el navegador/cliente reenvíe la solicitud POST completa con todos los datos del pedido al servidor de backup, sin cambiar a GET que perdería los datos."
+            },
+            {
+                "scenario": "Balanceo de carga con método preservado",
+                "request": "PUT /api/users/123/profile HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nAuthorization: Bearer token_xyz\n\n{\n  \"name\": \"John Updated\",\n  \"email\": \"john.new@example.com\",\n  \"phone\": \"+1234567890\"\n}",
+                "response": "HTTP/1.1 307 Temporary Redirect\nLocation: https://api-node-2.example.com/api/users/123/profile\nX-Load-Balancer: round-robin\nX-Target-Node: node-2\nCache-Control: no-cache\n\n{\n  \"status\": \"redirecting\",\n  \"target_server\": \"node-2\",\n  \"message\": \"Request being routed to optimal server node\"\n}",
+                "explanation": "El load balancer redirige temporalmente la solicitud PUT a otro nodo del cluster. El código 307 garantiza que la solicitud PUT con los datos de actualización del perfil se envíe al nuevo servidor, no se convierta en GET."
+            },
+            {
+                "scenario": "Upload de archivo con redirección temporal",
+                "request": "POST /api/uploads HTTP/1.1\nHost: storage.example.com\nContent-Type: multipart/form-data; boundary=----Boundary\nContent-Length: 5242880\n\n------Boundary\nContent-Disposition: form-data; name=\"file\"; filename=\"report.pdf\"\nContent-Type: application/pdf\n\n[5MB de datos del archivo PDF]\n------Boundary--",
+                "response": "HTTP/1.1 307 Temporary Redirect\nLocation: https://storage-region-2.example.com/api/uploads\nX-Storage-Region: us-west-2\nX-Redirect-Reason: region_optimization\nRetry-After: 0\n\n{\n  \"message\": \"Redirecting to optimal storage region\",\n  \"target_region\": \"us-west-2\",\n  \"note\": \"File upload will be resubmitted automatically\"\n}",
+                "explanation": "El sistema de storage detecta que el usuario está más cerca de otra región y redirige temporalmente. El código 307 asegura que el POST con el archivo completo se reenvíe al servidor de la nueva región sin perder datos."
+            },
+            {
+                "scenario": "Mantenimiento de API con DELETE preservado",
+                "request": "DELETE /api/articles/456 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer token_abc\nX-Confirm-Delete: true",
+                "response": "HTTP/1.1 307 Temporary Redirect\nLocation: https://api-maintenance.example.com/api/articles/456\nX-Maintenance-Mode: true\nX-Estimated-Duration: 1800\nCache-Control: no-store\n\n{\n  \"status\": \"maintenance_redirect\",\n  \"message\": \"Main API under scheduled maintenance\",\n  \"maintenance_endpoint\": \"https://api-maintenance.example.com\",\n  \"operation_will_complete\": true\n}",
+                "explanation": "Durante mantenimiento programado, las solicitudes DELETE son redirigidas a un servidor de mantenimiento que puede procesarlas. El 307 preserva el método DELETE para que la operación de eliminación se ejecute correctamente en el nuevo servidor."
+            },
+            {
+                "scenario": "Migración gradual de endpoints",
+                "request": "PATCH /api/v2/settings/notifications HTTP/1.1\nHost: old-api.example.com\nContent-Type: application/json\n\n{\n  \"email_notifications\": false,\n  \"push_notifications\": true\n}",
+                "response": "HTTP/1.1 307 Temporary Redirect\nLocation: https://new-api.example.com/api/v2/settings/notifications\nX-Migration-Phase: gradual-rollout\nX-Legacy-Endpoint: deprecated\nDeprecation: true\nLink: <https://docs.example.com/api-migration>; rel=\"deprecation\"\n\n{\n  \"message\": \"This endpoint is being migrated to new infrastructure\",\n  \"new_location\": \"https://new-api.example.com/api/v2/settings/notifications\",\n  \"migration_guide\": \"https://docs.example.com/api-migration\"\n}",
+                "explanation": "Durante una migración gradual de API, el endpoint antiguo redirige temporalmente al nuevo con 307, preservando el método PATCH y los datos de actualización de configuración."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.4.7",
+        "relatedHeaders": [
+            "Location",
+            "Cache-Control",
+            "Retry-After",
+            "Vary",
+            "X-Redirect-Reason"
+        ],
+        "technicalNotes": "El código 307 fue introducido en HTTP/1.1 para eliminar la ambigüedad del 302. La diferencia clave es que 307 GARANTIZA que el método HTTP se preserve (POST sigue siendo POST, PUT sigue siendo PUT, etc.), mientras que 302 en la práctica causa que navegadores cambien POST a GET. Para redirecciones temporales donde el método debe preservarse, siempre usa 307. Para redirecciones temporales donde cambiar a GET es aceptable o deseado, usa 302 o mejor aún 303. Los navegadores NO cachean 307 agresivamente, similar a 302. Los motores de búsqueda mantienen el URL original en índices.",
+        "images": []
+    },
+    {
+        "code": 308,
+        "status": "Permanent Redirect",
+        "category": "Redirection",
+        "description": "El código 308 Permanent Redirect indica que el recurso solicitado ha sido movido permanentemente a una nueva URI especificada en el encabezado Location, y todas las futuras solicitudes deben usar la nueva URI. Además, y esto es lo más importante, el cliente DEBE usar el mismo método HTTP en la solicitud redirigida que usó en la solicitud original. El código 308 es a 301 lo que 307 es a 302: proporciona una versión sin ambigüedades que garantiza la preservación del método HTTP. Mientras que el código 301 Moved Permanently es históricamente ambiguo (muchos navegadores cambian POST a GET al seguir un 301, aunque la especificación dice preservar el método), el código 308 elimina completamente esta ambigüedad. Si la solicitud original fue POST, la redirigida debe ser POST. Si fue PUT, la redirigida debe ser PUT. Si fue DELETE, la redirigida debe ser DELETE. Esta garantía es crítica para APIs RESTful y aplicaciones donde el método HTTP tiene significado semántico importante. El código 308 fue estandarizado más recientemente que otros códigos de redirección (en RFC 7538 de 2015) para llenar un vacío en la especificación HTTP. Combina dos propiedades importantes: (1) permanencia - como 301, indica que el cambio es definitivo y permanente, los motores de búsqueda deben actualizar índices, los navegadores pueden cachear la redirección, y el valor SEO debe transferirse al nuevo URL; (2) preservación del método - como 307, garantiza que el método HTTP no cambie durante la redirección. Los casos de uso típicos incluyen: reestructuración permanente de APIs donde los métodos deben preservarse, migración permanente de endpoints RESTful, consolidación de servicios manteniendo semántica de métodos HTTP, cambios de infraestructura permanentes donde POST/PUT/DELETE deben mantenerse, y cualquier redirección permanente donde cambiar el método sería semánticamente incorrecto o causaría pérdida de datos.",
+        "useCases": [
+            "Reestructuración permanente de APIs RESTful preservando métodos HTTP",
+            "Migración permanente de endpoints donde POST, PUT, DELETE deben mantenerse",
+            "Cambio permanente de dominio para APIs con operaciones de escritura",
+            "Consolidación de servicios manteniendo semántica RESTful",
+            "Deprecación definitiva de endpoints antiguos hacia nuevos con misma funcionalidad",
+            "Migración de infraestructura permanente (on-premise a cloud) preservando métodos",
+            "Reorganización de URLs en APIs donde el método HTTP es parte de la semántica",
+            "Versioning de APIs con redirección permanente preservando operaciones"
+        ],
+        "examples": [
+            {
+                "scenario": "Migración permanente de API endpoint con POST",
+                "request": "POST /api/v1/users HTTP/1.1\nHost: old-api.example.com\nContent-Type: application/json\nAuthorization: Bearer token_xyz\n\n{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"role\": \"admin\"\n}",
+                "response": "HTTP/1.1 308 Permanent Redirect\nLocation: https://api.example.com/v2/users\nCache-Control: max-age=31536000\nDeprecation: true\nSunset: Mon, 01 Jan 2025 00:00:00 GMT\n\n{\n  \"message\": \"API v1 has been permanently moved to v2\",\n  \"new_endpoint\": \"https://api.example.com/v2/users\",\n  \"documentation\": \"https://docs.example.com/api/v2\",\n  \"note\": \"Please update your integration to use the new endpoint\"\n}",
+                "explanation": "La API v1 ha sido permanentemente reemplazada por v2. El código 308 asegura que la solicitud POST con los datos del nuevo usuario se reenvíe al nuevo endpoint manteniendo POST, no convirtiéndose a GET que perdería los datos."
+            },
+            {
+                "scenario": "Cambio permanente de dominio con PUT preservado",
+                "request": "PUT /api/products/789 HTTP/1.1\nHost: shop-api.oldcompany.com\nContent-Type: application/json\nAuthorization: Bearer token_abc\n\n{\n  \"name\": \"Updated Product Name\",\n  \"price\": 99.99,\n  \"stock\": 150,\n  \"category\": \"electronics\"\n}",
+                "response": "HTTP/1.1 308 Permanent Redirect\nLocation: https://api.newcompany.com/api/products/789\nCache-Control: public, max-age=31536000, immutable\nX-Company-Rebrand: true\nLink: <https://www.newcompany.com/api-migration>; rel=\"alternate\"\n\n{\n  \"status\": \"permanent_redirect\",\n  \"message\": \"Our company has rebranded. API permanently moved to new domain.\",\n  \"new_location\": \"https://api.newcompany.com\",\n  \"migration_complete\": true\n}",
+                "explanation": "La empresa cambió de marca y dominio permanentemente. El 308 garantiza que la solicitud PUT para actualizar el producto se reenvíe al nuevo dominio manteniendo el método PUT y todos los datos de actualización."
+            },
+            {
+                "scenario": "Reestructuración permanente con DELETE preservado",
+                "request": "DELETE /services/old-structure/items/456 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer admin_token\nX-Confirm-Delete: true",
+                "response": "HTTP/1.1 308 Permanent Redirect\nLocation: https://api.example.com/v3/items/456\nCache-Control: max-age=2592000\nX-API-Restructure: v3-final\n\n{\n  \"message\": \"API structure has been permanently reorganized\",\n  \"old_path\": \"/services/old-structure/items/:id\",\n  \"new_path\": \"/v3/items/:id\",\n  \"operation_preserved\": \"DELETE\",\n  \"note\": \"Your delete operation will complete at the new location\"\n}",
+                "explanation": "La estructura de la API fue permanentemente reorganizada. El 308 asegura que la solicitud DELETE se reenvíe a la nueva estructura manteniendo la operación de eliminación, no cambiando a GET."
+            },
+            {
+                "scenario": "Migración cloud permanente con PATCH",
+                "request": "PATCH /api/configurations/global HTTP/1.1\nHost: on-premise.example.com\nContent-Type: application/json\n\n{\n  \"maintenance_mode\": false,\n  \"max_connections\": 1000,\n  \"timeout_seconds\": 30\n}",
+                "response": "HTTP/1.1 308 Permanent Redirect\nLocation: https://cloud-api.example.com/api/configurations/global\nX-Migration-Type: on-premise-to-cloud\nX-Migration-Date: 2024-01-15\nCache-Control: public, max-age=31536000\n\n{\n  \"message\": \"Service permanently migrated to cloud infrastructure\",\n  \"cloud_endpoint\": \"https://cloud-api.example.com\",\n  \"on_premise_shutdown\": \"2024-06-01\",\n  \"benefits\": \"Improved reliability, scalability, and performance\"\n}",
+                "explanation": "El servicio fue migrado permanentemente de infraestructura on-premise a cloud. El 308 preserva el método PATCH para que la actualización parcial de configuración se aplique correctamente en el nuevo servidor cloud."
+            },
+            {
+                "scenario": "Consolidación de microservicios con POST",
+                "request": "POST /payment-service/api/process HTTP/1.1\nHost: payments.example.com\nContent-Type: application/json\n\n{\n  \"amount\": 299.99,\n  \"currency\": \"USD\",\n  \"payment_method\": \"credit_card\",\n  \"card_token\": \"tok_12345\"\n}",
+                "response": "HTTP/1.1 308 Permanent Redirect\nLocation: https://unified-api.example.com/payments/process\nX-Service-Consolidation: microservices-to-unified\nCache-Control: max-age=15552000\n\n{\n  \"message\": \"Payment service consolidated into unified API\",\n  \"new_endpoint\": \"https://unified-api.example.com/payments/process\",\n  \"consolidation_date\": \"2024-01-01\",\n  \"note\": \"All microservices now under unified API gateway\"\n}",
+                "explanation": "Múltiples microservicios fueron consolidados en una API unificada permanentemente. El 308 asegura que la solicitud POST de procesamiento de pago con datos sensibles se reenvíe correctamente manteniendo POST."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7538 (2015)",
+        "relatedHeaders": [
+            "Location",
+            "Cache-Control",
+            "Deprecation",
+            "Sunset",
+            "Link"
+        ],
+        "relatedCodes": [
+            301,
+            307
+        ],
+        "technicalNotes": "El código 308 es relativamente nuevo (RFC 7538, 2015) y fue creado para llenar el vacío de un código de redirección permanente que preserve el método HTTP. Es a 301 lo que 307 es a 302. Combina permanencia (como 301) con preservación de método (como 307). Los navegadores modernos lo soportan bien desde ~2015-2016. Al igual que 301, los navegadores y motores de búsqueda deben cachear 308 y actualizar índices. La diferencia crítica con 301 es que 308 GARANTIZA que POST/PUT/DELETE/PATCH se preserven, mientras que 301 históricamente causa que navegadores cambien POST a GET. Para APIs RESTful con redirecciones permanentes, 308 es casi siempre la elección correcta.",
+        "images": []
     }
 ]
