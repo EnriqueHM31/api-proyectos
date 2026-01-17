@@ -22,7 +22,7 @@
         "specification": "RFC 7231, Section 6.2.1",
         "images": [
             {
-                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768596503/404_1_sctakm.png",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768611664/404_2_l0oyj5.png",
                 "alt": "Imagen que representa el nombre del código 100 Continue"
             },
             {
@@ -86,7 +86,7 @@
         "specification": "RFC 2518 (WebDAV)",
         "images": [
             {
-                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768597104/2_gptmes.png",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768611761/2_je4oyl.png",
                 "alt": "Imagen que representa el nombre del código 102 Processing"
             },
             {
@@ -154,7 +154,17 @@
             }
         ],
         "httpVersion": "HTTP/1.0+",
-        "specification": "RFC 7231, Section 6.3.1"
+        "specification": "RFC 7231, Section 6.3.1",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 200 OK"
+            },
+            {
+                "imageCharacter": "",
+                "alt": "Imagen del código 200 OK"
+            }
+        ]
     },
     {
         "code": 201,
