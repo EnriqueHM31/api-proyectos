@@ -2277,7 +2277,7 @@
                 "alt": "Imagen que representa el nombre del código 419 Authentication Timeout"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/44-removebg-preview_kkcvb3.png",
                 "alt": "Imagen del código 419 Authentication Timeout"
             }
         ]
@@ -2333,7 +2333,7 @@
                 "alt": "Imagen que representa el nombre del código 420 Method Failure"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/45-removebg-preview_ehbtbc.png",
                 "alt": "Imagen del código 420 Method Failure"
             }
         ]
@@ -2389,7 +2389,7 @@
                 "alt": "Imagen que representa el nombre del código 421 Misdirected Request"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/46-removebg-preview_fc6zow.png",
                 "alt": "Imagen del código 421 Misdirected Request"
             }
         ]
@@ -2445,7 +2445,7 @@
                 "alt": "Imagen que representa el nombre del código 422 Unprocessable Entity"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/47-removebg-preview_oj0vvy.png",
                 "alt": "Imagen del código 422 Unprocessable Entity"
             }
         ]
@@ -2502,7 +2502,7 @@
                 "alt": "Imagen que representa el nombre del código 423 Locked"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/48-removebg-preview_wrwpey.png",
                 "alt": "Imagen del código 423 Locked"
             }
         ]
@@ -2556,7 +2556,7 @@
                 "alt": "Imagen que representa el nombre del código 424 Failed Dependency"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768775597/49-removebg-preview_ev4bvj.png",
                 "alt": "Imagen del código 424 Failed Dependency"
             }
         ]
