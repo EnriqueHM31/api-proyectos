@@ -1,5 +1,6 @@
 import HttpCodes from "../data/http-codes.json" with { type: "json" };
 import type { Request, Response } from "express";
+import type { HttpCode } from "../types/http-codes.d.ts";
 
 export class HttpCodesController {
     getHttpCodesAll = (_req: Request, res: Response) => {
@@ -12,12 +13,26 @@ export class HttpCodesController {
         console.log("Solicitud recibida para obtener un código HTTP");
 
         const code = req.params.code;
-        const httpCode = HttpCodes.find((c) => Number(c.code) === Number(code));
+        const httpCode = HttpCodes as HttpCode[] | undefined;
 
-        if (!httpCode) {
-            res.status(404).json({ error: "No se encontró el código" });
-        } else {
-            res.status(200).json(httpCode);
+        if (!code) {
+            res.status(400).json({ error: "Falta el código" });
+            return;
         }
+
+        const codeNumber = parseInt(code as string);
+
+        if (isNaN(codeNumber)) {
+            res.status(400).json({ error: "El código debe ser un número" });
+            return;
+        }
+
+        httpCode?.forEach((httpCode) => {
+            if (httpCode.code === codeNumber) {
+                res.status(200).json(httpCode);
+                return;
+            }
+        });
+
     };
 }
