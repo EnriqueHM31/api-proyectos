@@ -1602,5 +1602,252 @@
                 "alt": "Imagen del código 407 Proxy Authentication Required"
             }
         ]
+    },
+    {
+        "code": 408,
+        "status": "Request Timeout",
+        "category": "Client Error",
+        "description": "El código 408 Request Timeout indica que el servidor decidió cerrar la conexión porque el cliente no produjo una solicitud completa dentro del tiempo que el servidor estaba preparado para esperar. Este código se utiliza cuando un cliente establece una conexión con el servidor pero tarda demasiado tiempo en enviar la solicitud HTTP completa, o cuando hay períodos de inactividad prolongados durante la transmisión de la solicitud. El servidor está diciendo: 'Estableciste una conexión conmigo, pero tardaste demasiado en enviar tu solicitud completa, así que voy a cerrar la conexión'. Es importante entender que 408 se refiere al tiempo de espera durante la RECEPCIÓN de la solicitud, no durante el PROCESAMIENTO de la misma. Si el servidor recibe la solicitud completa pero tarda mucho en procesarla, eso sería un problema diferente (potencialmente 504 Gateway Timeout si hay un proxy/gateway involucrado). Las causas comunes de 408 incluyen: conexiones de red lentas o inestables donde los datos se transmiten muy lentamente, clientes que establecen conexiones pero no envían datos (posiblemente por bugs), problemas de firewall o proxy que interrumpen la transmisión de datos, clientes que pausan o se quedan en espera durante la construcción de la solicitud, o ataques de denegación de servicio de tipo slowloris donde los atacantes mantienen conexiones abiertas enviando datos muy lentamente para agotar recursos del servidor. Los servidores implementan timeouts de solicitud como mecanismo de seguridad y gestión de recursos para evitar que conexiones ociosas o lentas consuman recursos indefinidamente. Los valores típicos de timeout varían desde 30 segundos hasta varios minutos dependiendo de la configuración del servidor y el caso de uso. La respuesta 408 puede incluir un encabezado Connection: close indicando que el servidor está cerrando la conexión. Los clientes que reciben 408 pueden reintentar la solicitud, pero deberían investigar por qué la solicitud original fue tan lenta. En aplicaciones modernas, 408 es relativamente raro porque las redes y clientes son generalmente rápidos, pero puede ocurrir en conexiones móviles inestables, uploads de archivos grandes interrumpidos, o situaciones de red degradada.",
+        "useCases": [
+            "Cliente con conexión de red muy lenta que tarda demasiado en enviar solicitud",
+            "Cliente que establece conexión pero no envía datos por bug o error de implementación",
+            "Uploads de archivos grandes interrumpidos o extremadamente lentos",
+            "Conexiones móviles inestables con pérdida de paquetes y retransmisiones",
+            "Problemas de firewall o proxy que causan pausas prolongadas en transmisión",
+            "Ataques slowloris u otros ataques de DoS basados en conexiones lentas",
+            "Cliente que pausa durante construcción de payload muy grande",
+            "Timeout de keep-alive en conexiones HTTP persistentes sin actividad"
+        ],
+        "examples": [
+            {
+                "scenario": "Cliente tarda demasiado en enviar solicitud completa",
+                "request": "POST /api/upload HTTP/1.1\nHost: api.example.com\nContent-Type: multipart/form-data\nContent-Length: 104857600\n\n[cliente envía datos muy lentamente, solo 10% después de 60 segundos]",
+                "response": "HTTP/1.1 408 Request Timeout\nConnection: close\nContent-Type: application/json\n\n{\n  \"error\": \"request_timeout\",\n  \"message\": \"The server timed out waiting for the complete request\",\n  \"timeout_duration\": \"60 seconds\",\n  \"bytes_received\": 10485760,\n  \"bytes_expected\": 104857600,\n  \"percentage_received\": \"10%\",\n  \"reason\": \"Request transmission too slow or interrupted\",\n  \"suggestion\": \"Check your network connection and retry the upload\",\n  \"retry_recommended\": true,\n  \"max_upload_time\": \"300 seconds for files up to 100MB\"\n}",
+                "explanation": "El cliente comenzó a subir un archivo de 100MB pero la transmisión fue extremadamente lenta. Después de 60 segundos, solo se recibió el 10% de los datos. El servidor cerró la conexión para liberar recursos. El cliente debe verificar su conexión y reintentar."
+            },
+            {
+                "scenario": "Conexión establecida pero sin datos enviados",
+                "request": "[TCP connection established]\n[30 seconds pass with no HTTP request sent]",
+                "response": "HTTP/1.1 408 Request Timeout\nConnection: close\nContent-Type: text/html\n\n<!DOCTYPE html>\n<html>\n<head><title>408 Request Timeout</title></head>\n<body>\n  <h1>408 Request Timeout</h1>\n  <p>The server closed this connection because no request was received within the expected time.</p>\n  <p>Connection was established but no data was sent for 30 seconds.</p>\n  <p>This may indicate a client-side error or network issue.</p>\n  <p>Please check your application and network connection.</p>\n</body>\n</html>",
+                "explanation": "El cliente estableció una conexión TCP con el servidor pero no envió ninguna solicitud HTTP durante 30 segundos. Esto podría indicar un bug en el cliente, un problema de red, o un intento de ataque slowloris. El servidor cierra la conexión."
+            },
+            {
+                "scenario": "Timeout de keep-alive en conexión persistente",
+                "request": "[Previous request completed successfully]\n[HTTP persistent connection kept alive]\n[No new request for 120 seconds]",
+                "response": "HTTP/1.1 408 Request Timeout\nConnection: close\nKeep-Alive: timeout=120, max=100\nContent-Type: application/json\n\n{\n  \"error\": \"keepalive_timeout\",\n  \"message\": \"Persistent connection timed out due to inactivity\",\n  \"connection_type\": \"HTTP/1.1 persistent (keep-alive)\",\n  \"inactive_duration\": \"120 seconds\",\n  \"keepalive_timeout\": \"120 seconds\",\n  \"requests_on_connection\": 5,\n  \"max_requests_per_connection\": 100,\n  \"action\": \"Connection closed. Establish new connection for additional requests.\",\n  \"note\": \"This is normal behavior for idle persistent connections\"\n}",
+                "explanation": "En una conexión HTTP/1.1 persistente (keep-alive), el cliente no envió una nueva solicitud durante 120 segundos después de la última respuesta. El servidor cierra la conexión idle para liberar recursos. El cliente puede establecer una nueva conexión si necesita hacer más solicitudes."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.7",
+        "relatedHeaders": [
+            "Connection",
+            "Keep-Alive",
+            "Timeout"
+        ],
+        "relatedCodes": [
+            504
+        ],
+        "technicalNotes": "408 se refiere al timeout durante la RECEPCIÓN de la solicitud (cliente → servidor), no durante el procesamiento. No confundir con 504 Gateway Timeout que es para timeouts de servidor upstream durante procesamiento. La respuesta 408 típicamente incluye Connection: close porque el servidor está cerrando la conexión. Los clientes PUEDEN reintentar automáticamente solicitudes que reciben 408, pero deben implementar backoff exponencial. Los timeouts típicos varían: 30-60 segundos para solicitudes normales, 5-10 minutos para uploads grandes. Los servidores modernos configuran timeouts para: prevenir ataques DoS slowloris, liberar recursos de conexiones idle, optimizar uso de recursos. 408 es relativamente raro en aplicaciones web modernas con conexiones rápidas.",
+        "images": []
+    },
+    {
+        "code": 409,
+        "status": "Conflict",
+        "category": "Client Error",
+        "description": "El código 409 Conflict indica que la solicitud no pudo ser completada debido a un conflicto con el estado actual del recurso en el servidor. Este código señala que existe una incompatibilidad o contradicción entre lo que el cliente está intentando hacer y el estado actual del sistema. El servidor está diciendo: 'Entiendo lo que quieres hacer, pero no puedo hacerlo porque entraría en conflicto con algo que ya existe o con el estado actual del sistema'. Los conflictos 409 son comunes en operaciones que implican concurrencia, unicidad, o restricciones de integridad de datos. Por ejemplo, intentar crear un usuario con un email que ya está registrado, intentar actualizar un recurso que ha sido modificado por otro usuario desde que lo recuperaste (conflicto de concurrencia), intentar eliminar un recurso que tiene dependencias, intentar reservar un recurso que ya está reservado, o violar restricciones de integridad referencial en bases de datos. El código 409 es fundamental en sistemas que implementan control de concurrencia optimista, donde múltiples clientes pueden intentar modificar el mismo recurso simultáneamente. En estos casos, 409 se usa típicamente con ETags o versionado: el cliente lee un recurso con su ETag actual, intenta actualizarlo enviando el ETag que leyó, pero si otro cliente modificó el recurso mientras tanto (cambiando el ETag), el servidor responde 409 indicando un conflicto de versión. La respuesta 409 debería incluir información suficiente en el cuerpo para que el cliente entienda la naturaleza del conflicto y potencialmente pueda resolverlo. Puede incluir detalles sobre qué causó el conflicto, el estado actual del recurso, y posibles acciones para resolver el conflicto. Es importante distinguir 409 de otros códigos: 400 es para errores de sintaxis o validación básica, 422 es para errores de validación semántica donde la sintaxis es correcta pero los datos no tienen sentido, y 409 es específicamente para conflictos con el estado actual del sistema. El 409 implica que la solicitud podría tener éxito en el futuro si el estado conflictivo cambia.",
+        "useCases": [
+            "Intentar crear usuario con email o username que ya existe",
+            "Conflictos de concurrencia en actualizaciones simultáneas (violación de ETag/versión)",
+            "Intentar eliminar recurso que tiene dependencias (foreign key constraints)",
+            "Reservar recurso que ya está reservado por otro usuario",
+            "Duplicación de transacciones o pedidos",
+            "Intentar crear recurso con identificador único que ya existe",
+            "Violación de reglas de negocio que dependen del estado actual",
+            "Conflictos en sistemas de control de versiones o merge de datos",
+            "Intentar aplicar cambios incompatibles con el estado actual del workflow"
+        ],
+        "examples": [
+            {
+                "scenario": "Email duplicado al crear usuario",
+                "request": "POST /api/users HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securepass123\"\n}",
+                "response": "HTTP/1.1 409 Conflict\nContent-Type: application/json\n\n{\n  \"error\": \"resource_conflict\",\n  \"message\": \"A user with this email address already exists\",\n  \"conflict_type\": \"duplicate_email\",\n  \"conflicting_field\": \"email\",\n  \"conflicting_value\": \"john@example.com\",\n  \"existing_user_id\": \"user_12345\",\n  \"created_at\": \"2023-06-15T10:30:00Z\",\n  \"suggestions\": [\n    \"Use a different email address\",\n    \"If this is your account, try logging in instead\",\n    \"Use the password reset feature if you forgot your password\"\n  ],\n  \"login_url\": \"/auth/login\",\n  \"password_reset_url\": \"/auth/forgot-password\"\n}",
+                "explanation": "El cliente intentó crear un nuevo usuario con un email que ya está registrado en el sistema. Esto viola la restricción de unicidad del email. El servidor responde con 409 indicando el conflicto y sugiriendo acciones alternativas."
+            },
+            {
+                "scenario": "Conflicto de concurrencia con ETag",
+                "request": "PUT /api/documents/789 HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nIf-Match: \"version-abc123\"\n\n{\n  \"title\": \"Updated Title\",\n  \"content\": \"Updated content...\",\n  \"status\": \"published\"\n}",
+                "response": "HTTP/1.1 409 Conflict\nETag: \"version-xyz789\"\nContent-Type: application/json\n\n{\n  \"error\": \"version_conflict\",\n  \"message\": \"The document has been modified by another user\",\n  \"conflict_type\": \"concurrent_modification\",\n  \"your_version\": \"version-abc123\",\n  \"current_version\": \"version-xyz789\",\n  \"last_modified_by\": \"user_456\",\n  \"last_modified_at\": \"2024-01-16T14:25:00Z\",\n  \"resolution_options\": [\n    {\n      \"option\": \"fetch_latest\",\n      \"description\": \"Get the latest version and manually merge your changes\",\n      \"endpoint\": \"GET /api/documents/789\"\n    },\n    {\n      \"option\": \"force_overwrite\",\n      \"description\": \"Overwrite with your version (will lose other user's changes)\",\n      \"warning\": \"This will discard changes made by user_456\",\n      \"not_recommended\": true\n    }\n  ],\n  \"current_document_url\": \"/api/documents/789\"\n}",
+                "explanation": "El cliente intentó actualizar el documento usando un ETag antiguo (version-abc123). Otro usuario ya modificó el documento, cambiando el ETag a version-xyz789. Esto indica un conflicto de concurrencia. El cliente debe obtener la versión actual y decidir cómo resolver el conflicto."
+            },
+            {
+                "scenario": "Eliminar recurso con dependencias",
+                "request": "DELETE /api/categories/5 HTTP/1.1\nHost: shop.example.com\nAuthorization: Bearer admin_token",
+                "response": "HTTP/1.1 409 Conflict\nContent-Type: application/json\n\n{\n  \"error\": \"cannot_delete_resource\",\n  \"message\": \"Cannot delete category because it has dependent resources\",\n  \"conflict_type\": \"referential_integrity\",\n  \"category_id\": 5,\n  \"category_name\": \"Electronics\",\n  \"dependent_resources\": [\n    {\n      \"resource_type\": \"products\",\n      \"count\": 47,\n      \"description\": \"47 products are currently assigned to this category\"\n    },\n    {\n      \"resource_type\": \"subcategories\",\n      \"count\": 3,\n      \"description\": \"3 subcategories exist under this category\"\n    }\n  ],\n  \"resolution_steps\": [\n    \"1. Reassign all 47 products to different categories\",\n    \"2. Delete or reassign the 3 subcategories\",\n    \"3. Then retry deleting this category\"\n  ],\n  \"bulk_reassign_endpoint\": \"/api/categories/5/reassign-products\",\n  \"view_products_url\": \"/api/products?category=5\",\n  \"view_subcategories_url\": \"/api/categories?parent=5\"\n}",
+                "explanation": "El administrador intentó eliminar una categoría, pero hay 47 productos y 3 subcategorías que dependen de ella. Eliminarla violaría la integridad referencial. El servidor responde con 409 y proporciona pasos claros para resolver el conflicto."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.8",
+        "relatedHeaders": [
+            "ETag",
+            "If-Match",
+            "If-None-Match"
+        ],
+        "relatedCodes": [
+            400,
+            422
+        ],
+        "technicalNotes": "409 es específicamente para conflictos con el ESTADO ACTUAL del recurso, no para errores de validación básica. Diferencias clave: 400 para errores de sintaxis/formato; 422 para validación semántica (datos bien formados pero no válidos); 409 para conflictos con estado existente. Común en control de concurrencia optimista usando ETags: el cliente incluye If-Match con el ETag que conoce, si cambió el servidor responde 409. La respuesta debe explicar claramente QUÉ está en conflicto y CÓMO resolverlo. 409 implica que la operación podría tener éxito si el estado conflictivo cambia. En REST, usar 409 para duplicados, violaciones de unicidad, y conflictos de concurrencia.",
+        "images": []
+    },
+    {
+        "code": 410,
+        "status": "Gone",
+        "category": "Client Error",
+        "description": "El código 410 Gone indica que el recurso solicitado ya no está disponible en el servidor y que esta condición es permanente, sin dirección de reenvío conocida. Este código es similar al 404 Not Found, pero proporciona información semántica adicional importante: 410 específicamente comunica que el recurso EXISTIÓ anteriormente pero ha sido INTENCIONALMENTE y PERMANENTEMENTE eliminado. El servidor está diciendo: 'Este recurso existía aquí antes, pero lo hemos eliminado deliberadamente y no volverá, y no hay una nueva ubicación para él'. La distinción clave entre 410 y 404 es: 404 significa 'no puedo encontrar esto' (puede que nunca haya existido, puede que haya sido movido, puede que sea temporal), mientras que 410 significa 'esto definitivamente existió aquí pero fue eliminado permanentemente de forma intencional'. El código 410 es útil para varias situaciones: contenido que fue publicado pero posteriormente retirado (artículos eliminados, productos descontinuados, páginas obsoletas), recursos que expiraron y fueron limpiados (cupones de descuento vencidos, promociones terminadas, enlaces de un solo uso consumidos), cuentas de usuario eliminadas permanentemente, o archivos que fueron removidos por violaciones de políticas. Usar 410 en lugar de 404 es beneficioso por varias razones: ayuda a los motores de búsqueda a entender que deben eliminar permanentemente la página de sus índices en lugar de seguir rastreándola esperando que regrese, informa a sistemas de caché que pueden purgar permanentemente el recurso, y proporciona mejor información a desarrolladores y usuarios sobre por qué el contenido no está disponible. Los motores de búsqueda como Google tratan 410 de manera diferente que 404: con 410, eliminan la URL de sus índices más rápidamente y dejan de rastrearla, mientras que con 404 pueden continuar verificando periódicamente si el recurso regresó. Sin embargo, en la práctica, 410 es mucho menos común que 404 porque requiere que el servidor mantenga un registro de qué recursos fueron eliminados, lo cual puede ser un overhead de mantenimiento. Muchos sitios simplemente usan 404 para todo lo que no existe, ya sea que nunca haya existido o haya sido eliminado.",
+        "useCases": [
+            "Artículos de blog o contenido que fue publicado pero posteriormente eliminado permanentemente",
+            "Productos descontinuados en tiendas online que ya no se venderán",
+            "Cuentas de usuario que fueron eliminadas permanentemente por solicitud del usuario",
+            "Cupones de descuento o códigos promocionales que expiraron",
+            "Enlaces de un solo uso que ya fueron consumidos (tokens de verificación, invitaciones)",
+            "Contenido removido por violaciones de términos de servicio o derechos de autor",
+            "Páginas web obsoletas que fueron retiradas intencionalmente sin reemplazo",
+            "Recursos temporales que cumplieron su propósito y fueron limpiados",
+            "Archivos subidos que fueron eliminados por el usuario propietario"
+        ],
+        "examples": [
+            {
+                "scenario": "Producto descontinuado permanentemente",
+                "request": "GET /products/vintage-model-2015 HTTP/1.1\nHost: shop.example.com\nAccept: application/json",
+                "response": "HTTP/1.1 410 Gone\nContent-Type: application/json\n\n{\n  \"error\": \"resource_gone\",\n  \"message\": \"This product has been permanently discontinued\",\n  \"resource_type\": \"product\",\n  \"product_id\": \"vintage-model-2015\",\n  \"product_name\": \"Vintage Model 2015\",\n  \"discontinued_date\": \"2023-12-31\",\n  \"reason\": \"Product line discontinued\",\n  \"status\": \"permanently_removed\",\n  \"alternatives\": [\n    {\n      \"product_id\": \"modern-model-2024\",\n      \"name\": \"Modern Model 2024\",\n      \"description\": \"Updated version with new features\",\n      \"url\": \"/products/modern-model-2024\"\n    },\n    {\n      \"product_id\": \"similar-alternative\",\n      \"name\": \"Similar Alternative\",\n      \"description\": \"Comparable product in same category\",\n      \"url\": \"/products/similar-alternative\"\n    }\n  ],\n  \"browse_category\": \"/categories/electronics\",\n  \"note\": \"This product will not return. Consider our alternatives above.\"\n}",
+                "explanation": "El producto fue descontinuado permanentemente y no volverá a estar disponible. El código 410 informa a motores de búsqueda que deben eliminar esta URL de sus índices. Se proporcionan productos alternativos para ayudar al usuario."
+            },
+            {
+                "scenario": "Artículo de blog eliminado permanentemente",
+                "request": "GET /blog/2020/controversial-article HTTP/1.1\nHost: blog.example.com\nAccept: text/html",
+                "response": "HTTP/1.1 410 Gone\nContent-Type: text/html; charset=utf-8\n\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Article Removed - Example Blog</title>\n  <meta name=\"robots\" content=\"noindex, nofollow\">\n</head>\n<body>\n  <h1>410 - Article No Longer Available</h1>\n  <p>The article you're looking for has been permanently removed.</p>\n  <div class=\"info\">\n    <h2>Why was this removed?</h2>\n    <p>This article was removed on January 15, 2024 due to outdated information that could be misleading.</p>\n    <p>We maintain high standards for content accuracy and decided to remove this rather than update it.</p>\n  </div>\n  <div class=\"alternatives\">\n    <h2>You might be interested in:</h2>\n    <ul>\n      <li><a href=\"/blog/2024/updated-perspective\">Updated Perspective on the Topic (2024)</a></li>\n      <li><a href=\"/blog/category/same-topic\">More articles on this topic</a></li>\n      <li><a href=\"/blog\">Browse all blog posts</a></li>\n    </ul>\n  </div>\n</body>\n</html>",
+                "explanation": "El artículo fue removido permanentemente por contener información desactualizada. El código 410 asegura que los motores de búsqueda eliminen la página de sus índices. Se incluye meta noindex y se ofrecen alternativas relevantes."
+            },
+            {
+                "scenario": "Token de verificación de un solo uso ya consumido",
+                "request": "GET /verify-email?token=abc123xyz789used HTTP/1.1\nHost: auth.example.com",
+                "response": "HTTP/1.1 410 Gone\nContent-Type: application/json\n\n{\n  \"error\": \"token_consumed\",\n  \"message\": \"This verification token has already been used\",\n  \"token_type\": \"email_verification\",\n  \"token_status\": \"consumed\",\n  \"used_at\": \"2024-01-10T09:30:00Z\",\n  \"used_by_ip\": \"192.168.1.100\",\n  \"email_status\": \"verified\",\n  \"account_email\": \"user@example.com\",\n  \"action_taken\": \"Email was successfully verified on January 10, 2024\",\n  \"next_steps\": [\n    \"Your email is already verified\",\n    \"You can now log in to your account\",\n    \"If you didn't verify this email, contact support immediately\"\n  ],\n  \"login_url\": \"/auth/login\",\n  \"support_url\": \"/support/contact\"\n}",
+                "explanation": "El token de verificación de email era de un solo uso y ya fue consumido el 10 de enero. No puede ser reutilizado. El código 410 indica que este token específico está permanentemente agotado. Se proporciona información sobre cuándo fue usado y qué hacer a continuación."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.9",
+        "relatedHeaders": [
+            "Content-Type",
+            "Cache-Control"
+        ],
+        "relatedCodes": [
+            404
+        ],
+        "technicalNotes": "410 es semánticamente diferente de 404: 410 significa eliminación PERMANENTE e INTENCIONAL de algo que existió; 404 es más genérico y no implica historia. Usar 410 beneficia SEO: los motores de búsqueda eliminan URLs con 410 de índices más rápido y dejan de rastrearlas. 410 es menos común que 404 en la práctica porque requiere que el servidor mantenga registro de recursos eliminados. Si no mantienes registro de qué fue eliminado, usa 404. Para redirecciones permanentes a nuevas ubicaciones, usa 301 no 410. 410 implica que NO hay nueva ubicación. Incluye meta tag noindex en respuestas HTML. La respuesta puede cacheable a menos que se indique lo contrario.",
+        "images": []
+    },
+    {
+        "code": 411,
+        "status": "Length Required",
+        "category": "Client Error",
+        "description": "El código 411 Length Required indica que el servidor se niega a aceptar la solicitud sin un encabezado Content-Length definido. Este código se utiliza cuando el servidor requiere conocer el tamaño exacto del cuerpo de la solicitud antes de comenzar a procesarla, pero el cliente no proporcionó el encabezado Content-Length. El servidor está diciendo: 'Necesito saber cuántos bytes de datos vas a enviarme antes de que pueda aceptar tu solicitud'. Este requisito es importante por varias razones: permite al servidor validar que tiene suficiente espacio o recursos para manejar la solicitud completa antes de comenzar a recibirla, ayuda a prevenir ataques de denegación de servicio donde un atacante podría enviar datos infinitos, permite implementar límites de tamaño de carga apropiados, y facilita la gestión eficiente de recursos del servidor. El código 411 es común en situaciones donde el servidor necesita asignar buffers o recursos basándose en el tamaño de la solicitud, cuando implementa límites de cuota o facturación basada en volumen de datos, o cuando necesita validar restricciones de tamaño antes de procesar. Sin embargo, es importante notar que HTTP/1.1 también soporta Transfer-Encoding: chunked, que permite enviar datos sin conocer la longitud total de antemano. Algunos servidores aceptan chunked encoding como alternativa a Content-Length, pero otros requieren específicamente Content-Length y responderán con 411 si no está presente. En HTTP/2, el concepto de Content-Length es menos crítico debido a la naturaleza del protocolo, pero en HTTP/1.1 sigue siendo relevante. Las causas comunes de 411 incluyen: clientes que intentan hacer POST o PUT sin especificar Content-Length, uso de streaming o chunked encoding cuando el servidor no lo soporta, bugs en implementaciones de cliente que omiten el encabezado, o proxies que eliminan el encabezado Content-Length durante el tránsito. La solución típica es que el cliente incluya el encabezado Content-Length con el número exacto de bytes en el cuerpo de la solicitud.",
+        "useCases": [
+            "Servidor que requiere Content-Length para validar límites de tamaño antes de aceptar uploads",
+            "APIs que implementan cuotas o facturación basada en volumen de datos",
+            "Servidores que necesitan pre-asignar buffers basándose en tamaño de solicitud",
+            "Sistemas que validan capacidad de almacenamiento antes de aceptar datos",
+            "Prevención de ataques DoS de streaming infinito de datos",
+            "Servicios que requieren conocer tamaño total para operaciones transaccionales",
+            "Sistemas legacy que no soportan Transfer-Encoding: chunked",
+            "Validación de límites de recursos antes de procesamiento"
+        ],
+        "examples": [
+            {
+                "scenario": "POST sin Content-Length",
+                "request": "POST /api/upload HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"data\": \"some content\"\n}",
+                "response": "HTTP/1.1 411 Length Required\nContent-Type: application/json\n\n{\n  \"error\": \"length_required\",\n  \"message\": \"Content-Length header is required for this request\",\n  \"missing_header\": \"Content-Length\",\n  \"reason\": \"Server must know the size of the request body before processing\",\n  \"requirements\": {\n    \"header_name\": \"Content-Length\",\n    \"header_value\": \"Size in bytes of the request body\",\n    \"example\": \"Content-Length: 1024\"\n  },\n  \"max_content_length\": 10485760,\n  \"max_content_length_human\": \"10 MB\",\n  \"supported_encodings\": [\"identity\"],\n  \"chunked_encoding_supported\": false,\n  \"how_to_fix\": [\n    \"Calculate the exact size of your request body in bytes\",\n    \"Add Content-Length header with that value\",\n    \"Example: Content-Length: 27 (for the JSON body shown)\"\n  ],\n  \"documentation\": \"https://api.example.com/docs/headers\"\n}",
+                "explanation": "El cliente envió una solicitud POST con un cuerpo JSON pero omitió el encabezado Content-Length. El servidor requiere este encabezado para validar el tamaño antes de procesar. El cliente debe calcular el tamaño del cuerpo (27 bytes en este caso) y agregar Content-Length: 27."
+            },
+            {
+                "scenario": "Upload de archivo sin especificar tamaño",
+                "request": "PUT /api/files/document.pdf HTTP/1.1\nHost: storage.example.com\nContent-Type: application/pdf\nAuthorization: Bearer valid_token\n\n[binary PDF data without Content-Length]",
+                "response": "HTTP/1.1 411 Length Required\nContent-Type: application/json\n\n{\n  \"error\": \"content_length_required\",\n  \"message\": \"File uploads require Content-Length header\",\n  \"resource\": \"/api/files/document.pdf\",\n  \"operation\": \"file_upload\",\n  \"reason\": \"Server must validate available storage space before accepting upload\",\n  \"requirements\": {\n    \"required_headers\": [\n      \"Content-Length\",\n      \"Content-Type\"\n    ],\n    \"example_request\": \"PUT /api/files/document.pdf\\nContent-Type: application/pdf\\nContent-Length: 2048576\\n\\n[file data]\"\n  },\n  \"storage_limits\": {\n    \"max_file_size\": 104857600,\n    \"max_file_size_human\": \"100 MB\",\n    \"current_quota_used\": \"45%\",\n    \"available_space\": 57671680,\n    \"available_space_human\": \"55 MB\"\n  },\n  \"note\": \"Content-Length allows us to verify sufficient storage before accepting your file\"\n}",
+                "explanation": "El cliente intenta subir un archivo PDF pero no especificó Content-Length. El servidor necesita este valor para verificar que tiene suficiente espacio de almacenamiento disponible antes de comenzar a recibir el archivo potencialmente grande."
+            },
+            {
+                "scenario": "Solicitud con chunked encoding en servidor que no lo soporta",
+                "request": "POST /api/data HTTP/1.1\nHost: legacy.example.com\nTransfer-Encoding: chunked\nContent-Type: application/json\n\n5\n{\"da\n2\nta\n3\n\":1\n2\n}\n\n0\n\n",
+                "response": "HTTP/1.1 411 Length Required\nContent-Type: application/json\n\n{\n  \"error\": \"content_length_required\",\n  \"message\": \"This server does not support chunked transfer encoding\",\n  \"received_encoding\": \"chunked\",\n  \"supported_encodings\": [\"identity\"],\n  \"required_header\": \"Content-Length\",\n  \"explanation\": \"This is a legacy server that requires Content-Length and does not support streaming uploads\",\n  \"solution\": [\n    \"Calculate the total size of your data before sending\",\n    \"Remove Transfer-Encoding: chunked header\",\n    \"Add Content-Length header with the exact byte count\",\n    \"Send the data in a single request body\"\n  ],\n  \"example_correct_request\": \"POST /api/data HTTP/1.1\\nContent-Type: application/json\\nContent-Length: 10\\n\\n{\\\"data\\\":1}\",\n  \"modernization_note\": \"Consider upgrading to our v2 API which supports chunked encoding: https://api-v2.example.com\"\n}",
+                "explanation": "El cliente intentó usar Transfer-Encoding: chunked para enviar datos sin conocer la longitud total de antemano. Sin embargo, este servidor legacy no soporta chunked encoding y requiere específicamente el encabezado Content-Length."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.10",
+        "relatedHeaders": [
+            "Content-Length",
+            "Transfer-Encoding"
+        ],
+        "relatedCodes": [
+            413
+        ],
+        "technicalNotes": "411 requiere específicamente el encabezado Content-Length. Algunos servidores aceptan Transfer-Encoding: chunked como alternativa, pero otros no. La respuesta 411 indica que el servidor REQUIERE Content-Length. HTTP/1.1 soporta chunked encoding como alternativa donde la longitud no se conoce de antemano, pero no todos los servidores lo implementan. La diferencia con 413 Payload Too Large: 413 se usa cuando Content-Length ESTÁ presente pero el valor excede el límite; 411 se usa cuando Content-Length está AUSENTE. Para calcular Content-Length: contar bytes exactos del cuerpo de la solicitud (no caracteres, bytes). En HTTP/2, los conceptos de streaming son diferentes y 411 es menos relevante.",
+        "images": []
+    },
+    {
+        "code": 412,
+        "status": "Precondition Failed",
+        "category": "Client Error",
+        "description": "El código 412 Precondition Failed indica que una o más condiciones especificadas en los encabezados de solicitud del cliente fueron evaluadas como falsas cuando fueron probadas en el servidor. Este código es fundamental para implementar control de concurrencia condicional y operaciones seguras sobre recursos. Los encabezados de precondición permiten que los clientes especifiquen condiciones que deben cumplirse para que la solicitud sea procesada. Si alguna de estas condiciones falla, el servidor responde con 412 sin realizar la operación solicitada. Los encabezados de precondición más comunes son: If-Match (la operación solo debe proceder si el ETag actual del recurso coincide con el valor especificado), If-None-Match (proceder solo si el ETag NO coincide), If-Modified-Since (proceder solo si el recurso fue modificado después de la fecha especificada), If-Unmodified-Since (proceder solo si el recurso NO fue modificado desde la fecha especificada), y If-Range (para solicitudes de rango condicionales). El código 412 es especialmente importante en el control de concurrencia optimista, donde múltiples clientes pueden leer un recurso, pero solo uno debería poder modificarlo basándose en la versión que leyó. Por ejemplo: Cliente A lee un documento con ETag 'v1', Cliente B lee el mismo documento con ETag 'v1', Cliente B actualiza el documento (ETag cambia a 'v2'), Cliente A intenta actualizar enviando If-Match: 'v1', el servidor detecta que el ETag actual es 'v2' y responde 412 Precondition Failed, indicando que el documento cambió desde que Cliente A lo leyó. Esto previene que Cliente A sobrescriba inadvertidamente los cambios de Cliente B. El código 412 también es usado en operaciones de eliminación condicional (solo eliminar si el recurso no ha sido modificado), actualizaciones parciales con PATCH (solo aplicar cambios si la versión base es la esperada), y operaciones de caché condicionales. Es importante distinguir 412 de otros códigos: 409 Conflict se usa cuando hay un conflicto con el estado del recurso pero no necesariamente relacionado con precondiciones de encabezados; 428 Precondition Required se usa cuando el servidor REQUIERE una precondición pero el cliente no proporcionó ninguna; 412 se usa cuando el cliente SÍ proporcionó una precondición pero FALLÓ la evaluación.",
+        "useCases": [
+            "Control de concurrencia optimista con ETags en actualizaciones",
+            "Prevenir sobrescritura de cambios concurrentes en edición colaborativa",
+            "Validación de versión antes de aplicar actualizaciones o parches",
+            "Operaciones condicionales que solo deben ejecutarse si el recurso no cambió",
+            "Eliminación segura solo si el recurso está en el estado esperado",
+            "Caché condicional basado en fechas de modificación",
+            "Prevenir race conditions en operaciones críticas",
+            "Validación de que prerequisitos se cumplen antes de operaciones complejas"
+        ],
+        "examples": [
+            {
+                "scenario": "Control de concurrencia con If-Match fallido",
+                "request": "PUT /api/documents/456 HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nIf-Match: \"version-abc123\"\nAuthorization: Bearer valid_token\n\n{\n  \"title\": \"Updated Document Title\",\n  \"content\": \"My updated content...\",\n  \"status\": \"published\"\n}",
+                "response": "HTTP/1.1 412 Precondition Failed\nETag: \"version-xyz789\"\nContent-Type: application/json\n\n{\n  \"error\": \"precondition_failed\",\n  \"message\": \"The resource has been modified since you last retrieved it\",\n  \"precondition_type\": \"if_match\",\n  \"your_etag\": \"version-abc123\",\n  \"current_etag\": \"version-xyz789\",\n  \"last_modified\": \"2024-01-16T15:30:00Z\",\n  \"last_modified_by\": \"user_789\",\n  \"explanation\": \"Another user modified this document after you retrieved it. Your changes cannot be applied to avoid overwriting their work.\",\n  \"resolution_options\": [\n    {\n      \"option\": \"fetch_and_merge\",\n      \"description\": \"Retrieve the latest version and manually merge your changes\",\n      \"recommended\": true,\n      \"action\": \"GET /api/documents/456\"\n    },\n    {\n      \"option\": \"force_update\",\n      \"description\": \"Force your update and overwrite recent changes\",\n      \"warning\": \"This will discard changes made by user_789\",\n      \"action\": \"PUT /api/documents/456 without If-Match header\",\n      \"recommended\": false\n    }\n  ],\n  \"current_version_url\": \"/api/documents/456\"\n}",
+                "explanation": "El cliente intentó actualizar el documento usando If-Match con un ETag antiguo (version-abc123). El ETag actual es version-xyz789, lo que significa que otro usuario modificó el documento. La precondición falló y el servidor responde 412 para prevenir sobrescritura accidental."
+            },
+            {
+                "scenario": "If-Unmodified-Since fallido en DELETE",
+                "request": "DELETE /api/posts/789 HTTP/1.1\nHost: blog.example.com\nIf-Unmodified-Since: Mon, 15 Jan 2024 10:00:00 GMT\nAuthorization: Bearer admin_token",
+                "response": "HTTP/1.1 412 Precondition Failed\nLast-Modified: Tue, 16 Jan 2024 14:20:00 GMT\nContent-Type: application/json\n\n{\n  \"error\": \"precondition_failed\",\n  \"message\": \"The post has been modified since the specified date\",\n  \"precondition_type\": \"if_unmodified_since\",\n  \"your_date\": \"2024-01-15T10:00:00Z\",\n  \"last_modified_date\": \"2024-01-16T14:20:00Z\",\n  \"post_id\": 789,\n  \"post_title\": \"Important Announcement\",\n  \"modified_by\": \"editor_user_456\",\n  \"changes_made\": \"Content updated with critical corrections\",\n  \"explanation\": \"This post was modified after the date you specified. Deletion cannot proceed to prevent loss of recent updates.\",\n  \"next_steps\": [\n    \"Review the current version of the post\",\n    \"Verify that deletion is still appropriate given recent changes\",\n    \"If deletion is still desired, retry without the If-Unmodified-Since header or with the current Last-Modified date\"\n  ],\n  \"view_current_post\": \"/api/posts/789\"\n}",
+                "explanation": "El administrador intentó eliminar un post solo si no había sido modificado desde el 15 de enero. Sin embargo, el post fue modificado el 16 de enero. La precondición If-Unmodified-Since falló, y el servidor responde 412 para prevenir eliminación accidental de contenido actualizado."
+            },
+            {
+                "scenario": "If-None-Match fallido (recurso no cambió)",
+                "request": "GET /api/data/statistics HTTP/1.1\nHost: api.example.com\nIf-None-Match: \"stats-current-etag-xyz\"\nAccept: application/json",
+                "response": "HTTP/1.1 304 Not Modified\nETag: \"stats-current-etag-xyz\"\nCache-Control: private, max-age=300\n\nNOTA: Este escenario NO resulta en 412, sino en 304 Not Modified.\nIf-None-Match con GET típicamente resulta en 304 cuando coincide.\n412 se usa principalmente con métodos de modificación (PUT, PATCH, DELETE, POST).",
+                "explanation": "ACLARACIÓN IMPORTANTE: Con métodos seguros como GET, If-None-Match que coincide resulta en 304 Not Modified, no 412. El código 412 se usa principalmente cuando precondiciones fallan en métodos de modificación (PUT, PATCH, DELETE)."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7232, Section 4.2",
+        "relatedHeaders": [
+            "If-Match",
+            "If-None-Match",
+            "If-Modified-Since",
+            "If-Unmodified-Since",
+            "If-Range",
+            "ETag",
+            "Last-Modified"
+        ],
+        "relatedCodes": [
+            304,
+            409,
+            428
+        ],
+        "technicalNotes": "412 indica que una PRECONDICIÓN proporcionada FALLÓ. Diferencias clave: 304 Not Modified se usa con GET cuando If-None-Match/If-Modified-Since indica que el recurso no cambió (esto es éxito, no error); 412 se usa principalmente con métodos de modificación cuando la precondición falla; 409 Conflict es para conflictos de estado no relacionados con precondiciones de encabezados; 428 Precondition Required es cuando el servidor REQUIERE una precondición pero no se proporcionó. Los encabezados If-Match e If-Unmodified-Since se usan para control de concurrencia optimista. 412 previene el 'lost update problem' donde actualizaciones concurrentes se sobrescriben. La respuesta debe incluir el ETag o Last-Modified actual para que el cliente pueda recuperar la versión actual.",
+        "images": []
     }
 ]
