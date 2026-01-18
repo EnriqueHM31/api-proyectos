@@ -1157,5 +1157,392 @@
                 "alt": "Imagen del código 308 Permanent Redirect"
             }
         ]
+    },
+    {
+        "code": 400,
+        "status": "Bad Request",
+        "category": "Client Error",
+        "description": "El código 400 Bad Request indica que el servidor no puede o no procesará la solicitud debido a algo que se percibe como un error del cliente. Este es uno de los códigos de error más comunes y versátiles en HTTP, utilizado como respuesta genérica para una amplia variedad de errores de solicitud del cliente que no encajan en categorías más específicas. El servidor está indicando que la solicitud está malformada, contiene sintaxis inválida, parámetros inválidos, o es imposible de cumplir por razones que son responsabilidad del cliente. Las causas comunes incluyen: JSON o XML mal formado en el cuerpo de la solicitud, parámetros de query string inválidos o que faltan, encabezados HTTP malformados o contradictorios, tamaño de solicitud que excede límites del servidor, errores de codificación de caracteres, valores de datos que no cumplen con reglas de validación, tipos de contenido no soportados, o cualquier otra violación del protocolo HTTP o de las expectativas de la API. A diferencia de errores 5xx que indican problemas del servidor, el 400 señala claramente que el problema está en la solicitud del cliente y que reenviar la misma solicitud sin modificaciones resultará en el mismo error. El cliente debe corregir la solicitud antes de reintentarla. Es importante que las respuestas 400 incluyan información descriptiva en el cuerpo del mensaje explicando qué está mal con la solicitud para ayudar a los desarrolladores a corregir el problema. Una buena respuesta 400 debería especificar: qué campo o parámetro causó el error, qué se esperaba versus qué se recibió, y cómo corregir el problema. En APIs RESTful modernas, es común incluir códigos de error estructurados, mensajes de error detallados, y referencias a documentación. El código 400 es preferible a códigos de error más específicos cuando el error no encaja claramente en categorías como 401 (autenticación), 403 (autorización), 404 (no encontrado), etc.",
+        "useCases": [
+            "JSON o XML malformado en el cuerpo de la solicitud",
+            "Parámetros de query string inválidos, faltantes o mal formateados",
+            "Errores de validación de datos de entrada (formatos incorrectos, valores fuera de rango)",
+            "Encabezados HTTP contradictorios o malformados",
+            "Tamaño de solicitud que excede límites permitidos",
+            "Tipo de contenido no soportado o Content-Type incorrecto",
+            "Errores de codificación de caracteres en la solicitud",
+            "Violaciones de esquema o estructura de datos esperada",
+            "Combinaciones inválidas de parámetros",
+            "Requests que violan reglas de negocio básicas"
+        ],
+        "examples": [
+            {
+                "scenario": "JSON malformado en el cuerpo de la solicitud",
+                "request": "POST /api/users HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  // Comentario inválido en JSON\n}",
+                "response": "HTTP/1.1 400 Bad Request\nContent-Type: application/json\n\n{\n  \"error\": \"invalid_request_body\",\n  \"message\": \"Request body contains malformed JSON\",\n  \"details\": \"Unexpected token '/' at position 78. JSON does not support comments.\",\n  \"documentation\": \"https://api.example.com/docs/errors/invalid-json\"\n}",
+                "explanation": "El JSON en el cuerpo contiene un comentario que no es válido en JSON estándar. El servidor responde con 400 y explica específicamente qué está mal y dónde ocurrió el error."
+            },
+            {
+                "scenario": "Parámetros de validación fallidos",
+                "request": "POST /api/products HTTP/1.1\nHost: shop.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"AB\",\n  \"price\": -10.50,\n  \"stock\": \"not_a_number\"\n}",
+                "response": "HTTP/1.1 400 Bad Request\nContent-Type: application/json\n\n{\n  \"error\": \"validation_failed\",\n  \"message\": \"Request validation failed\",\n  \"validation_errors\": [\n    {\n      \"field\": \"name\",\n      \"message\": \"Name must be at least 3 characters long\",\n      \"received\": \"AB\"\n    },\n    {\n      \"field\": \"price\",\n      \"message\": \"Price must be a positive number\",\n      \"received\": -10.50\n    },\n    {\n      \"field\": \"stock\",\n      \"message\": \"Stock must be an integer\",\n      \"received_type\": \"string\"\n    }\n  ]\n}",
+                "explanation": "Múltiples campos tienen errores de validación. La respuesta 400 proporciona detalles específicos de cada error, facilitando que el cliente corrija todos los problemas de una vez."
+            },
+            {
+                "scenario": "Parámetros de query string inválidos",
+                "request": "GET /api/users?page=abc&limit=-5 HTTP/1.1\nHost: api.example.com",
+                "response": "HTTP/1.1 400 Bad Request\nContent-Type: application/json\n\n{\n  \"error\": \"invalid_query_parameters\",\n  \"message\": \"One or more query parameters are invalid\",\n  \"errors\": [\n    {\n      \"parameter\": \"page\",\n      \"error\": \"Page must be a positive integer\",\n      \"received\": \"abc\"\n    },\n    {\n      \"parameter\": \"limit\",\n      \"error\": \"Limit must be between 1 and 100\",\n      \"received\": -5\n    }\n  ]\n}",
+                "explanation": "Los parámetros de paginación contienen valores inválidos. El servidor indica qué parámetros están mal y qué valores son aceptables."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.5.1",
+        "relatedHeaders": [
+            "Content-Type",
+            "Content-Length"
+        ],
+        "technicalNotes": "400 es un código de error genérico del cliente. Cuando sea posible, usa códigos más específicos: 401 para autenticación, 403 para autorización, 404 para recursos no encontrados, 405 para métodos no permitidos, 409 para conflictos, 422 para errores de validación semántica. El 400 debe reservarse para errores de sintaxis, malformaciones, o cuando ningún código más específico aplica. Siempre incluye un cuerpo de respuesta descriptivo con detalles del error para facilitar debugging.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712934/400_odwp8l.png",
+                "alt": "Imagen que representa el nombre del código 400 Bad Request"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712631/25-removebg-preview_ujorgb.png",
+                "alt": "Imagen del código 400 Bad Request"
+            }
+        ]
+    },
+    {
+        "code": 401,
+        "status": "Unauthorized",
+        "category": "Client Error",
+        "description": "El código 401 Unauthorized indica que la solicitud requiere autenticación del usuario y que las credenciales proporcionadas son inválidas, están ausentes, o han expirado. A pesar de su nombre algo confuso ('Unauthorized'), este código específicamente se refiere a problemas de AUTENTICACIÓN (verificar quién eres), no de AUTORIZACIÓN (verificar qué puedes hacer). El nombre más preciso sería 'Unauthenticated', pero por razones históricas se mantiene como 'Unauthorized'. Cuando un servidor responde con 401, está diciendo: 'No sé quién eres' o 'Las credenciales que proporcionaste no son válidas' o 'Tu sesión ha expirado'. El cliente debe proporcionar credenciales válidas (o renovarlas) para acceder al recurso. La respuesta 401 DEBE incluir un encabezado WWW-Authenticate que especifique el esquema de autenticación que el servidor espera (Basic, Bearer, Digest, etc.). Este encabezado informa al cliente qué tipo de credenciales se requieren y cómo deben ser enviadas. Los escenarios comunes incluyen: intentar acceder a un recurso protegido sin proporcionar token de autenticación, proporcionar un token JWT expirado o inválido, credenciales de usuario/contraseña incorrectas, token de API key inválido o revocado, sesión expirada que necesita renovación, o intentar usar un token de autenticación que fue emitido para otro recurso o dominio. En aplicaciones web modernas, 401 típicamente resulta en redireccionar al usuario a una página de login o mostrar un modal de autenticación. En APIs, puede desencadenar un flujo de renovación de tokens (refresh token flow) o requerir que el usuario vuelva a autenticarse. Es crucial distinguir 401 de 403 Forbidden: usa 401 cuando el problema es que el cliente no está autenticado o sus credenciales son inválidas; usa 403 cuando el cliente está correctamente autenticado pero no tiene permisos para acceder al recurso específico.",
+        "useCases": [
+            "Acceso a recursos protegidos sin proporcionar token de autenticación",
+            "Token JWT expirado que necesita renovación",
+            "Credenciales de usuario/contraseña incorrectas en login",
+            "API key inválida, revocada o faltante",
+            "Sesión de usuario expirada que requiere re-autenticación",
+            "Token de autenticación malformado o corrupto",
+            "Intentar acceder con credenciales que fueron revocadas",
+            "Autenticación de dos factores (2FA) fallida",
+            "Token OAuth inválido o expirado",
+            "Certificado de cliente inválido o faltante en mTLS"
+        ],
+        "examples": [
+            {
+                "scenario": "Acceso sin token de autenticación",
+                "request": "GET /api/user/profile HTTP/1.1\nHost: api.example.com\nAccept: application/json",
+                "response": "HTTP/1.1 401 Unauthorized\nWWW-Authenticate: Bearer realm=\"api.example.com\"\nContent-Type: application/json\n\n{\n  \"error\": \"authentication_required\",\n  \"message\": \"Authentication is required to access this resource\",\n  \"required_header\": \"Authorization: Bearer <token>\",\n  \"obtain_token\": \"https://api.example.com/auth/login\"\n}",
+                "explanation": "La solicitud intenta acceder a un perfil de usuario protegido sin proporcionar ningún token de autenticación. El servidor responde con 401 y el encabezado WWW-Authenticate indicando que se requiere autenticación Bearer."
+            },
+            {
+                "scenario": "Token JWT expirado",
+                "request": "GET /api/orders HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.expired_token.signature",
+                "response": "HTTP/1.1 401 Unauthorized\nWWW-Authenticate: Bearer error=\"invalid_token\", error_description=\"The access token expired\"\nContent-Type: application/json\n\n{\n  \"error\": \"token_expired\",\n  \"message\": \"Your access token has expired\",\n  \"expired_at\": \"2024-01-15T10:00:00Z\",\n  \"refresh_endpoint\": \"/auth/refresh\"\n}",
+                "explanation": "El token JWT proporcionado es válido estructuralmente pero ha expirado. El servidor indica cuándo expiró y cómo obtener un nuevo token usando el refresh token."
+            },
+            {
+                "scenario": "Credenciales de login incorrectas",
+                "request": "POST /auth/login HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"username\": \"john@example.com\",\n  \"password\": \"wrong_password\"\n}",
+                "response": "HTTP/1.1 401 Unauthorized\nWWW-Authenticate: Bearer realm=\"api.example.com\"\nContent-Type: application/json\n\n{\n  \"error\": \"invalid_credentials\",\n  \"message\": \"The username or password you entered is incorrect\",\n  \"attempts_remaining\": 3,\n  \"lockout_warning\": \"Account will be locked after 5 failed attempts\"\n}",
+                "explanation": "El usuario proporcionó credenciales incorrectas. El servidor responde con 401 e información sobre intentos restantes antes de bloqueo de cuenta."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7235, Section 3.1",
+        "relatedHeaders": [
+            "WWW-Authenticate",
+            "Authorization",
+            "Proxy-Authenticate",
+            "Proxy-Authorization"
+        ],
+        "technicalNotes": "401 es específicamente para AUTENTICACIÓN (quién eres), no AUTORIZACIÓN (qué puedes hacer). La respuesta DEBE incluir encabezado WWW-Authenticate. Los esquemas comunes son: Basic, Bearer (JWT/OAuth), Digest, OAuth, ApiKey. Distinguir de 403 Forbidden: 401 = no estás autenticado o credenciales inválidas; 403 = estás autenticado pero no autorizado. En aplicaciones web, 401 típicamente resulta en redirect a login; en APIs, puede trigger refresh token flow.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712933/401_bmlwc3.png",
+                "alt": "Imagen que representa el nombre del código 401 Unauthorized"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712629/26-removebg-preview_kemtbk.png",
+                "alt": "Imagen del código 401 Unauthorized"
+            }
+        ]
+    },
+    {
+        "code": 402,
+        "status": "Payment Required",
+        "category": "Client Error",
+        "description": "El código 402 Payment Required está RESERVADO para uso futuro y originalmente fue concebido para sistemas de pago digital y micropagos en la web. Este código fue incluido en la especificación original de HTTP con la visión de que la web eventualmente incorporaría sistemas de pago integrados directamente en el protocolo HTTP. La idea era que los servidores pudieran responder con 402 cuando un recurso requiriera pago, y los navegadores tendrían capacidades integradas para manejar transacciones. Sin embargo, más de 30 años después de su creación, el código 402 sigue sin tener una definición formal o implementación estándar. Aunque está reservado oficialmente, NO existe un comportamiento estándar definido para él en las especificaciones HTTP. A pesar de esto, algunas APIs modernas y servicios han comenzado a utilizar 402 de manera no estándar para indicar varios escenarios relacionados con pagos: cuando un usuario ha excedido su cuota de API gratuita y necesita actualizar a un plan de pago, cuando una suscripción ha expirado, cuando se requiere pago para acceder a contenido premium, o cuando un servicio freemium ha alcanzado sus límites gratuitos. Sin embargo, estas implementaciones son completamente no estandarizadas y varían significativamente entre diferentes servicios. Debido a la falta de estándares, muchos desarrolladores y servicios evitan usar 402 y en su lugar optan por códigos alternativos como 403 Forbidden con mensajes explicativos sobre requisitos de pago, 451 Unavailable For Legal Reasons para contenido bloqueado por razones comerciales, o códigos de error personalizados en el rango 4xx. Algunos argumentan que 402 podría ser útil para distinguir problemas de pago de otros errores, pero sin estandarización, su uso sigue siendo experimental y no recomendado para producción crítica.",
+        "useCases": [
+            "USO NO ESTÁNDAR: Indicar que se ha excedido cuota de API gratuita",
+            "USO NO ESTÁNDAR: Suscripción expirada que requiere renovación",
+            "USO NO ESTÁNDAR: Contenido premium que requiere pago",
+            "USO NO ESTÁNDAR: Límites de freemium alcanzados",
+            "NOTA: Ninguno de estos usos está estandarizado oficialmente"
+        ],
+        "examples": [
+            {
+                "scenario": "Uso experimental (NO estándar) - Cuota de API excedida",
+                "request": "GET /api/premium-data HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer free_tier_token",
+                "response": "HTTP/1.1 402 Payment Required\nContent-Type: application/json\n\n{\n  \"error\": \"quota_exceeded\",\n  \"message\": \"You have exceeded your free tier quota\",\n  \"quota_limit\": 1000,\n  \"quota_used\": 1000,\n  \"upgrade_url\": \"https://billing.example.com/upgrade\",\n  \"note\": \"Non-standard use of 402. Standard practice would be 403 or 429.\"\n}",
+                "explanation": "USO EXPERIMENTAL: Este servicio usa 402 para indicar que el usuario gratuito ha excedido su cuota. Sin embargo, este NO es un uso estándar. Sería más apropiado usar 429 (Too Many Requests) o 403 (Forbidden) con información de pago."
+            },
+            {
+                "scenario": "Alternativa ESTÁNDAR recomendada - Usar 403 con contexto de pago",
+                "request": "GET /api/premium-features HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer free_user_token",
+                "response": "HTTP/1.1 403 Forbidden\nContent-Type: application/json\n\n{\n  \"error\": \"payment_required\",\n  \"message\": \"This feature requires a paid subscription\",\n  \"current_plan\": \"free\",\n  \"required_plan\": \"premium\",\n  \"upgrade_url\": \"https://example.com/upgrade\",\n  \"price\": \"$19.99/month\"\n}",
+                "explanation": "MEJOR PRÁCTICA: Usar 403 Forbidden con información detallada sobre requisitos de pago es más estándar y ampliamente entendido que usar el no estandarizado 402."
+            },
+            {
+                "scenario": "Alternativa usando 429 para límites de cuota",
+                "request": "GET /api/data HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer free_tier_token",
+                "response": "HTTP/1.1 429 Too Many Requests\nX-RateLimit-Limit: 1000\nX-RateLimit-Remaining: 0\nX-RateLimit-Reset: 1706745600\nContent-Type: application/json\n\n{\n  \"error\": \"rate_limit_exceeded\",\n  \"message\": \"You have exceeded your monthly API quota\",\n  \"reset_date\": \"2024-02-01T00:00:00Z\",\n  \"upgrade_info\": \"https://billing.example.com/upgrade\"\n}",
+                "explanation": "MEJOR PRÁCTICA: Para límites de cuota/rate limiting, 429 Too Many Requests es semánticamente más correcto que 402, incluso si el upgrade requiere pago."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.2 (Reserved for future use)",
+        "relatedHeaders": [],
+        "technicalNotes": "El código 402 está OFICIALMENTE RESERVADO pero NO DEFINIDO en las especificaciones HTTP. No existe comportamiento estándar para este código. Su uso en producción es NO RECOMENDADO. Alternativas estándar: 403 Forbidden (para contenido que requiere pago), 429 Too Many Requests (para límites de cuota), o códigos personalizados 4xx. Muchas empresas evitan 402 completamente debido a la falta de estandarización.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712936/402_vofv3h.png",
+                "alt": "Imagen que representa el nombre del código 402 Payment Required"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712628/27-removebg-preview_sws62c.png",
+                "alt": "Imagen del código 402 Payment Required"
+            }
+        ]
+    },
+    {
+        "code": 403,
+        "status": "Forbidden",
+        "category": "Client Error",
+        "description": "El código 403 Forbidden indica que el servidor entendió la solicitud pero se niega a autorizarla. A diferencia del 401 Unauthorized que se refiere a problemas de AUTENTICACIÓN (quién eres), el 403 se refiere específicamente a problemas de AUTORIZACIÓN (qué tienes permitido hacer). Cuando un servidor responde con 403, está diciendo: 'Sé quién eres (estás autenticado correctamente), pero no tienes permiso para acceder a este recurso' o 'Este recurso está prohibido para ti'. Este es un punto crítico de distinción: 401 significa que no te has identificado o tus credenciales son inválidas, mientras que 403 significa que te identificaste correctamente pero no tienes los permisos necesarios. Un 403 indica que proporcionar credenciales diferentes no ayudará - el acceso está prohibido independientemente de la autenticación. Las causas comunes incluyen: intentar acceder a un recurso para el cual tu rol de usuario no tiene permisos, intentar realizar una operación que excede tus privilegios (por ejemplo, un usuario regular intentando acceder a funciones de administrador), acceder a recursos que están geográficamente restringidos, intentar acceder a contenido que requiere una suscripción o plan de pago superior, violación de políticas de seguridad o control de acceso, acceso bloqueado por firewall de aplicación web (WAF), direcciones IP bloqueadas o en lista negra, intentar acceder a archivos del sistema o directorios protegidos, o violación de límites de rate limiting basados en permisos. A diferencia del 401 que puede ser resuelto proporcionando credenciales válidas, un 403 generalmente requiere que se otorguen permisos adicionales al usuario, que se cambie de plan de suscripción, que se modifiquen políticas de acceso, o que se eliminen restricciones. Las respuestas 403 deben ser cuidadosamente diseñadas para no revelar información sensible sobre la estructura del sistema o existencia de recursos, ya que esto podría ser explotado por atacantes. Es una buena práctica incluir información útil sobre por qué el acceso fue denegado (sin revelar detalles de seguridad sensibles) y qué acciones podría tomar el usuario para obtener acceso.",
+        "useCases": [
+            "Usuario autenticado intenta acceder a recursos de administrador sin privilegios",
+            "Acceso a recursos que requieren roles o permisos específicos que el usuario no tiene",
+            "Intentar modificar o eliminar recursos que pertenecen a otro usuario",
+            "Acceso a contenido premium sin suscripción adecuada",
+            "Restricciones geográficas o de región (geo-blocking)",
+            "Límites de rate limiting excedidos para el nivel de usuario",
+            "IP bloqueada o en lista negra por razones de seguridad",
+            "Violación de políticas de uso o términos de servicio",
+            "Acceso a recursos durante horarios restringidos",
+            "Intentar realizar operaciones en modo de solo lectura"
+        ],
+        "examples": [
+            {
+                "scenario": "Usuario sin privilegios de administrador",
+                "request": "DELETE /api/users/789 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer valid_user_token_not_admin",
+                "response": "HTTP/1.1 403 Forbidden\nContent-Type: application/json\n\n{\n  \"error\": \"insufficient_permissions\",\n  \"message\": \"You do not have permission to perform this action\",\n  \"required_role\": \"admin\",\n  \"your_role\": \"user\",\n  \"action_attempted\": \"delete_user\",\n  \"contact\": \"Please contact your administrator to request elevated permissions\",\n  \"documentation\": \"https://docs.example.com/permissions/roles\"\n}",
+                "explanation": "El usuario está correctamente autenticado (el token es válido) pero su rol de 'user' no tiene permisos para eliminar usuarios. Solo los administradores pueden realizar esta acción. Proporcionar un token diferente de usuario regular no ayudará."
+            },
+            {
+                "scenario": "Acceso a recurso de otro usuario",
+                "request": "GET /api/users/456/private-messages HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer user_123_token",
+                "response": "HTTP/1.1 403 Forbidden\nContent-Type: application/json\n\n{\n  \"error\": \"access_denied\",\n  \"message\": \"You are not authorized to access this resource\",\n  \"reason\": \"This resource belongs to another user\",\n  \"resource_owner\": \"user_456\",\n  \"authenticated_as\": \"user_123\",\n  \"allowed_actions\": [\n    \"View your own messages at /api/users/123/private-messages\"\n  ]\n}",
+                "explanation": "El usuario 123 está autenticado correctamente pero está intentando acceder a los mensajes privados del usuario 456. Por razones de privacidad y seguridad, esto está prohibido. Solo puede acceder a sus propios mensajes."
+            },
+            {
+                "scenario": "Contenido premium sin suscripción adecuada",
+                "request": "GET /api/premium-analytics/advanced-reports HTTP/1.1\nHost: analytics.example.com\nAuthorization: Bearer basic_plan_user_token",
+                "response": "HTTP/1.1 403 Forbidden\nContent-Type: application/json\n\n{\n  \"error\": \"subscription_required\",\n  \"message\": \"This feature requires a premium subscription\",\n  \"current_plan\": \"Basic\",\n  \"required_plan\": \"Premium\",\n  \"feature_name\": \"Advanced Analytics Reports\",\n  \"upgrade_info\": {\n    \"plan_name\": \"Premium Plan\",\n    \"monthly_price\": \"$49.99\",\n    \"annual_price\": \"$499.99 (2 months free)\",\n    \"features\": [\n      \"Advanced analytics reports\",\n      \"Custom dashboards\",\n      \"API access\",\n      \"Priority support\"\n    ],\n    \"upgrade_url\": \"https://analytics.example.com/upgrade\",\n    \"trial_available\": true,\n    \"trial_duration\": \"14 days\"\n  }\n}",
+                "explanation": "El usuario está autenticado y tiene una cuenta válida con plan Basic, pero este recurso específico requiere un plan Premium. El acceso está prohibido hasta que actualice su suscripción."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.5.3",
+        "relatedHeaders": [
+            "WWW-Authenticate",
+            "Authorization"
+        ],
+        "technicalNotes": "403 es específicamente para AUTORIZACIÓN (qué puedes hacer), no AUTENTICACIÓN (quién eres). La diferencia con 401: 401 = no autenticado o credenciales inválidas (solucionable con login correcto); 403 = autenticado pero sin permisos (proporcionar otras credenciales no ayuda, se necesitan permisos adicionales). No incluyas WWW-Authenticate en 403, ese encabezado es para 401. Por seguridad, considera si deberías devolver 404 en lugar de 403 cuando no quieras revelar que un recurso existe. 403 es apropiado cuando el usuario debe saber que el recurso existe pero no puede accederlo.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712938/403_vobb9m.png",
+                "alt": "Imagen que representa el nombre del código 403 Forbidden"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712627/28-removebg-preview_kc6xuc.png",
+                "alt": "Imagen del código 403 Forbidden"
+            }
+        ]
+    },
+    {
+        "code": 404,
+        "status": "Not Found",
+        "category": "Client Error",
+        "description": "El código 404 Not Found es probablemente el código de estado HTTP más conocido y reconocible, incluso fuera de la comunidad técnica. Indica que el servidor no pudo encontrar el recurso solicitado. Es importante entender que 404 significa específicamente que el URI solicitado no corresponde a ningún recurso existente en el servidor, pero no proporciona información sobre si esta ausencia es temporal o permanente. El servidor está diciendo: 'Busqué en la ubicación que especificaste y no hay nada allí'. Esto puede ocurrir por varias razones: el recurso nunca existió en esa ubicación, el recurso existió anteriormente pero fue eliminado, el recurso fue movido a otra ubicación sin configurar una redirección, hay un error tipográfico en la URL, o el usuario no tiene permisos para saber que el recurso existe (en cuyo caso 404 se usa intencionalmente en lugar de 403 por razones de seguridad). El código 404 es apropiado tanto para recursos que definitivamente no existen como para aquellos cuya existencia no debería ser revelada por razones de seguridad o privacidad. Por ejemplo, si un usuario intenta acceder a '/admin/secret-page' pero no tiene permisos, podrías devolver 404 en lugar de 403 para no confirmar que esa página existe. El 404 es distinto del 410 Gone, que específicamente indica que el recurso existió anteriormente pero fue eliminado permanentemente y no regresará. Si sabes con certeza que un recurso fue eliminado permanentemente, 410 es más semántico, pero 404 es aceptable y más comúnmente usado. Las páginas 404 personalizadas son una práctica común en diseño web, ofreciendo navegación útil, búsqueda, o contenido relacionado en lugar de simplemente indicar el error. En APIs RESTful, las respuestas 404 deben incluir información estructurada sobre qué recurso no se encontró y potencialmente sugerencias de recursos similares o acciones alternativas. Es importante que las respuestas 404 sean informativas pero no revelen información sensible del sistema.",
+        "useCases": [
+            "URL con error tipográfico o mal formada",
+            "Recurso que fue eliminado y no existe más",
+            "Recurso que nunca existió en la ubicación especificada",
+            "ID de recurso inválido en APIs RESTful (producto, usuario, orden que no existe)",
+            "Ruta de archivo o directorio inexistente",
+            "Endpoint de API que no está definido o fue deprecado",
+            "Recurso movido sin redirección configurada",
+            "Seguridad: ocultar existencia de recursos sensibles devolviendo 404 en lugar de 403",
+            "Páginas que fueron parte de una reestructuración de sitio sin mantener URLs antiguas",
+            "Recursos temporales que expiraron (cupones, tokens de verificación vencidos)"
+        ],
+        "examples": [
+            {
+                "scenario": "Recurso no encontrado en API REST",
+                "request": "GET /api/products/99999 HTTP/1.1\nHost: shop.example.com\nAccept: application/json",
+                "response": "HTTP/1.1 404 Not Found\nContent-Type: application/json\n\n{\n  \"error\": \"resource_not_found\",\n  \"message\": \"Product not found\",\n  \"resource_type\": \"product\",\n  \"resource_id\": \"99999\",\n  \"requested_url\": \"/api/products/99999\",\n  \"suggestions\": [\n    \"Verify the product ID is correct\",\n    \"Browse available products at /api/products\",\n    \"Search products at /api/products/search\"\n  ],\n  \"documentation\": \"https://docs.shop.example.com/api/products\"\n}",
+                "explanation": "El cliente solicitó un producto con ID 99999 que no existe en la base de datos. El servidor responde con 404 e información útil sobre cómo proceder."
+            },
+            {
+                "scenario": "Página web no encontrada con sugerencias útiles",
+                "request": "GET /blog/non-existent-article HTTP/1.1\nHost: www.example.com\nAccept: text/html",
+                "response": "HTTP/1.1 404 Not Found\nContent-Type: text/html; charset=utf-8\n\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Page Not Found - Example Blog</title>\n  <meta name=\"robots\" content=\"noindex\">\n</head>\n<body>\n  <h1>404 - Page Not Found</h1>\n  <p>Sorry, we couldn't find the page you're looking for.</p>\n  <h2>You might be interested in:</h2>\n  <ul>\n    <li><a href=\"/blog\">Latest Blog Posts</a></li>\n    <li><a href=\"/blog/popular\">Popular Articles</a></li>\n    <li><a href=\"/search?q=article\">Search our site</a></li>\n  </ul>\n  <p>Or <a href=\"/\">return to homepage</a></p>\n</body>\n</html>",
+                "explanation": "La página solicitada no existe. En lugar de un error genérico, se proporciona una página 404 personalizada con navegación útil, enlaces a contenido popular y opción de búsqueda para ayudar al usuario a encontrar lo que busca."
+            },
+            {
+                "scenario": "Endpoint de API inexistente",
+                "request": "POST /api/v2/invalid-endpoint HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"data\": \"some data\"\n}",
+                "response": "HTTP/1.1 404 Not Found\nContent-Type: application/json\n\n{\n  \"error\": \"endpoint_not_found\",\n  \"message\": \"The requested API endpoint does not exist\",\n  \"requested_path\": \"/api/v2/invalid-endpoint\",\n  \"method\": \"POST\",\n  \"api_version\": \"v2\",\n  \"available_endpoints\": [\n    \"GET /api/v2/users\",\n    \"POST /api/v2/users\",\n    \"GET /api/v2/products\",\n    \"POST /api/v2/orders\"\n  ],\n  \"documentation\": \"https://api.example.com/docs/v2\",\n  \"support\": \"api-support@example.com\"\n}",
+                "explanation": "El cliente está intentando acceder a un endpoint que no existe en la API. El servidor responde con 404 y lista de endpoints disponibles para ayudar al desarrollador a corregir la solicitud."
+            }
+        ],
+        "httpVersion": "HTTP/1.0+",
+        "specification": "RFC 7231, Section 6.5.4",
+        "relatedHeaders": [
+            "Content-Type",
+            "Cache-Control"
+        ],
+        "relatedCodes": [
+            410
+        ],
+        "technicalNotes": "404 significa que el recurso no fue encontrado en la ubicación solicitada, pero no especifica si es temporal o permanente. Para eliminaciones permanentes conocidas, considera usar 410 Gone en su lugar. Por seguridad, 404 puede ser usado intencionalmente en lugar de 403 Forbidden para no revelar la existencia de recursos sensibles. Las páginas 404 deben incluir meta tag noindex para evitar que sean indexadas por motores de búsqueda. En APIs, siempre proporciona información estructurada sobre qué recurso no se encontró. Considera implementar logging de 404s para detectar enlaces rotos o problemas de integración.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712940/404_xr4mgz.png",
+                "alt": "Imagen que representa el nombre del código 404 Not Found"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712638/29-removebg-preview_pml3fe.png",
+                "alt": "Imagen del código 404 Not Found"
+            }
+        ]
+    },
+    {
+        "code": 405,
+        "status": "Method Not Allowed",
+        "category": "Client Error",
+        "description": "El código 405 Method Not Allowed indica que el servidor reconoce el método HTTP utilizado en la solicitud (GET, POST, PUT, DELETE, PATCH, etc.), pero ese método específico no está permitido para el recurso solicitado. Es crucial entender que esto es diferente de 404 Not Found: con 405, el recurso SÍ existe y fue encontrado, pero el método HTTP que estás intentando usar sobre ese recurso no está soportado o permitido. El servidor está diciendo: 'Conozco este recurso y existe, pero no puedes usar ese método HTTP en él'. Por ejemplo, si tienes un endpoint de API de solo lectura en /api/statistics, podrías permitir GET pero no POST, PUT o DELETE. Si un cliente intenta hacer POST a ese endpoint, recibiría 405. La respuesta 405 DEBE incluir un encabezado Allow que liste los métodos HTTP que SÍ son permitidos para ese recurso. Este encabezado es obligatorio según la especificación HTTP y proporciona información valiosa al cliente sobre cómo interactuar correctamente con el recurso. Por ejemplo: 'Allow: GET, HEAD, OPTIONS'. Las causas comunes de 405 incluyen: intentar usar POST en un endpoint que solo acepta GET, intentar modificar (PUT/PATCH) o eliminar (DELETE) un recurso de solo lectura, usar métodos no implementados en endpoints específicos, o violar restricciones de seguridad que permiten solo ciertos métodos. El código 405 es fundamental en el diseño de APIs RESTful donde diferentes recursos tienen diferentes conjuntos de operaciones permitidas. Por ejemplo, un endpoint de listado podría solo permitir GET, mientras que un endpoint de recurso individual podría permitir GET, PUT, PATCH, DELETE pero no POST. Es importante distinguir 405 de otros códigos: 404 significa que el recurso no existe; 403 significa que existe pero no tienes permiso; 405 significa que existe, puedes tener permiso, pero el método que intentas usar no es válido para este recurso. Las implementaciones bien diseñadas también responden correctamente a solicitudes OPTIONS, que son usadas por navegadores en CORS preflight para descubrir qué métodos están permitidos.",
+        "useCases": [
+            "Intentar POST en un endpoint de solo lectura que solo acepta GET",
+            "Intentar DELETE en un recurso que no puede ser eliminado",
+            "Intentar PUT/PATCH en un recurso inmutable o de solo lectura",
+            "Usar métodos HTTP no implementados en endpoints específicos de API",
+            "Intentar modificar recursos del sistema que son configurables solo por administradores",
+            "Endpoints que solo permiten operaciones de consulta (GET) pero no modificaciones",
+            "Recursos que solo permiten creación (POST) pero no actualizaciones individuales",
+            "Violación de restricciones de diseño REST donde ciertos recursos solo soportan subconjuntos de métodos",
+            "Intentar usar métodos HTTP personalizados o no estándar no soportados por el servidor"
+        ],
+        "examples": [
+            {
+                "scenario": "Intentar POST en endpoint de solo lectura",
+                "request": "POST /api/statistics/daily-summary HTTP/1.1\nHost: analytics.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"date\": \"2024-01-16\",\n  \"views\": 5000\n}",
+                "response": "HTTP/1.1 405 Method Not Allowed\nAllow: GET, HEAD, OPTIONS\nContent-Type: application/json\n\n{\n  \"error\": \"method_not_allowed\",\n  \"message\": \"The POST method is not allowed for this resource\",\n  \"requested_method\": \"POST\",\n  \"requested_resource\": \"/api/statistics/daily-summary\",\n  \"allowed_methods\": [\"GET\", \"HEAD\", \"OPTIONS\"],\n  \"reason\": \"This is a read-only statistics endpoint. Data is automatically generated and cannot be manually posted.\",\n  \"alternatives\": [\n    {\n      \"method\": \"GET\",\n      \"description\": \"Retrieve daily statistics summary\",\n      \"example\": \"GET /api/statistics/daily-summary?date=2024-01-16\"\n    }\n  ],\n  \"documentation\": \"https://docs.analytics.example.com/api/statistics\"\n}",
+                "explanation": "El endpoint de estadísticas es de solo lectura porque los datos son generados automáticamente por el sistema. El cliente intentó usar POST para crear datos manualmente, lo cual no está permitido. El encabezado Allow indica que solo GET, HEAD y OPTIONS son válidos."
+            },
+            {
+                "scenario": "Intentar DELETE en recurso no eliminable",
+                "request": "DELETE /api/system/configuration/core-settings HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer admin_token",
+                "response": "HTTP/1.1 405 Method Not Allowed\nAllow: GET, PUT, PATCH, OPTIONS\nContent-Type: application/json\n\n{\n  \"error\": \"method_not_allowed\",\n  \"message\": \"DELETE method is not allowed on core system settings\",\n  \"requested_method\": \"DELETE\",\n  \"resource_type\": \"system_configuration\",\n  \"allowed_methods\": [\"GET\", \"PUT\", \"PATCH\", \"OPTIONS\"],\n  \"reason\": \"Core settings cannot be deleted as they are required for system operation. They can only be viewed or modified.\",\n  \"allowed_operations\": [\n    {\n      \"method\": \"GET\",\n      \"description\": \"View current core settings\"\n    },\n    {\n      \"method\": \"PUT\",\n      \"description\": \"Replace all core settings\"\n    },\n    {\n      \"method\": \"PATCH\",\n      \"description\": \"Update specific core settings\"\n    }\n  ],\n  \"warning\": \"Modifying core settings requires administrator privileges and can affect system stability\"\n}",
+                "explanation": "Las configuraciones centrales del sistema no pueden ser eliminadas porque son esenciales para el funcionamiento del sistema. Solo pueden ser leídas o modificadas. El método DELETE no tiene sentido para este recurso."
+            },
+            {
+                "scenario": "Intentar PUT en endpoint de colección que solo acepta POST",
+                "request": "PUT /api/products HTTP/1.1\nHost: shop.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"name\": \"New Product\",\n  \"price\": 29.99,\n  \"category\": \"electronics\"\n}",
+                "response": "HTTP/1.1 405 Method Not Allowed\nAllow: GET, POST, HEAD, OPTIONS\nContent-Type: application/json\n\n{\n  \"error\": \"method_not_allowed\",\n  \"message\": \"PUT method is not allowed on the products collection endpoint\",\n  \"requested_method\": \"PUT\",\n  \"requested_resource\": \"/api/products\",\n  \"allowed_methods\": [\"GET\", \"POST\", \"HEAD\", \"OPTIONS\"],\n  \"explanation\": \"PUT is used to update specific resources, not collections. To create a new product, use POST. To update an existing product, use PUT on /api/products/{id}\",\n  \"correct_usage\": [\n    {\n      \"operation\": \"Create new product\",\n      \"method\": \"POST\",\n      \"endpoint\": \"/api/products\",\n      \"example\": \"POST /api/products with product data in body\"\n    },\n    {\n      \"operation\": \"Update existing product\",\n      \"method\": \"PUT\",\n      \"endpoint\": \"/api/products/{id}\",\n      \"example\": \"PUT /api/products/123 with updated product data\"\n    },\n    {\n      \"operation\": \"List all products\",\n      \"method\": \"GET\",\n      \"endpoint\": \"/api/products\",\n      \"example\": \"GET /api/products?page=1&limit=20\"\n    }\n  ]\n}",
+                "explanation": "Según principios REST, PUT se usa en recursos individuales específicos, no en colecciones. Para crear un producto, debe usar POST en /api/products. Para actualizar un producto específico, debe usar PUT en /api/products/{id}."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.5",
+        "relatedHeaders": [
+            "Allow"
+        ],
+        "relatedCodes": [
+            501
+        ],
+        "technicalNotes": "405 es diferente de 501 Not Implemented: 405 significa que el servidor soporta el método en general pero no para este recurso específico; 501 significa que el servidor no implementa ese método en absoluto. La respuesta 405 DEBE incluir el encabezado Allow listando los métodos permitidos. Este encabezado es obligatorio según RFC 7231. Las solicitudes OPTIONS deben ser manejadas apropiadamente para CORS preflight, respondiendo con los métodos permitidos. En diseño REST: colecciones típicamente permiten GET y POST; recursos individuales permiten GET, PUT, PATCH, DELETE. No confundir con 403 (tienes permiso pero no autorización) o 404 (recurso no existe).",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712942/405_iq06kt.png",
+                "alt": "Imagen que representa el nombre del código 405 Method Not Allowed"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712634/30-removebg-preview_mns9bp.png",
+                "alt": "Imagen del código 405 Method Not Allowed"
+            }
+        ]
+    },
+    {
+        "code": 406,
+        "status": "Not Acceptable",
+        "category": "Client Error",
+        "description": "El código 406 Not Acceptable indica que el servidor no puede producir una respuesta que coincida con los criterios de aceptabilidad especificados en los encabezados de la solicitud del cliente, particularmente los encabezados Accept, Accept-Charset, Accept-Encoding, y Accept-Language. Este código es parte del mecanismo de negociación de contenido (content negotiation) en HTTP. Cuando un cliente envía una solicitud, puede especificar qué tipos de contenido acepta mediante estos encabezados. Por ejemplo, un cliente podría decir 'Accept: application/json' indicando que solo puede procesar respuestas en formato JSON. Si el servidor solo puede proporcionar el recurso en formato XML, debe responder con 406 indicando que no puede satisfacer los requisitos del cliente. El servidor está diciendo: 'Tengo el recurso que solicitaste, pero no puedo entregártelo en ninguno de los formatos que me dijiste que aceptas'. Es importante notar que 406 es relativamente raro en la práctica web moderna porque la mayoría de los servidores simplemente ignoran parcial o totalmente las preferencias del cliente cuando no pueden satisfacerlas, y envían una respuesta en un formato por defecto (usualmente con código 200). Sin embargo, en APIs estrictamente diseñadas y sistemas que implementan negociación de contenido rigurosa, 406 es la respuesta correcta cuando hay una incompatibilidad irreconciliable. Los escenarios incluyen: un cliente que solo acepta JSON pero el servidor solo produce XML, un cliente que requiere compresión gzip pero el servidor no la soporta, un cliente que solicita un idioma específico que no está disponible, o un cliente que requiere un conjunto de caracteres no soportado por el servidor. La respuesta 406 puede incluir una lista de las representaciones disponibles para ayudar al cliente a reformular su solicitud, aunque esto no es obligatorio. Es crucial distinguir 406 de 415 Unsupported Media Type: 415 se refiere al Content-Type que el cliente ENVÍA en el cuerpo de la solicitud, mientras que 406 se refiere a lo que el cliente especifica que puede ACEPTAR en la respuesta.",
+        "useCases": [
+            "Cliente solicita JSON pero servidor solo puede producir XML",
+            "Cliente requiere codificación de caracteres no soportada por el servidor",
+            "Cliente solicita idioma específico no disponible",
+            "Cliente requiere compresión específica no implementada en servidor",
+            "APIs estrictas donde formato de respuesta debe coincidir exactamente con Accept header",
+            "Cliente especifica calidad de media type que servidor no puede satisfacer",
+            "Negociación de contenido falla completamente sin formato común",
+            "Cliente requiere nivel de detalle o versión de API no disponible"
+        ],
+        "examples": [
+            {
+                "scenario": "Cliente requiere JSON pero servidor solo produce XML",
+                "request": "GET /api/data HTTP/1.1\nHost: api.example.com\nAccept: application/json\nAuthorization: Bearer valid_token",
+                "response": "HTTP/1.1 406 Not Acceptable\nContent-Type: application/json\n\n{\n  \"error\": \"not_acceptable\",\n  \"message\": \"The requested resource cannot be provided in the requested format\",\n  \"requested_formats\": [\"application/json\"],\n  \"available_formats\": [\n    {\n      \"content_type\": \"application/xml\",\n      \"description\": \"XML representation\",\n      \"example_request\": \"Accept: application/xml\"\n    },\n    {\n      \"content_type\": \"text/xml\",\n      \"description\": \"Plain XML\",\n      \"example_request\": \"Accept: text/xml\"\n    }\n  ],\n  \"suggestion\": \"Please modify your Accept header to one of the available formats\",\n  \"documentation\": \"https://api.example.com/docs/content-negotiation\"\n}",
+                "explanation": "El cliente especificó que solo acepta JSON (Accept: application/json), pero este servidor legacy solo puede producir XML. Como no hay un formato común, el servidor responde con 406 y lista los formatos disponibles."
+            },
+            {
+                "scenario": "Idioma solicitado no disponible",
+                "request": "GET /api/content/article-123 HTTP/1.1\nHost: content.example.com\nAccept: application/json\nAccept-Language: ja-JP",
+                "response": "HTTP/1.1 406 Not Acceptable\nContent-Type: application/json\nContent-Language: en-US\n\n{\n  \"error\": \"language_not_available\",\n  \"message\": \"The requested content is not available in the requested language\",\n  \"requested_language\": \"ja-JP\",\n  \"available_languages\": [\n    {\n      \"code\": \"en-US\",\n      \"name\": \"English (United States)\",\n      \"is_default\": true\n    },\n    {\n      \"code\": \"es-ES\",\n      \"name\": \"Spanish (Spain)\"\n    },\n    {\n      \"code\": \"fr-FR\",\n      \"name\": \"French (France)\"\n    },\n    {\n      \"code\": \"de-DE\",\n      \"name\": \"German (Germany)\"\n    }\n  ],\n  \"suggestion\": \"Try requesting with Accept-Language: en-US, es-ES, fr-FR, or de-DE\",\n  \"note\": \"If no Accept-Language header is provided, content will be served in English (default)\"\n}",
+                "explanation": "El cliente solicitó contenido en japonés (ja-JP), pero ese idioma no está disponible para este recurso. El servidor lista los idiomas disponibles para ayudar al cliente a hacer una solicitud válida."
+            },
+            {
+                "scenario": "Codificación de caracteres no soportada",
+                "request": "GET /api/legacy-data HTTP/1.1\nHost: api.example.com\nAccept: text/plain\nAccept-Charset: ISO-8859-1",
+                "response": "HTTP/1.1 406 Not Acceptable\nContent-Type: application/json\n\n{\n  \"error\": \"charset_not_supported\",\n  \"message\": \"The requested character encoding is not supported\",\n  \"requested_charset\": \"ISO-8859-1\",\n  \"available_charsets\": [\n    {\n      \"charset\": \"UTF-8\",\n      \"description\": \"Unicode UTF-8 (recommended)\",\n      \"is_default\": true\n    },\n    {\n      \"charset\": \"UTF-16\",\n      \"description\": \"Unicode UTF-16\"\n    }\n  ],\n  \"recommendation\": \"Use Accept-Charset: UTF-8 or omit the header to receive UTF-8 by default\",\n  \"reason\": \"Modern APIs exclusively use Unicode encodings for better international character support\"\n}",
+                "explanation": "El cliente solicitó codificación ISO-8859-1 (Latin-1), pero el servidor moderno solo soporta Unicode (UTF-8 y UTF-16). Se recomienda al cliente usar UTF-8 que es el estándar actual."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.6",
+        "relatedHeaders": [
+            "Accept",
+            "Accept-Charset",
+            "Accept-Encoding",
+            "Accept-Language",
+            "Content-Type"
+        ],
+        "relatedCodes": [
+            415
+        ],
+        "technicalNotes": "406 se refiere a negociación de contenido proactiva basada en lo que el cliente puede ACEPTAR (headers Accept-*). No confundir con 415 Unsupported Media Type que se refiere al Content-Type que el cliente ENVÍA. En la práctica, 406 es raro porque muchos servidores ignoran parcialmente las preferencias del cliente y envían un formato por defecto con 200. Usar 406 indica una implementación estricta de content negotiation. La respuesta puede incluir lista de representaciones disponibles, aunque no es obligatorio. Si el servidor puede producir múltiples formatos pero ninguno coincide con Accept, debe responder 406, no elegir arbitrariamente uno.",
+        "images": [
+            {
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768712944/406_dlslce.png",
+                "alt": "Imagen que representa el nombre del código 406 Not Acceptable"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768712632/31-removebg-preview_glqv2u.png",
+                "alt": "Imagen del código 406 Not Acceptable"
+            }
+        ]
     }
 ]
