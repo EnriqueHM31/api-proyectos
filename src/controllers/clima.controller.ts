@@ -37,7 +37,7 @@ export class ClimaController {
             }
 
             // 5️⃣ Parseo seguro
-            const data = await response.json() as { forecast: any };
+            const data = await response.json();
 
             res.status(200).json(data);
 
