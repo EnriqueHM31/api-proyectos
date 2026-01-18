@@ -1894,5 +1894,337 @@
                 "alt": "Imagen del código 412 Precondition Failed"
             }
         ]
+    },
+    {
+        "code": 413,
+        "status": "Payload Too Large",
+        "category": "Client Error",
+        "description": "El código 413 Payload Too Large (anteriormente conocido como 'Request Entity Too Large' en HTTP/1.1) indica que el servidor se niega a procesar la solicitud porque el cuerpo de la solicitud (payload) es más grande que los límites que el servidor está dispuesto o es capaz de procesar. El servidor está diciendo: 'Los datos que estás intentando enviarme son demasiado grandes, exceden mis límites configurados'. Este código es fundamental para la gestión de recursos del servidor y la prevención de abusos. Los servidores implementan límites de tamaño de payload por varias razones: prevenir ataques de denegación de servicio (DoS) donde atacantes intentan agotar memoria o almacenamiento del servidor con payloads enormes, gestionar eficientemente los recursos de memoria y almacenamiento, implementar límites de cuota por usuario o plan de suscripción, proteger contra uploads accidentales de archivos excesivamente grandes, y mantener tiempos de respuesta razonables. Los límites pueden aplicarse a diferentes aspectos: tamaño total del cuerpo de la solicitud, tamaño de archivos individuales en uploads multipart, tamaño de campos específicos en formularios, o límites agregados por periodo de tiempo. La respuesta 413 puede incluir un encabezado Retry-After si la condición es temporal (por ejemplo, el usuario ha excedido su cuota mensual pero puede reintentar el próximo mes), aunque esto es menos común. Es importante distinguir 413 de otros códigos relacionados con tamaño: 411 Length Required se usa cuando falta el encabezado Content-Length, mientras que 413 se usa cuando Content-Length ESTÁ presente pero el valor excede el límite permitido. Los límites típicos varían ampliamente según el tipo de servidor y aplicación: servidores web pueden limitar requests a 1-10MB por defecto, servicios de upload de archivos pueden permitir 100MB-5GB, APIs pueden limitar payloads JSON a 1-16MB, y servicios de email pueden limitar adjuntos a 25-50MB. Cuando un cliente recibe 413, las opciones incluyen: reducir el tamaño de los datos (comprimir, optimizar), dividir la carga en múltiples requests más pequeños, o actualizar a un plan de servicio con límites mayores si es una restricción de cuota.",
+        "useCases": [
+            "Upload de archivos que exceden el tamaño máximo permitido",
+            "Solicitudes POST/PUT con payloads JSON o XML demasiado grandes",
+            "Envío de formularios con datos que exceden límites configurados",
+            "Uploads de imágenes o videos que superan restricciones de tamaño",
+            "Requests que exceden cuotas de usuario o plan de suscripción",
+            "Payloads que excederían capacidad de memoria o almacenamiento del servidor",
+            "Múltiples archivos en upload multipart que exceden límite agregado",
+            "Prevención de ataques DoS con payloads excesivamente grandes"
+        ],
+        "examples": [
+            {
+                "scenario": "Upload de archivo que excede límite",
+                "request": "POST /api/upload HTTP/1.1\nHost: storage.example.com\nContent-Type: multipart/form-data\nContent-Length: 524288000\nAuthorization: Bearer valid_token\n\n[500MB de datos de archivo]",
+                "response": "HTTP/1.1 413 Payload Too Large\nContent-Type: application/json\n\n{\n  \"error\": \"payload_too_large\",\n  \"message\": \"The uploaded file exceeds the maximum allowed size\",\n  \"request_size\": 524288000,\n  \"request_size_human\": \"500 MB\",\n  \"max_size\": 104857600,\n  \"max_size_human\": \"100 MB\",\n  \"size_exceeded_by\": 419430400,\n  \"size_exceeded_by_human\": \"400 MB\",\n  \"user_plan\": \"free\",\n  \"plan_limits\": {\n    \"free\": \"100 MB per file\",\n    \"basic\": \"500 MB per file\",\n    \"premium\": \"5 GB per file\",\n    \"enterprise\": \"50 GB per file\"\n  },\n  \"suggestions\": [\n    \"Compress the file before uploading\",\n    \"Split the file into smaller chunks\",\n    \"Upgrade to Basic plan for 500 MB limit\",\n    \"Use our chunked upload API for files larger than 100 MB\"\n  ],\n  \"upgrade_url\": \"https://billing.example.com/upgrade\",\n  \"chunked_upload_docs\": \"https://docs.example.com/api/chunked-upload\"\n}",
+                "explanation": "El cliente intentó subir un archivo de 500MB, pero el límite del plan gratuito es 100MB. El servidor rechaza la solicitud con 413 y proporciona información sobre límites de diferentes planes y alternativas como compresión o upload por chunks."
+            },
+            {
+                "scenario": "Payload JSON demasiado grande en API",
+                "request": "POST /api/bulk-import HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nContent-Length: 16777216\nAuthorization: Bearer valid_token\n\n{\n  \"items\": [\n    ... 100,000 items de datos ...\n  ]\n}",
+                "response": "HTTP/1.1 413 Payload Too Large\nContent-Type: application/json\n\n{\n  \"error\": \"request_body_too_large\",\n  \"message\": \"Request body exceeds maximum allowed size for this endpoint\",\n  \"payload_size\": 16777216,\n  \"payload_size_human\": \"16 MB\",\n  \"max_allowed\": 5242880,\n  \"max_allowed_human\": \"5 MB\",\n  \"endpoint\": \"/api/bulk-import\",\n  \"items_in_request\": 100000,\n  \"recommended_batch_size\": 1000,\n  \"explanation\": \"Large bulk imports should be split into smaller batches to ensure reliability and performance\",\n  \"alternatives\": [\n    {\n      \"method\": \"batch_processing\",\n      \"description\": \"Split into batches of 1,000 items each\",\n      \"endpoint\": \"/api/bulk-import\",\n      \"max_items_per_batch\": 1000,\n      \"example\": \"Send 100 requests with 1,000 items each\"\n    },\n    {\n      \"method\": \"file_upload\",\n      \"description\": \"Upload CSV or JSON file for async processing\",\n      \"endpoint\": \"/api/bulk-import/file\",\n      \"max_file_size\": \"100 MB\",\n      \"format\": \"CSV or JSON\"\n    }\n  ],\n  \"documentation\": \"https://docs.example.com/api/bulk-operations\"\n}",
+                "explanation": "El cliente intentó importar 100,000 items en una sola solicitud de 16MB, excediendo el límite de 5MB para este endpoint. Se sugiere dividir en lotes de 1,000 items o usar el endpoint de upload de archivo para procesamiento asíncrono."
+            },
+            {
+                "scenario": "Límite de cuota mensual excedido",
+                "request": "POST /api/data-processing HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nContent-Length: 2097152\n\n[2MB de datos para procesamiento]",
+                "response": "HTTP/1.1 413 Payload Too Large\nRetry-After: 1209600\nX-RateLimit-Limit: 104857600\nX-RateLimit-Remaining: 0\nX-RateLimit-Reset: 1709251200\nContent-Type: application/json\n\n{\n  \"error\": \"quota_exceeded\",\n  \"message\": \"Monthly data processing quota has been exceeded\",\n  \"request_size\": 2097152,\n  \"request_size_human\": \"2 MB\",\n  \"quota_type\": \"monthly_processing\",\n  \"quota_limit\": 104857600,\n  \"quota_limit_human\": \"100 MB per month\",\n  \"quota_used\": 104857600,\n  \"quota_used_human\": \"100 MB\",\n  \"quota_remaining\": 0,\n  \"quota_reset_date\": \"2024-03-01T00:00:00Z\",\n  \"days_until_reset\": 14,\n  \"current_plan\": \"starter\",\n  \"plan_options\": [\n    {\n      \"plan\": \"professional\",\n      \"quota\": \"1 GB per month\",\n      \"price\": \"$29.99/month\",\n      \"upgrade_url\": \"https://billing.example.com/upgrade/professional\"\n    },\n    {\n      \"plan\": \"business\",\n      \"quota\": \"10 GB per month\",\n      \"price\": \"$99.99/month\",\n      \"upgrade_url\": \"https://billing.example.com/upgrade/business\"\n    }\n  ],\n  \"suggestions\": [\n    \"Wait 14 days for quota to reset on March 1st\",\n    \"Upgrade to a higher plan for increased quota\",\n    \"Optimize data to reduce processing size\"\n  ]\n}",
+                "explanation": "El usuario ha consumido toda su cuota mensual de procesamiento de datos (100MB). Aunque la solicitud individual de 2MB es pequeña, no puede procesarse porque excedería la cuota del periodo. El encabezado Retry-After indica que puede reintentar en 14 días cuando se resetee la cuota."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.11",
+        "relatedHeaders": [
+            "Content-Length",
+            "Retry-After",
+            "X-RateLimit-Limit",
+            "X-RateLimit-Remaining"
+        ],
+        "relatedCodes": [
+            411
+        ],
+        "technicalNotes": "413 se usa cuando el payload EXCEDE un límite, mientras que 411 Length Required se usa cuando falta el encabezado Content-Length. El nombre cambió de 'Request Entity Too Large' a 'Payload Too Large' en especificaciones recientes para mayor claridad. La respuesta puede incluir Retry-After si la condición es temporal (cuotas por periodo). Los límites pueden ser: por solicitud individual, agregados por periodo de tiempo, por usuario/plan, o por tipo de contenido. Los servidores deben documentar claramente sus límites. Para archivos grandes, considerar: chunked upload APIs, compresión, procesamiento asíncrono con polling. Los límites comunes: nginx default 1MB, Apache default 2GB (configurable), servicios cloud 5-100MB para APIs.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 413 Payload Too Large"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753831/38-removebg-preview_y2zldy.png",
+                "alt": "Imagen del código 413 Payload Too Large"
+            }
+        ]
+    },
+    {
+        "code": 414,
+        "status": "URI Too Long",
+        "category": "Client Error",
+        "description": "El código 414 URI Too Long indica que el servidor se niega a procesar la solicitud porque el URI (Uniform Resource Identifier) solicitado es más largo que lo que el servidor está dispuesto a interpretar. El servidor está diciendo: 'La URL que estás intentando usar es demasiado larga para que yo la procese'. Este código se aplica tanto a la longitud total del URI completo (incluyendo el esquema, host, path, y query string) como específicamente a componentes individuales que pueden tener límites. Las causas más comunes de URIs excesivamente largos son: query strings con demasiados parámetros o valores muy largos, especialmente cuando se pasan grandes cantidades de datos mediante GET en lugar de POST, encoding de datos complejos en la URL (como estado de aplicación, filtros múltiples, o datos serializados), redirecciones en cadena que acumulan parámetros, ataques que intentan explotar vulnerabilidades mediante URLs extremadamente largas, o simplemente diseño inadecuado de API que pone demasiada información en la URL. Los límites de longitud de URI varían significativamente entre diferentes servidores y navegadores: muchos navegadores modernos soportan URLs de hasta 2,000 caracteres (aunque técnicamente pueden manejar más), Internet Explorer históricamente tenía un límite de 2,083 caracteres, Apache tiene un límite por defecto de 8,190 bytes, nginx usa 4K-8K bytes por defecto, IIS tiene límites configurables pero típicamente 16K, y muchos servicios cloud imponen límites de 2K-8K. La especificación HTTP no define un límite máximo, dejándolo a la implementación del servidor. Cuando se encuentra un 414, las soluciones típicas incluyen: cambiar de GET a POST para enviar datos en el cuerpo de la solicitud en lugar de query parameters, acortar los parámetros de query usando IDs en lugar de datos completos, implementar algún tipo de compresión o codificación más eficiente, dividir la solicitud en múltiples requests más pequeños, o usar métodos alternativos como almacenar estado en el servidor y referenciar con un token corto. Es importante diseñar APIs que no dependan de URLs extremadamente largas.",
+        "useCases": [
+            "Query strings con demasiados parámetros de filtrado o búsqueda",
+            "Pasar grandes cantidades de datos mediante GET en lugar de POST",
+            "URLs que codifican estado completo de aplicación",
+            "Múltiples parámetros de array o lista en query string",
+            "Encoding de datos JSON o XML complejos en parámetros de URL",
+            "Redirecciones que acumulan parámetros progresivamente",
+            "Búsquedas con muchos términos o filtros simultáneos",
+            "URLs generadas automáticamente que concatenan demasiada información"
+        ],
+        "examples": [
+            {
+                "scenario": "Query string excesivamente largo con múltiples filtros",
+                "request": "GET /api/products?category=electronics&brand=Samsung&brand=Apple&brand=Sony&brand=LG&price_min=100&price_max=2000&color=black&color=white&color=silver&color=blue&features=wifi&features=bluetooth&features=4k&features=hdr&features=smart&rating_min=4&shipping=free&instock=true&warranty=2years&model=2024&model=2023&condition=new&region=north&region=south&region=east&region=west&sortby=price&order=asc&page=1&limit=50&include_reviews=true&include_specs=true&include_images=true&include_related=true&format=json... [continues for 3000+ characters] HTTP/1.1\nHost: shop.example.com",
+                "response": "HTTP/1.1 414 URI Too Long\nContent-Type: application/json\n\n{\n  \"error\": \"uri_too_long\",\n  \"message\": \"The request URI exceeds the maximum allowed length\",\n  \"uri_length\": 3245,\n  \"max_uri_length\": 2048,\n  \"exceeded_by\": 1197,\n  \"component\": \"query_string\",\n  \"explanation\": \"Your search has too many filters and parameters in the URL\",\n  \"recommendations\": [\n    {\n      \"method\": \"use_post\",\n      \"description\": \"Use POST method with filters in request body\",\n      \"endpoint\": \"POST /api/products/search\",\n      \"example\": {\n        \"filters\": {\n          \"categories\": [\"electronics\"],\n          \"brands\": [\"Samsung\", \"Apple\", \"Sony\", \"LG\"],\n          \"price_range\": {\"min\": 100, \"max\": 2000},\n          \"colors\": [\"black\", \"white\", \"silver\", \"blue\"]\n        }\n      }\n    },\n    {\n      \"method\": \"save_search\",\n      \"description\": \"Save your search criteria and use a short reference ID\",\n      \"endpoint\": \"POST /api/saved-searches\",\n      \"usage\": \"GET /api/products?search_id=abc123\"\n    },\n    {\n      \"method\": \"simplify_filters\",\n      \"description\": \"Reduce the number of simultaneous filters\",\n      \"suggestion\": \"Focus on the most important criteria\"\n    }\n  ],\n  \"documentation\": \"https://docs.shop.example.com/api/search-best-practices\"\n}",
+                "explanation": "El cliente intentó usar una URL de más de 3,000 caracteres con docenas de filtros y parámetros. El servidor tiene un límite de 2,048 caracteres. Se sugiere usar POST con los filtros en el cuerpo, o guardar la búsqueda y usar un ID corto."
+            },
+            {
+                "scenario": "Datos codificados en URL que deberían estar en POST body",
+                "request": "GET /api/report?data={\"users\":[{\"id\":1,\"name\":\"John Doe\",\"email\":\"john@example.com\",\"department\":\"Engineering\",\"projects\":[\"Project A\",\"Project B\",\"Project C\"]},{\"id\":2,\"name\":\"Jane Smith\",\"email\":\"jane@example.com\",\"department\":\"Marketing\",\"projects\":[\"Campaign X\",\"Campaign Y\"]}],\"date_range\":{\"start\":\"2024-01-01\",\"end\":\"2024-12-31\"},\"metrics\":[\"revenue\",\"users\",\"conversions\",\"engagement\"],\"groupby\":[\"month\",\"department\",\"project\"],\"format\":\"pdf\",\"include_charts\":true,\"include_summary\":true} HTTP/1.1\nHost: analytics.example.com",
+                "response": "HTTP/1.1 414 URI Too Long\nContent-Type: application/json\n\n{\n  \"error\": \"uri_too_long\",\n  \"message\": \"URI length exceeds server limits\",\n  \"uri_length\": 892,\n  \"max_uri_length\": 512,\n  \"issue\": \"Complex data structures should not be passed in URL parameters\",\n  \"correct_approach\": {\n    \"method\": \"POST\",\n    \"endpoint\": \"/api/report\",\n    \"content_type\": \"application/json\",\n    \"body_example\": {\n      \"users\": [\n        {\"id\": 1, \"name\": \"John Doe\"},\n        {\"id\": 2, \"name\": \"Jane Smith\"}\n      ],\n      \"date_range\": {\n        \"start\": \"2024-01-01\",\n        \"end\": \"2024-12-31\"\n      },\n      \"metrics\": [\"revenue\", \"users\"],\n      \"format\": \"pdf\"\n    }\n  },\n  \"why_post\": [\n    \"POST allows larger payloads in request body\",\n    \"Better security (data not visible in URLs/logs)\",\n    \"No URL encoding issues with special characters\",\n    \"Cleaner and more maintainable code\"\n  ],\n  \"security_note\": \"Sensitive data should never be in URLs as they may be logged or cached\",\n  \"documentation\": \"https://docs.analytics.example.com/api/reports\"\n}",
+                "explanation": "El cliente intentó pasar datos JSON complejos como parámetro de query en GET. Esto no solo excede límites de longitud sino que también es mala práctica. Los datos estructurados complejos deben enviarse en el cuerpo de una solicitud POST."
+            },
+            {
+                "scenario": "URL generada con IDs múltiples como parámetros individuales",
+                "request": "GET /api/export?id=1001&id=1002&id=1003&id=1004&id=1005... [continues with 500 more IDs] ...&id=1500&format=csv&include_metadata=true HTTP/1.1\nHost: data.example.com",
+                "response": "HTTP/1.1 414 URI Too Long\nContent-Type: application/json\n\n{\n  \"error\": \"uri_too_long\",\n  \"message\": \"Too many ID parameters in URL\",\n  \"parameter_count\": 500,\n  \"uri_length\": 4567,\n  \"max_uri_length\": 2048,\n  \"better_approaches\": [\n    {\n      \"method\": \"post_with_body\",\n      \"description\": \"Use POST with IDs in request body\",\n      \"endpoint\": \"POST /api/export\",\n      \"example\": {\n        \"ids\": [1001, 1002, 1003, \"...\", 1500],\n        \"format\": \"csv\",\n        \"include_metadata\": true\n      }\n    },\n    {\n      \"method\": \"id_ranges\",\n      \"description\": \"Use ranges instead of individual IDs\",\n      \"example\": \"GET /api/export?ids=1001-1500&format=csv\"\n    },\n    {\n      \"method\": \"comma_separated\",\n      \"description\": \"Use comma-separated IDs in single parameter\",\n      \"example\": \"GET /api/export?ids=1001,1002,1003,...,1500&format=csv\",\n      \"note\": \"Still may exceed limits with many IDs, POST recommended\"\n    }\n  ],\n  \"max_recommended_ids_in_url\": 50,\n  \"recommendation\": \"For bulk operations with many IDs, always use POST method\"\n}",
+                "explanation": "El cliente intentó exportar 500 items pasando cada ID como un parámetro separado &id=X. Esto crea una URL de más de 4,500 caracteres. Se recomienda usar POST con un array de IDs en el cuerpo, o usar rangos/listas separadas por comas con menos items."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.12",
+        "relatedHeaders": [
+            "Content-Length"
+        ],
+        "relatedCodes": [
+            413
+        ],
+        "technicalNotes": "414 es específico para longitud de URI (URL completa incluyendo query string), mientras que 413 Payload Too Large es para el cuerpo de la solicitud. No hay límite máximo definido en la especificación HTTP, cada servidor implementa sus propios límites. Límites típicos: navegadores ~2,000 caracteres (IE: 2,083), servidores web 2K-8K bytes. Mejores prácticas: usar POST para datos complejos, mantener URLs bajo 2,000 caracteres para compatibilidad, usar IDs/tokens en lugar de datos completos, implementar mecanismos de 'saved searches' o 'saved filters'. Query strings largos también pueden causar problemas de seguridad (datos sensibles en logs) y caching issues.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 414 URI Too Long"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753831/39-removebg-preview_llxt9h.png",
+                "alt": "Imagen del código 414 URI Too Long"
+            }
+        ]
+    },
+    {
+        "code": 415,
+        "status": "Unsupported Media Type",
+        "category": "Client Error",
+        "description": "El código 415 Unsupported Media Type indica que el servidor se niega a aceptar la solicitud porque el formato del payload (cuerpo de la solicitud) está en un formato no soportado. Específicamente, se refiere al valor del encabezado Content-Type que el cliente especificó para los datos que está ENVIANDO al servidor. El servidor está diciendo: 'Recibí tus datos, pero están en un formato que no puedo procesar'. Este código es fundamental en APIs modernas donde los servidores pueden aceptar ciertos formatos de contenido pero no otros. Es importante distinguir 415 de 406 Not Acceptable: 415 se refiere al Content-Type de los datos que el cliente ENVÍA en la solicitud (lo que el cliente está produciendo); 406 se refiere a los tipos de contenido que el cliente puede ACEPTAR en la respuesta (lo que el cliente puede consumir, especificado en el encabezado Accept). Los escenarios comunes que causan 415 incluyen: enviar JSON cuando el servidor solo acepta XML, enviar datos de formulario (application/x-www-form-urlencoded) cuando se espera JSON, enviar archivos con Content-Type incorrecto (por ejemplo, text/plain en lugar de image/jpeg), olvidar incluir el encabezado Content-Type completamente, usar multipart/form-data incorrectamente, o enviar datos en un formato legacy que el servidor ya no soporta. Los servidores modernos típicamente soportan formatos comunes como application/json, application/xml, multipart/form-data para uploads de archivos, y application/x-www-form-urlencoded para formularios tradicionales. Sin embargo, algunos endpoints pueden ser más restrictivos y aceptar solo un formato específico. La respuesta 415 debería idealmente incluir información sobre qué formatos de contenido SÍ son aceptados por el servidor, típicamente mediante el encabezado Accept (aunque técnicamente Accept es para respuestas, algunos servidores lo usan en respuestas 415 para indicar formatos aceptados para solicitudes). En APIs bien diseñadas, la documentación especifica claramente qué Content-Type se requiere para cada endpoint.",
+        "useCases": [
+            "Enviar JSON cuando el servidor solo acepta XML",
+            "Enviar form data cuando se requiere JSON",
+            "Upload de archivo con Content-Type incorrecto o faltante",
+            "Usar formato legacy no soportado por API moderna",
+            "Content-Type mal formado o no reconocido",
+            "Enviar datos sin especificar Content-Type cuando es requerido",
+            "Intentar enviar formato binario cuando solo se acepta texto",
+            "Mismatch entre Content-Type declarado y datos reales enviados"
+        ],
+        "examples": [
+            {
+                "scenario": "Enviar JSON cuando solo se acepta XML",
+                "request": "POST /api/legacy-service HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nContent-Length: 89\n\n{\n  \"userId\": 123,\n  \"action\": \"update\",\n  \"data\": {\n    \"status\": \"active\"\n  }\n}",
+                "response": "HTTP/1.1 415 Unsupported Media Type\nContent-Type: application/json\nAccept: application/xml, text/xml\n\n{\n  \"error\": \"unsupported_media_type\",\n  \"message\": \"The media type of the request is not supported\",\n  \"received_content_type\": \"application/json\",\n  \"supported_types\": [\n    {\n      \"content_type\": \"application/xml\",\n      \"description\": \"XML format (preferred)\",\n      \"example\": \"<?xml version=\\\"1.0\\\"?>\\n<request>\\n  <userId>123</userId>\\n  <action>update</action>\\n</request>\"\n    },\n    {\n      \"content_type\": \"text/xml\",\n      \"description\": \"Plain XML format\"\n    }\n  ],\n  \"explanation\": \"This is a legacy endpoint that only accepts XML format\",\n  \"migration_note\": \"Consider using our v2 API which supports JSON: https://api.example.com/v2/\",\n  \"documentation\": \"https://docs.example.com/api/legacy/xml-format\"\n}",
+                "explanation": "El cliente envió datos JSON a un endpoint legacy que solo acepta XML. El servidor responde con 415 e indica claramente qué formatos son aceptados, proporcionando un ejemplo de formato correcto y sugiriendo migrar a la API moderna que soporta JSON."
+            },
+            {
+                "scenario": "Falta encabezado Content-Type en upload",
+                "request": "POST /api/documents HTTP/1.1\nHost: storage.example.com\nAuthorization: Bearer valid_token\nContent-Length: 2048\n\n[binary PDF data without Content-Type header]",
+                "response": "HTTP/1.1 415 Unsupported Media Type\nContent-Type: application/json\n\n{\n  \"error\": \"content_type_required\",\n  \"message\": \"Content-Type header is required and must specify a supported media type\",\n  \"received_content_type\": null,\n  \"issue\": \"No Content-Type header was provided\",\n  \"supported_types\": [\n    \"application/pdf\",\n    \"application/msword\",\n    \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\n    \"image/jpeg\",\n    \"image/png\",\n    \"text/plain\"\n  ],\n  \"required_headers\": [\n    \"Content-Type\",\n    \"Content-Length\"\n  ],\n  \"example_correct_request\": \"POST /api/documents HTTP/1.1\\nContent-Type: application/pdf\\nContent-Length: 2048\\n\\n[PDF data]\",\n  \"note\": \"The Content-Type must match the actual file format being uploaded\",\n  \"documentation\": \"https://docs.storage.example.com/api/upload-requirements\"\n}",
+                "explanation": "El cliente intentó subir un archivo PDF pero no incluyó el encabezado Content-Type. El servidor no puede determinar qué tipo de archivo es y responde con 415, listando los tipos de contenido aceptados y explicando que Content-Type es requerido."
+            },
+            {
+                "scenario": "Content-Type no coincide con datos reales",
+                "request": "POST /api/users HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nContent-Length: 45\n\nname=John+Doe&email=john%40example.com",
+                "response": "HTTP/1.1 415 Unsupported Media Type\nContent-Type: application/json\n\n{\n  \"error\": \"content_type_mismatch\",\n  \"message\": \"Content-Type header does not match the actual content format\",\n  \"declared_content_type\": \"application/json\",\n  \"detected_format\": \"application/x-www-form-urlencoded\",\n  \"issue\": \"You declared JSON but sent URL-encoded form data\",\n  \"resolution_options\": [\n    {\n      \"option\": \"use_correct_content_type\",\n      \"description\": \"Change Content-Type to match your data format\",\n      \"correct_header\": \"Content-Type: application/x-www-form-urlencoded\"\n    },\n    {\n      \"option\": \"send_json\",\n      \"description\": \"Send actual JSON data as declared\",\n      \"example\": {\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\"\n      },\n      \"note\": \"This endpoint prefers JSON format\"\n    }\n  ],\n  \"accepted_formats\": [\n    \"application/json (preferred)\",\n    \"application/x-www-form-urlencoded (legacy support)\"\n  ],\n  \"recommendation\": \"Use JSON format for better structure and type safety\"\n}",
+                "explanation": "El cliente declaró Content-Type: application/json pero envió datos URL-encoded. Esta inconsistencia causa confusión y el servidor responde con 415, explicando el mismatch y proporcionando opciones para corregirlo."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.13",
+        "relatedHeaders": [
+            "Content-Type",
+            "Accept"
+        ],
+        "relatedCodes": [
+            406
+        ],
+        "technicalNotes": "415 es sobre el Content-Type de lo que el cliente ENVÍA (request body), mientras que 406 Not Acceptable es sobre lo que el cliente puede ACEPTAR en la respuesta (Accept header). El servidor debería incluir información sobre qué tipos de contenido acepta, aunque no hay un encabezado estándar específico para esto en respuestas 415 (algunos usan Accept, otros lo incluyen en el cuerpo de la respuesta). Content-Type común aceptados: application/json, application/xml, application/x-www-form-urlencoded, multipart/form-data, text/plain. Para uploads de archivos, el Content-Type debe coincidir con el tipo real del archivo. APIs RESTful modernas típicamente requieren application/json. La validación puede ser estricta (solo tipos específicos) o permisiva (cualquier tipo pero con advertencias).",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 415 Unsupported Media Type"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753830/40-removebg-preview_it0wsn.png",
+                "alt": "Imagen del código 415 Unsupported Media Type"
+            }
+        ]
+    },
+    {
+        "code": 416,
+        "status": "Range Not Satisfiable",
+        "category": "Client Error",
+        "description": "El código 416 Range Not Satisfiable indica que ninguno de los rangos especificados en el encabezado Range de la solicitud puede ser satisfecho. Este código se utiliza cuando un cliente solicita una porción específica de un recurso (usando el encabezado Range), pero el rango solicitado está fuera de los límites del recurso o es inválido de alguna manera. El servidor está diciendo: 'Entiendo que quieres una porción específica de este recurso, pero el rango que especificaste no es válido o está completamente fuera de los límites del contenido disponible'. El mecanismo de rangos en HTTP permite a los clientes solicitar solo partes de un recurso, lo cual es fundamental para: descargas resumibles (donde un cliente puede solicitar solo la porción restante después de una interrupción), streaming de video/audio (donde el cliente puede solicitar segmentos específicos para permitir seek/skip), descargas paralelas (donde múltiples conexiones descargan diferentes segmentos simultáneamente), y optimización de ancho de banda (solicitando solo las porciones necesarias de archivos grandes). El encabezado Range tiene el formato 'Range: bytes=start-end', por ejemplo 'Range: bytes=0-1023' solicita los primeros 1024 bytes, o 'Range: bytes=1000-' solicita desde el byte 1000 hasta el final. Los errores comunes que causan 416 incluyen: solicitar un rango que comienza más allá del final del archivo (por ejemplo, 'Range: bytes=5000-' cuando el archivo solo tiene 3000 bytes), especificar un rango de inicio mayor que el rango de fin (por ejemplo, 'Range: bytes=1000-500'), usar valores negativos inválidos, o solicitar rangos cuando el recurso ha cambiado de tamaño desde que se obtuvo la información inicial. La respuesta 416 DEBE incluir un encabezado Content-Range que especifique el tamaño actual del recurso en el formato 'Content-Range: bytes */size', donde 'size' es el tamaño total en bytes del recurso completo. Esto permite al cliente entender el tamaño real y reformular su solicitud con un rango válido.",
+        "useCases": [
+            "Reanudación de descarga con rango que excede el tamaño del archivo",
+            "Solicitud de rango inválido (inicio > fin)",
+            "Rango que comienza más allá del final del recurso",
+            "Archivo cambió de tamaño entre solicitudes y el rango ya no es válido",
+            "Streaming de video solicitando segmento más allá de la duración del contenido",
+            "Descarga paralela con rango calculado incorrectamente",
+            "Cliente con información desactualizada sobre tamaño de archivo",
+            "Formato de rango mal formado o no soportado"
+        ],
+        "examples": [
+            {
+                "scenario": "Rango de inicio más allá del tamaño del archivo",
+                "request": "GET /downloads/video.mp4 HTTP/1.1\nHost: media.example.com\nRange: bytes=500000000-",
+                "response": "HTTP/1.1 416 Range Not Satisfiable\nContent-Range: bytes */104857600\nContent-Type: application/json\n\n{\n  \"error\": \"range_not_satisfiable\",\n  \"message\": \"The requested range is outside the bounds of the resource\",\n  \"requested_range\": \"bytes=500000000-\",\n  \"requested_start\": 500000000,\n  \"requested_start_human\": \"500 MB\",\n  \"file_size\": 104857600,\n  \"file_size_human\": \"100 MB\",\n  \"issue\": \"Range start (500000000) is beyond the end of file (104857600)\",\n  \"explanation\": \"You requested data starting at byte 500,000,000 but the file is only 104,857,600 bytes (100 MB) in total\",\n  \"valid_range\": \"bytes=0-104857599\",\n  \"suggestions\": [\n    \"Request the entire file: GET /downloads/video.mp4 (no Range header)\",\n    \"Request from the beginning: Range: bytes=0-\",\n    \"Request the last portion: Range: bytes=104000000-104857599\"\n  ],\n  \"note\": \"The file may have been truncated or you may have outdated size information\"\n}",
+                "explanation": "El cliente solicitó datos comenzando desde el byte 500,000,000, pero el archivo solo tiene 104,857,600 bytes en total. El rango está completamente fuera de los límites. El encabezado Content-Range indica que el tamaño total es 104,857,600 bytes."
+            },
+            {
+                "scenario": "Rango inválido donde inicio > fin",
+                "request": "GET /files/document.pdf HTTP/1.1\nHost: storage.example.com\nRange: bytes=1000-500\nAuthorization: Bearer valid_token",
+                "response": "HTTP/1.1 416 Range Not Satisfiable\nContent-Range: bytes */2097152\nContent-Type: application/json\n\n{\n  \"error\": \"invalid_range_format\",\n  \"message\": \"The requested range has invalid values\",\n  \"requested_range\": \"bytes=1000-500\",\n  \"range_start\": 1000,\n  \"range_end\": 500,\n  \"file_size\": 2097152,\n  \"file_size_human\": \"2 MB\",\n  \"issue\": \"Range start (1000) is greater than range end (500)\",\n  \"explanation\": \"A valid byte range must have the start position less than or equal to the end position\",\n  \"correct_format\": \"Range: bytes=start-end where start <= end\",\n  \"examples_of_valid_ranges\": [\n    \"Range: bytes=0-1023 (first 1024 bytes)\",\n    \"Range: bytes=500-1000 (bytes 500 through 1000)\",\n    \"Range: bytes=1000- (from byte 1000 to end of file)\",\n    \"Range: bytes=-1024 (last 1024 bytes)\"\n  ],\n  \"did_you_mean\": \"Range: bytes=500-1000\",\n  \"documentation\": \"https://docs.storage.example.com/api/range-requests\"\n}",
+                "explanation": "El cliente especificó un rango donde el inicio (1000) es mayor que el fin (500), lo cual es lógicamente inválido. El servidor responde con 416 y explica el formato correcto de rangos, sugiriendo que posiblemente quiso decir bytes=500-1000."
+            },
+            {
+                "scenario": "Reanudación de descarga después de que el archivo fue modificado",
+                "request": "GET /downloads/software-v2.zip HTTP/1.1\nHost: cdn.example.com\nRange: bytes=50000000-\nIf-Range: \"etag-old-version-abc123\"",
+                "response": "HTTP/1.1 416 Range Not Satisfiable\nContent-Range: bytes */45000000\nETag: \"etag-new-version-xyz789\"\nLast-Modified: Wed, 17 Jan 2024 10:00:00 GMT\nContent-Type: application/json\n\n{\n  \"error\": \"range_not_satisfiable\",\n  \"message\": \"Range request cannot be satisfied because the resource has changed\",\n  \"requested_range\": \"bytes=50000000-\",\n  \"requested_start\": 50000000,\n  \"requested_start_human\": \"50 MB\",\n  \"current_file_size\": 45000000,\n  \"current_file_size_human\": \"45 MB\",\n  \"previous_file_size_estimate\": \"~100 MB or more\",\n  \"issue\": \"The file was updated and is now smaller than your resume point\",\n  \"file_version_changed\": true,\n  \"your_etag\": \"etag-old-version-abc123\",\n  \"current_etag\": \"etag-new-version-xyz789\",\n  \"last_modified\": \"2024-01-17T10:00:00Z\",\n  \"explanation\": \"You were downloading an older version of the file. A new version (v2.1) was released that is smaller.\",\n  \"resolution\": [\n    \"Download the new version from the beginning\",\n    \"The new version may have different content or be more compressed\",\n    \"Previous partial download is incompatible with new version\"\n  ],\n  \"download_new_version\": \"GET /downloads/software-v2.zip (without Range header)\",\n  \"version_info\": {\n    \"old_version\": \"v2.0\",\n    \"new_version\": \"v2.1\",\n    \"changelog\": \"https://example.com/changelog/v2.1\"\n  }\n}",
+                "explanation": "El cliente estaba descargando un archivo de ~100MB y había descargado 50MB. El archivo fue actualizado a una nueva versión que solo tiene 45MB. El rango solicitado (desde byte 50,000,000) ahora está más allá del final del archivo actualizado. Debe descargar la nueva versión desde el principio."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7233, Section 4.4",
+        "relatedHeaders": [
+            "Range",
+            "Content-Range",
+            "Accept-Ranges",
+            "If-Range",
+            "ETag"
+        ],
+        "relatedCodes": [
+            206
+        ],
+        "technicalNotes": "416 es la respuesta cuando un rango NO puede satisfacerse. Cuando un rango SÍ puede satisfacerse, el servidor responde 206 Partial Content. La respuesta 416 DEBE incluir Content-Range con el formato 'bytes */size' donde size es el tamaño total del recurso. El encabezado If-Range puede usarse para hacer requests de rango condicionales: si el recurso cambió, el servidor ignora el Range y envía 200 con el recurso completo en lugar de 416. Formato válido de Range: bytes=start-end (ambos inclusivos), bytes=start- (desde start hasta el final), bytes=-suffix (últimos suffix bytes). Los índices comienzan en 0. Un archivo de 1000 bytes va de 0 a 999. Múltiples rangos son soportados: Range: bytes=0-100,200-300.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 416 Range Not Satisfiable"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753835/41-removebg-preview_trgi8w.png",
+                "alt": "Imagen del código 416 Range Not Satisfiable"
+            }
+        ]
+    },
+    {
+        "code": 417,
+        "status": "Expectation Failed",
+        "category": "Client Error",
+        "description": "El código 417 Expectation Failed indica que la expectativa especificada en el encabezado Expect de la solicitud no puede ser cumplida por el servidor. El encabezado Expect permite al cliente indicar ciertos comportamientos que espera del servidor antes de enviar el cuerpo completo de la solicitud. El uso más común del encabezado Expect es 'Expect: 100-continue', que le dice al servidor: 'Voy a enviar un cuerpo de solicitud grande, pero primero verifica si puedes manejarlo'. Si el servidor puede procesar la solicitud, responde con '100 Continue' y el cliente entonces envía el cuerpo completo. Sin embargo, si el servidor determina que no puede cumplir con la expectativa (por ejemplo, porque rechazará la solicitud por razones de autenticación, autorización, o límites de tamaño), responde con 417 Expectation Failed en lugar de 100 Continue. Esto ahorra ancho de banda al prevenir que el cliente envíe un payload grande que será rechazado de todos modos. El código 417 es relativamente raro en la práctica web moderna porque: (1) el mecanismo Expect/100-continue no es ampliamente utilizado fuera de ciertos contextos específicos, (2) muchos servidores simplemente ignoran el encabezado Expect y procesan la solicitud normalmente, (3) algunos servidores no implementan completamente el manejo de expectativas. Los escenarios donde 417 es apropiado incluyen: cuando el servidor no soporta el esquema de expectativa solicitado (por ejemplo, expectativas personalizadas más allá de 100-continue), cuando el servidor determina por adelantado que la solicitud fallará incluso antes de recibir el cuerpo (autenticación inválida, permisos insuficientes, límites excedidos), o cuando el servidor está configurado para no aceptar solicitudes con ciertos tipos de expectativas. Es importante notar que 417 es específicamente para fallos relacionados con el encabezado Expect, no para otros tipos de fallos de validación o precondiciones.",
+        "useCases": [
+            "Servidor rechaza Expect: 100-continue debido a autenticación inválida",
+            "Servidor no soporta el esquema de expectativa especificado",
+            "Servidor determina que la solicitud fallará antes de recibir el cuerpo",
+            "Expectativa personalizada no reconocida o no soportada por el servidor",
+            "Servidor configurado para rechazar ciertos tipos de expectativas",
+            "Prevención de upload de payload grande que será rechazado por otras razones",
+            "Validación temprana que determina que la solicitud no puede proceder"
+        ],
+        "examples": [
+            {
+                "scenario": "Expect: 100-continue rechazado por autenticación inválida",
+                "request": "POST /api/upload HTTP/1.1\nHost: storage.example.com\nExpect: 100-continue\nContent-Type: application/octet-stream\nContent-Length: 524288000\nAuthorization: Bearer expired_or_invalid_token",
+                "response": "HTTP/1.1 417 Expectation Failed\nContent-Type: application/json\n\n{\n  \"error\": \"expectation_failed\",\n  \"message\": \"Cannot fulfill the Expect: 100-continue request\",\n  \"expectation\": \"100-continue\",\n  \"reason\": \"Authentication token is invalid or expired\",\n  \"explanation\": \"The server will not accept the request body because authentication failed. Sending 417 to prevent uploading 500MB that would be rejected anyway.\",\n  \"authentication_error\": {\n    \"code\": \"token_expired\",\n    \"message\": \"The authorization token has expired\",\n    \"expired_at\": \"2024-01-16T12:00:00Z\",\n    \"current_time\": \"2024-01-17T15:30:00Z\"\n  },\n  \"next_steps\": [\n    \"Obtain a new authentication token\",\n    \"Retry the upload with valid credentials\"\n  ],\n  \"token_refresh_endpoint\": \"/auth/refresh\",\n  \"bandwidth_saved\": \"500 MB (by not uploading rejected content)\"\n}",
+                "explanation": "El cliente envió Expect: 100-continue indicando que enviará 500MB de datos. El servidor verifica primero el token de autenticación y descubre que está expirado. En lugar de responder 100 Continue solo para luego rechazar con 401, responde inmediatamente con 417 ahorrando el envío innecesario de 500MB."
+            },
+            {
+                "scenario": "Expectativa personalizada no soportada",
+                "request": "POST /api/data HTTP/1.1\nHost: api.example.com\nExpect: custom-validation, 100-continue\nContent-Type: application/json\nContent-Length: 10485760",
+                "response": "HTTP/1.1 417 Expectation Failed\nContent-Type: application/json\n\n{\n  \"error\": \"expectation_failed\",\n  \"message\": \"Server cannot fulfill the specified expectations\",\n  \"received_expectations\": [\"custom-validation\", \"100-continue\"],\n  \"unsupported_expectations\": [\"custom-validation\"],\n  \"supported_expectations\": [\"100-continue\"],\n  \"reason\": \"The 'custom-validation' expectation is not recognized or supported by this server\",\n  \"explanation\": \"While 100-continue is supported, custom-validation is not a standard expectation and this server doesn't implement it\",\n  \"recommendation\": \"Remove unsupported expectations and retry with only: Expect: 100-continue\",\n  \"correct_request\": \"POST /api/data HTTP/1.1\\nExpect: 100-continue\\n...\",\n  \"documentation\": \"https://docs.api.example.com/http-expectations\"\n}",
+                "explanation": "El cliente especificó múltiples expectativas incluyendo una personalizada ('custom-validation') que el servidor no reconoce o no soporta. El servidor responde con 417 indicando qué expectativa causó el problema y cuáles son soportadas."
+            },
+            {
+                "scenario": "Servidor determina que límite será excedido",
+                "request": "POST /api/process HTTP/1.1\nHost: api.example.com\nExpect: 100-continue\nContent-Type: application/json\nContent-Length: 52428800\nAuthorization: Bearer free_tier_user_token",
+                "response": "HTTP/1.1 417 Expectation Failed\nContent-Type: application/json\n\n{\n  \"error\": \"expectation_failed\",\n  \"message\": \"Cannot proceed with request due to quota limitations\",\n  \"expectation\": \"100-continue\",\n  \"reason\": \"Request would exceed user quota limits\",\n  \"request_size\": 52428800,\n  \"request_size_human\": \"50 MB\",\n  \"user_plan\": \"free\",\n  \"quota_limit\": 10485760,\n  \"quota_limit_human\": \"10 MB per request\",\n  \"quota_used_today\": 8388608,\n  \"quota_remaining_today\": 2097152,\n  \"quota_remaining_human\": \"2 MB\",\n  \"explanation\": \"Your free plan allows maximum 10 MB per request. This 50 MB request exceeds the limit. Responding with 417 to prevent sending data that would be rejected.\",\n  \"upgrade_options\": [\n    {\n      \"plan\": \"basic\",\n      \"limit\": \"100 MB per request\",\n      \"price\": \"$9.99/month\"\n    },\n    {\n      \"plan\": \"pro\",\n      \"limit\": \"1 GB per request\",\n      \"price\": \"$29.99/month\"\n    }\n  ],\n  \"suggestion\": \"Either reduce request size to under 10 MB or upgrade your plan\"\n}",
+                "explanation": "El cliente con plan gratuito intentó enviar 50MB cuando su límite es 10MB. El servidor evalúa esto antes de enviar 100 Continue y responde 417 para evitar que el cliente desperdicie ancho de banda enviando datos que serán rechazados por 413 Payload Too Large."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7231, Section 6.5.14",
+        "relatedHeaders": [
+            "Expect"
+        ],
+        "relatedCodes": [
+            100
+        ],
+        "technicalNotes": "417 es específicamente para fallos relacionados con el encabezado Expect. El caso más común es Expect: 100-continue. Cuando un cliente envía Expect: 100-continue, el servidor tiene tres opciones: (1) responder 100 Continue si puede procesar la solicitud, (2) responder 417 Expectation Failed si no puede cumplir la expectativa, (3) responder directamente con código de error apropiado (401, 403, 413, etc.) si ya sabe que la solicitud fallará. El código 417 es raro en la práctica porque muchos servidores ignoran Expect o no lo implementan completamente. Si el servidor no entiende/soporta el encabezado Expect, puede ignorarlo y procesar normalmente. 417 NO debe usarse para otros tipos de validación o precondiciones - usar códigos apropiados como 400, 412, 428.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 417 Expectation Failed"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753835/42-removebg-preview_zp0aep.png",
+                "alt": "Imagen del código 417 Expectation Failed"
+            }
+        ]
+    },
+    {
+        "code": 418,
+        "status": "I'm a teapot",
+        "category": "Client Error",
+        "description": "El código 418 I'm a teapot es uno de los códigos de estado HTTP más peculiares y únicos en toda la especificación. Fue definido originalmente en 1998 como parte del RFC 2324, que era una broma del April Fools' Day (Día de los Inocentes) llamada 'Hyper Text Coffee Pot Control Protocol' (HTCPCP). El RFC 2324 propuso un protocolo para controlar, monitorear y diagnosticar cafeteras a través de internet. El código 418 se define como la respuesta que debe dar una tetera cuando se le solicita preparar café: 'I'm a teapot' (Soy una tetera). El servidor está diciendo: 'Soy una tetera, no una cafetera, por lo tanto no puedo preparar café'. Aunque comenzó como una broma, el código 418 ha ganado un estatus de culto en la comunidad de desarrolladores y se ha vuelto un símbolo del humor geek en la cultura de internet. A pesar de su origen humorístico, el código 418 está oficialmente reservado en el registro de códigos de estado HTTP de IANA. En 2017, hubo una propuesta para eliminar 418 del registro oficial, pero la comunidad de desarrolladores se opuso fuertemente, argumentando que es parte de la cultura de internet y debe preservarse. Como resultado, 418 permanece oficialmente reservado. En la práctica moderna, algunos desarrolladores usan 418 de manera humorística en sus APIs como easter eggs, respuestas a solicitudes absurdas, o simplemente para agregar un toque de diversión. Sin embargo, NO debe usarse en aplicaciones de producción serias para indicar errores reales, ya que los clientes HTTP estándar no tienen lógica específica para manejarlo y puede causar confusión. El código 418 representa el lado divertido y humano del desarrollo de software, recordándonos que detrás de protocolos y especificaciones técnicas, hay personas con sentido del humor.",
+        "useCases": [
+            "Easter eggs en APIs como respuesta humorística",
+            "Respuestas a solicitudes absurdas o imposibles de manera divertida",
+            "Demostración de cultura de internet en proyectos educativos",
+            "Indicador humorístico de que una API no hace lo que se solicita",
+            "NOTA: NO debe usarse para errores reales en producción"
+        ],
+        "examples": [
+            {
+                "scenario": "Easter egg en API divertida",
+                "request": "POST /api/brew-coffee HTTP/1.1\nHost: teapot.example.com\nContent-Type: application/json\n\n{\n  \"beverage\": \"coffee\",\n  \"size\": \"large\",\n  \"strength\": \"strong\"\n}",
+                "response": "HTTP/1.1 418 I'm a teapot\nContent-Type: application/json\n\n{\n  \"error\": \"im_a_teapot\",\n  \"message\": \"I'm a teapot, not a coffee pot!\",\n  \"explanation\": \"This endpoint is a teapot and cannot brew coffee. Please try the tea endpoint instead.\",\n  \"requested_beverage\": \"coffee\",\n  \"what_i_can_do\": \"brew tea\",\n  \"alternative_endpoint\": \"/api/brew-tea\",\n  \"reference\": \"RFC 2324 - Hyper Text Coffee Pot Control Protocol (HTCPCP/1.0)\",\n  \"fun_fact\": \"This is a real HTTP status code from an April Fools' RFC!\",\n  \"teapot_status\": {\n    \"type\": \"ceramic\",\n    \"capacity\": \"1 liter\",\n    \"temperature\": \"hot\",\n    \"currently_brewing\": \"Earl Grey tea\"\n  },\n  \"suggestion\": \"Try: POST /api/brew-tea with beverage: 'earl-grey' or 'green-tea'\",\n  \"ascii_art\": \"\\n    _\\n   ( )\\n    )(_\\n  .-|:|-. \\n (_:===:_)\\n   |: I :|\\n   |: m :|\\n   |: a :|\\n   |:   :|\\n   |:tea|\\n   |: p :|\\n   |: o :|\\n   |: t :|\\n   '-----'\\n\"\n}",
+                "explanation": "Una API divertida usa 418 como respuesta humorística cuando alguien intenta pedirle que prepare café. Incluye arte ASCII de una tetera, referencias al RFC original, y sugiere el endpoint correcto para té."
+            },
+            {
+                "scenario": "Respuesta a solicitud imposible o absurda",
+                "request": "DELETE /api/internet HTTP/1.1\nHost: silly-api.example.com\nAuthorization: Bearer curious_user_token",
+                "response": "HTTP/1.1 418 I'm a teapot\nContent-Type: application/json\n\n{\n  \"error\": \"request_impossible\",\n  \"message\": \"I'm a teapot, and even if I weren't, I couldn't delete the internet\",\n  \"requested_action\": \"DELETE /api/internet\",\n  \"why_teapot\": \"Using HTTP 418 to indicate this request is as absurd as asking a teapot to make coffee\",\n  \"reality_check\": [\n    \"The internet is not a single deletable entity\",\n    \"No API has that kind of power (thankfully)\",\n    \"This endpoint doesn't exist for very good reasons\",\n    \"Please don't try to delete the internet\"\n  ],\n  \"what_you_can_actually_do\": [\n    \"View API documentation: GET /api/docs\",\n    \"Check service status: GET /api/status\",\n    \"Manage your account: GET /api/account\"\n  ],\n  \"philosophical_note\": \"The internet is a network of networks. To 'delete' it would require disconnecting every device worldwide. Also, I'm a teapot.\",\n  \"http_418_history\": \"https://tools.ietf.org/html/rfc2324\"\n}",
+                "explanation": "Cuando alguien intenta hacer algo completamente absurdo como 'eliminar el internet', la API responde con 418 de manera humorística, explicando por qué la solicitud es imposible mientras mantiene el espíritu divertido del código."
+            },
+            {
+                "scenario": "Implementación educativa mostrando RFC 2324",
+                "request": "BREW /pot-0 HTTP/1.1\nHost: htcpcp.example.com\nContent-Type: application/coffee-pot-command\nAccept-Additions: cream, sugar\n\nstart",
+                "response": "HTTP/1.1 418 I'm a teapot\nContent-Type: text/plain\n\nI'm a teapot!\n\nThis device is a teapot, not a coffee pot.\nAccording to RFC 2324 (HTCPCP/1.0), a teapot receiving\na request to brew coffee should respond with 418.\n\nHTCPCP/1.0 was an April Fools' RFC published in 1998.\nIt proposed a protocol for controlling coffee pots over HTTP.\n\nThe 418 status code has since become beloved by developers\nand is now permanently reserved, even though it started as a joke.\n\nFun facts:\n- The BREW method was proposed for making coffee\n- Accept-Additions header was for cream, sugar, etc.\n- There's even a 406 Not Acceptable for when you ask\n  for additions the pot doesn't have\n\nFor more information:\nhttps://tools.ietf.org/html/rfc2324\n\nP.S. I can make excellent tea though! Try:\nBREW /pot-0 HTTP/1.1\nContent-Type: message/teapot",
+                "explanation": "Una implementación educativa que enseña sobre el origen humorístico del código 418, implementando el protocolo HTCPCP propuesto en el RFC 2324 y explicando la historia detrás del código de estado más divertido de HTTP."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 2324 (April Fools' RFC), RFC 7168 (update)",
+        "relatedHeaders": [
+            "Accept-Additions",
+            "Content-Type"
+        ],
+        "technicalNotes": "418 I'm a teapot es oficialmente un código reservado pero NO debe usarse para indicar errores reales en aplicaciones de producción. Origen: RFC 2324 (1998) como parte del protocolo HTCPCP para controlar cafeteras por internet (broma del April Fools'). A pesar de ser una broma, está oficialmente reservado en el registro IANA desde entonces. En 2017 hubo intento de eliminarlo (save418.com movement lo preservó). RFC 7168 (2014) actualizó HTCPCP pero mantuvo 418. Uso moderno: principalmente easter eggs y humor en APIs. Los clientes HTTP estándar no tienen lógica especial para 418. Es un símbolo de la cultura geek/developer y del lado humano de las especificaciones técnicas. NO usar en lugar de códigos apropiados como 400, 404, 501.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 418 I'm a teapot"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768753832/43-removebg-preview_a0tody.png",
+                "alt": "Imagen del código 418 I'm a teapot"
+            }
+        ]
     }
 ]
