@@ -673,7 +673,7 @@
         "technicalNotes": "Aunque especificado en HTTP/1.0, es raramente usado en la práctica moderna. La mayoría de los servidores implementan content negotiation automática usando encabezados Accept-* y devuelven 200 OK con la mejor representación, o usan 302/303 para redirigir automáticamente.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701317/300_gepcv9.png",
                 "alt": "Imagen que representa el nombre del código 300 Multiple Choices"
             },
             {
@@ -738,7 +738,7 @@
         "technicalNotes": "En HTTP/1.0, la especificación permitía que navegadores cambiaran el método de POST a GET al seguir un 301. HTTP/1.1 clarificó que el método debe preservarse, pero muchos navegadores aún cambian POST a GET por compatibilidad histórica. Para comportamiento predecible con POST requests, usa 308 en su lugar. Los navegadores cachean 301 agresivamente incluso sin Cache-Control explícito.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701318/301_wdshbj.png",
                 "alt": "Imagen que representa el nombre del código 301 Moved Permanently"
             },
             {
@@ -802,7 +802,7 @@
         "technicalNotes": "302 es históricamente ambiguo: la especificación dice preservar el método, pero la mayoría de los navegadores cambian POST a GET. Para comportamiento explícito: usa 303 (fuerza GET) o 307 (preserva método). Las redirecciones 302 generalmente NO se cachean agresivamente. Los motores de búsqueda mantienen el URL original en índices y no transfieren SEO value.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701320/302_pr9ato.png",
                 "alt": "Imagen que representa el nombre del código 302 Found"
             },
             {
@@ -863,7 +863,7 @@
         "technicalNotes": "303 fue introducido en HTTP/1.1 para resolver la ambigüedad de 302. El método SIEMPRE cambia a GET - esto no es un bug, es la característica principal. Los navegadores SIEMPRE cambian el método a GET cuando siguen una redirección 303, sin importar el método original (POST, PUT, DELETE). Si necesitas preservar el método, usa 307 en su lugar.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701317/303_b4nnly.png",
                 "alt": "Imagen que representa el nombre del código 303 See Other"
             },
             {
@@ -928,7 +928,7 @@
         "technicalNotes": "La respuesta 304 NUNCA debe incluir un cuerpo de mensaje. DEBE incluir Date header. DEBE incluir ETag y/o Last-Modified si estaban en la respuesta 200 original. DEBE incluir Cache-Control y Expires si aplican. NO debe incluir Content-Length porque no hay cuerpo. Los navegadores automáticamente incluyen If-None-Match/If-Modified-Since cuando revalidan recursos cacheados.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701318/304_ot5mbk.png",
                 "alt": "Imagen que representa el nombre del código 304 Not Modified"
             },
             {
