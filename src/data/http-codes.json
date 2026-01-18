@@ -1598,7 +1598,7 @@
                 "alt": "Imagen que representa el nombre del código 407 Proxy Authentication Required"
             },
             {
-                "imageCharacter": "",
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752254/32-removebg-preview_ww1jb2.png",
                 "alt": "Imagen del código 407 Proxy Authentication Required"
             }
         ]
@@ -1649,7 +1649,16 @@
             504
         ],
         "technicalNotes": "408 se refiere al timeout durante la RECEPCIÓN de la solicitud (cliente → servidor), no durante el procesamiento. No confundir con 504 Gateway Timeout que es para timeouts de servidor upstream durante procesamiento. La respuesta 408 típicamente incluye Connection: close porque el servidor está cerrando la conexión. Los clientes PUEDEN reintentar automáticamente solicitudes que reciben 408, pero deben implementar backoff exponencial. Los timeouts típicos varían: 30-60 segundos para solicitudes normales, 5-10 minutos para uploads grandes. Los servidores modernos configuran timeouts para: prevenir ataques DoS slowloris, liberar recursos de conexiones idle, optimizar uso de recursos. 408 es relativamente raro en aplicaciones web modernas con conexiones rápidas.",
-        "images": []
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 408 Request Timeout"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752253/33-removebg-preview_ogidrb.png",
+                "alt": "Imagen del código 408 Request Timeout"
+            }
+        ]
     },
     {
         "code": 409,
@@ -1699,7 +1708,16 @@
             422
         ],
         "technicalNotes": "409 es específicamente para conflictos con el ESTADO ACTUAL del recurso, no para errores de validación básica. Diferencias clave: 400 para errores de sintaxis/formato; 422 para validación semántica (datos bien formados pero no válidos); 409 para conflictos con estado existente. Común en control de concurrencia optimista usando ETags: el cliente incluye If-Match con el ETag que conoce, si cambió el servidor responde 409. La respuesta debe explicar claramente QUÉ está en conflicto y CÓMO resolverlo. 409 implica que la operación podría tener éxito si el estado conflictivo cambia. En REST, usar 409 para duplicados, violaciones de unicidad, y conflictos de concurrencia.",
-        "images": []
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 409 Conflict"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752251/34-removebg-preview_caqa9i.png",
+                "alt": "Imagen del código 409 Conflict"
+            }
+        ]
     },
     {
         "code": 410,
@@ -1747,7 +1765,16 @@
             404
         ],
         "technicalNotes": "410 es semánticamente diferente de 404: 410 significa eliminación PERMANENTE e INTENCIONAL de algo que existió; 404 es más genérico y no implica historia. Usar 410 beneficia SEO: los motores de búsqueda eliminan URLs con 410 de índices más rápido y dejan de rastrearlas. 410 es menos común que 404 en la práctica porque requiere que el servidor mantenga registro de recursos eliminados. Si no mantienes registro de qué fue eliminado, usa 404. Para redirecciones permanentes a nuevas ubicaciones, usa 301 no 410. 410 implica que NO hay nueva ubicación. Incluye meta tag noindex en respuestas HTML. La respuesta puede cacheable a menos que se indique lo contrario.",
-        "images": []
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 410 Gone"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752248/35-removebg-preview_h8zeav.png",
+                "alt": "Imagen del código 410 Gone"
+            }
+        ]
     },
     {
         "code": 411,
@@ -1794,7 +1821,16 @@
             413
         ],
         "technicalNotes": "411 requiere específicamente el encabezado Content-Length. Algunos servidores aceptan Transfer-Encoding: chunked como alternativa, pero otros no. La respuesta 411 indica que el servidor REQUIERE Content-Length. HTTP/1.1 soporta chunked encoding como alternativa donde la longitud no se conoce de antemano, pero no todos los servidores lo implementan. La diferencia con 413 Payload Too Large: 413 se usa cuando Content-Length ESTÁ presente pero el valor excede el límite; 411 se usa cuando Content-Length está AUSENTE. Para calcular Content-Length: contar bytes exactos del cuerpo de la solicitud (no caracteres, bytes). En HTTP/2, los conceptos de streaming son diferentes y 411 es menos relevante.",
-        "images": []
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 411 Length Required"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752246/36-removebg-preview_h9lidy.png",
+                "alt": "Imagen del código 411 Length Required"
+            }
+        ]
     },
     {
         "code": 412,
@@ -1848,6 +1884,15 @@
             428
         ],
         "technicalNotes": "412 indica que una PRECONDICIÓN proporcionada FALLÓ. Diferencias clave: 304 Not Modified se usa con GET cuando If-None-Match/If-Modified-Since indica que el recurso no cambió (esto es éxito, no error); 412 se usa principalmente con métodos de modificación cuando la precondición falla; 409 Conflict es para conflictos de estado no relacionados con precondiciones de encabezados; 428 Precondition Required es cuando el servidor REQUIERE una precondición pero no se proporcionó. Los encabezados If-Match e If-Unmodified-Since se usan para control de concurrencia optimista. 412 previene el 'lost update problem' donde actualizaciones concurrentes se sobrescriben. La respuesta debe incluir el ETag o Last-Modified actual para que el cliente pueda recuperar la versión actual.",
-        "images": []
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 412 Precondition Failed"
+            },
+            {
+                "imageCharacter": "https://res.cloudinary.com/dovznesem/image/upload/v1768752245/37-removebg-preview_zvinwn.png",
+                "alt": "Imagen del código 412 Precondition Failed"
+            }
+        ]
     }
 ]
