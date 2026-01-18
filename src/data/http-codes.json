@@ -1544,5 +1544,63 @@
                 "alt": "Imagen del código 406 Not Acceptable"
             }
         ]
+    },
+    {
+        "code": 407,
+        "status": "Proxy Authentication Required",
+        "category": "Client Error",
+        "description": "El código 407 Proxy Authentication Required es similar al 401 Unauthorized, pero indica específicamente que el cliente debe autenticarse primero con un servidor proxy antes de que la solicitud pueda ser procesada. Este código es utilizado en escenarios donde la comunicación entre el cliente y el servidor final debe pasar a través de un proxy intermedio que requiere autenticación. El proxy está diciendo: 'Antes de que pueda reenviar tu solicitud al servidor de destino, necesitas autenticarte conmigo'. Esto es común en entornos corporativos donde todo el tráfico HTTP/HTTPS debe pasar por un proxy corporativo que implementa políticas de seguridad, filtrado de contenido, o logging. La respuesta 407 DEBE incluir un encabezado Proxy-Authenticate que especifica el esquema de autenticación que el proxy requiere, similar a cómo 401 usa WWW-Authenticate. Los esquemas comunes incluyen Basic, Digest, NTLM (en entornos Windows/Active Directory), o esquemas personalizados. Cuando un cliente recibe un 407, debe reenviar la solicitud incluyendo un encabezado Proxy-Authorization con las credenciales apropiadas para el proxy. Es importante distinguir entre autenticación de proxy (407) y autenticación de servidor final (401): puede haber escenarios donde ambas son necesarias, primero autenticándose con el proxy (407) y luego con el servidor de destino (401). El código 407 es transparente para muchas aplicaciones modernas porque los navegadores y librerías HTTP manejan automáticamente la autenticación de proxy usando credenciales configuradas a nivel de sistema operativo o aplicación. En entornos empresariales, es común que los administradores configuren credenciales de proxy a nivel de sistema para que todas las aplicaciones puedan usarlas automáticamente. Los proxies pueden requerir autenticación por varias razones: control de acceso y seguridad, rastreo de uso por usuario o departamento, implementación de políticas de uso aceptable, prevención de uso no autorizado de recursos de red, o cumplimiento de requisitos regulatorios. En APIs y aplicaciones server-to-server, manejar 407 correctamente es crucial para funcionar en entornos corporativos donde los proxies son obligatorios.",
+        "useCases": [
+            "Proxies corporativos que requieren autenticación de empleados",
+            "Proxies de red que implementan control de acceso",
+            "Proxies de filtrado de contenido en instituciones educativas",
+            "Proxies que rastrean y registran uso de internet por usuario",
+            "Proxies de caché que requieren identificación de usuarios",
+            "Proxies que implementan políticas de uso aceptable",
+            "Gateways de seguridad que validan identidad antes de permitir tráfico externo",
+            "Proxies que aplican límites de ancho de banda por usuario autenticado"
+        ],
+        "examples": [
+            {
+                "scenario": "Proxy corporativo requiere autenticación Basic",
+                "request": "GET https://external-api.example.com/data HTTP/1.1\nHost: external-api.example.com\nAccept: application/json",
+                "response": "HTTP/1.1 407 Proxy Authentication Required\nProxy-Authenticate: Basic realm=\"Corporate Proxy\"\nProxy-Connection: close\nContent-Type: text/html\n\n<!DOCTYPE html>\n<html>\n<head><title>Proxy Authentication Required</title></head>\n<body>\n  <h1>407 Proxy Authentication Required</h1>\n  <p>This request must be authenticated with the corporate proxy before it can be forwarded.</p>\n  <p>Please configure your application with valid proxy credentials.</p>\n  <p>Contact IT Support if you need assistance: support@company.com</p>\n</body>\n</html>",
+                "explanation": "Un proxy corporativo interceptó la solicitud al servidor externo. Antes de reenviar la solicitud, requiere que el cliente se autentique usando credenciales corporativas con esquema Basic authentication. El cliente debe reenviar con encabezado Proxy-Authorization."
+            },
+            {
+                "scenario": "Solicitud correcta con autenticación de proxy",
+                "request": "GET https://external-api.example.com/data HTTP/1.1\nHost: external-api.example.com\nProxy-Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=\nAccept: application/json",
+                "response": "HTTP/1.1 200 OK\nContent-Type: application/json\nVia: 1.1 corporate-proxy.company.com\n\n{\n  \"message\": \"Request successfully forwarded through authenticated proxy\",\n  \"data\": {\n    \"user\": \"authenticated_user\",\n    \"proxy\": \"corporate-proxy.company.com\",\n    \"result\": \"success\"\n  }\n}",
+                "explanation": "Después de recibir 407, el cliente reenvió la solicitud incluyendo el encabezado Proxy-Authorization con credenciales válidas. El proxy validó las credenciales y reenvió la solicitud al servidor de destino, que respondió exitosamente. El encabezado Via indica que pasó por el proxy."
+            },
+            {
+                "scenario": "Proxy con autenticación NTLM (entorno Windows)",
+                "request": "GET http://internet-resource.example.com/page HTTP/1.1\nHost: internet-resource.example.com",
+                "response": "HTTP/1.1 407 Proxy Authentication Required\nProxy-Authenticate: NTLM\nProxy-Authenticate: Negotiate\nContent-Type: application/json\n\n{\n  \"error\": \"proxy_authentication_required\",\n  \"message\": \"Authentication with the corporate proxy is required\",\n  \"proxy_server\": \"proxy.corporate.local\",\n  \"authentication_methods\": [\n    {\n      \"method\": \"NTLM\",\n      \"description\": \"Windows integrated authentication\",\n      \"automatic\": true,\n      \"note\": \"Your Windows credentials will be used automatically if configured\"\n    },\n    {\n      \"method\": \"Negotiate\",\n      \"description\": \"Kerberos/NTLM negotiation\",\n      \"automatic\": true\n    }\n  ],\n  \"help\": \"If automatic authentication fails, contact IT: it-support@corporate.local\",\n  \"documentation\": \"https://intranet.corporate.local/proxy-setup\"\n}",
+                "explanation": "Un proxy en entorno Windows corporativo ofrece autenticación NTLM y Negotiate (Kerberos). Estos esquemas típicamente usan las credenciales de dominio del usuario de Windows automáticamente, sin requerir entrada manual de credenciales."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 7235, Section 3.2",
+        "relatedHeaders": [
+            "Proxy-Authenticate",
+            "Proxy-Authorization",
+            "Via",
+            "Proxy-Connection"
+        ],
+        "relatedCodes": [
+            401
+        ],
+        "technicalNotes": "407 es específico para autenticación de PROXY, no del servidor final. Similar a como 401 requiere WWW-Authenticate, 407 DEBE incluir Proxy-Authenticate. El cliente responde con Proxy-Authorization (no Authorization). Es posible recibir tanto 407 como 401 en secuencia: primero autenticarse con proxy, luego con servidor destino. Los navegadores modernos manejan 407 automáticamente usando credenciales de proxy configuradas. En aplicaciones, las librerías HTTP típicamente soportan configuración de proxy con credenciales. NTLM y Negotiate son comunes en entornos Windows/Active Directory. El encabezado Via indica proxies por los que pasó la solicitud.",
+        "images": [
+            {
+                "imageCover": "",
+                "alt": "Imagen que representa el nombre del código 407 Proxy Authentication Required"
+            },
+            {
+                "imageCharacter": "",
+                "alt": "Imagen del código 407 Proxy Authentication Required"
+            }
+        ]
     }
 ]
