@@ -2226,5 +2226,285 @@
                 "alt": "Imagen del código 418 I 'm a teapot"
             }
         ]
+    },
+    {
+        "code": 419,
+        "status": "Authentication Timeout / Page Expired",
+        "category": "Client Error",
+        "description": "El código 419 NO es un código de estado HTTP estándar oficial definido en ninguna RFC de IETF. Sin embargo, ha sido adoptado y utilizado de manera no estándar por algunos frameworks web, siendo Laravel (un popular framework PHP) el usuario más prominente. En Laravel, el código 419 se utiliza específicamente para indicar que un token CSRF (Cross-Site Request Forgery) ha expirado o es inválido, típicamente mostrando el mensaje 'Page Expired'. Este es un caso interesante de cómo los frameworks web a veces crean sus propios códigos de estado para necesidades específicas, aunque no estén en el estándar oficial HTTP. Cuando Laravel devuelve 419, está diciendo: 'Tu formulario o solicitud incluía un token CSRF que ya expiró, probablemente porque la página estuvo abierta demasiado tiempo antes de enviarla'. Los tokens CSRF son mecanismos de seguridad que previenen ataques donde un sitio malicioso intenta hacer que tu navegador envíe solicitudes no autorizadas a otro sitio donde estás autenticado. Laravel genera un token único por sesión y lo incluye en formularios; cuando el formulario se envía, valida que el token coincida. Si un usuario deja un formulario abierto por mucho tiempo (más allá del tiempo de vida del token, típicamente horas), el token expira, y al intentar enviar el formulario, Laravel responde con 419. Aunque 419 es específico de Laravel, otros frameworks han usado códigos en el rango 419-420 para propósitos similares no estándar. Algunos servidores proxy también han utilizado 419 para indicar timeouts de autenticación. Es importante notar que usar códigos de estado no estándar puede causar problemas de interoperabilidad, ya que clientes HTTP genéricos no tendrán lógica específica para manejarlos. Las mejores prácticas sugieren usar códigos estándar existentes (como 403 Forbidden o 401 Unauthorized con información adicional en el cuerpo) en lugar de inventar códigos nuevos, pero el uso de 419 por Laravel está tan extendido que es ampliamente reconocido en la comunidad PHP.",
+        "useCases": [
+            "Laravel: Token CSRF expirado en formularios (uso más común)",
+            "Algunos frameworks PHP: Sesión expirada durante envío de formulario",
+            "Uso no estándar: Timeout de autenticación en algunos servidores",
+            "Indicar que una página debe ser recargada antes de reenviar",
+            "NOTA: NO es un código HTTP oficial/estándar"
+        ],
+        "examples": [
+            {
+                "scenario": "Laravel - Token CSRF expirado en formulario",
+                "request": "POST /profile/update HTTP/1.1\nHost: app.example.com\nContent-Type: application/x-www-form-urlencoded\nCookie: laravel_session=eyJpdiI6...\n\n_token=expired_csrf_token_abc123&name=John+Doe&email=john@example.com",
+                "response": "HTTP/1.1 419 Page Expired\nContent-Type: text/html; charset=UTF-8\n\n<!DOCTYPE html>\n<html>\n<head>\n    <title>419 | Page Expired</title>\n    <style>\n        body { font-family: sans-serif; text-align: center; padding: 50px; }\n        h1 { color: #e74c3c; }\n    </style>\n</head>\n<body>\n    <h1>419</h1>\n    <h2>Page Expired</h2>\n    <p>The page has expired due to inactivity.</p>\n    <p>Please refresh and try again.</p>\n    <button onclick=\"window.location.reload()\">Refresh Page</button>\n    <hr>\n    <p><small>This happened because your CSRF token expired. Laravel generates tokens for security that expire after a period of inactivity.</small></p>\n</body>\n</html>",
+                "explanation": "Este es el uso más común de 419: en Laravel, cuando un usuario deja un formulario abierto por mucho tiempo, el token CSRF expira. Al intentar enviar el formulario, Laravel detecta el token expirado y responde con 419, pidiendo al usuario que recargue la página para obtener un nuevo token."
+            },
+            {
+                "scenario": "Laravel API - CSRF token inválido en JSON",
+                "request": "POST /api/data HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nX-CSRF-TOKEN: invalid_or_expired_token\nCookie: XSRF-TOKEN=...\n\n{\n  \"action\": \"update\",\n  \"data\": {\n    \"field\": \"value\"\n  }\n}",
+                "response": "HTTP/1.1 419 Page Expired\nContent-Type: application/json\n\n{\n  \"message\": \"CSRF token mismatch.\",\n  \"error\": \"TokenMismatchException\",\n  \"error_code\": 419,\n  \"explanation\": \"The CSRF token in your request is invalid or has expired\",\n  \"causes\": [\n    \"The token has expired due to session timeout\",\n    \"The session was cleared or regenerated\",\n    \"The token was not included in the request\",\n    \"The token doesn't match the session token\"\n  ],\n  \"resolution\": [\n    \"Obtain a fresh CSRF token from the server\",\n    \"Include the token in X-CSRF-TOKEN header or _token field\",\n    \"Ensure cookies are enabled for session management\"\n  ],\n  \"get_new_token\": \"GET /sanctum/csrf-cookie\",\n  \"documentation\": \"https://laravel.com/docs/csrf\",\n  \"note\": \"419 is a Laravel-specific status code, not part of official HTTP standards\"\n}",
+                "explanation": "En una API Laravel, cuando el token CSRF en el encabezado X-CSRF-TOKEN no coincide o ha expirado, el servidor responde con 419 y proporciona información sobre cómo obtener un nuevo token."
+            },
+            {
+                "scenario": "Alternativa estándar usando 403 Forbidden",
+                "request": "POST /profile/update HTTP/1.1\nHost: standard-app.example.com\nContent-Type: application/x-www-form-urlencoded\n\n_token=expired_csrf_token&name=John+Doe",
+                "response": "HTTP/1.1 403 Forbidden\nContent-Type: application/json\n\n{\n  \"error\": \"csrf_token_expired\",\n  \"message\": \"The CSRF token has expired\",\n  \"error_type\": \"security\",\n  \"reason\": \"Your session token is no longer valid\",\n  \"token_lifetime\": \"2 hours\",\n  \"token_expired_at\": \"2024-01-17T14:00:00Z\",\n  \"current_time\": \"2024-01-17T16:30:00Z\",\n  \"explanation\": \"For security reasons, form tokens expire after a period of inactivity. This prevents CSRF attacks.\",\n  \"action_required\": \"Refresh the page to get a new token and resubmit the form\",\n  \"best_practice\": \"Instead of non-standard 419, we use standard 403 Forbidden with descriptive error information\",\n  \"note\": \"Using standard HTTP codes ensures better client compatibility\"\n}",
+                "explanation": "MEJOR PRÁCTICA: En lugar de usar el código no estándar 419, una aplicación puede usar el código estándar 403 Forbidden con información detallada en el cuerpo sobre el problema específico de CSRF. Esto mantiene compatibilidad con clientes HTTP estándar."
+            }
+        ],
+        "httpVersion": "N/A (No es estándar HTTP oficial)",
+        "specification": "No oficial - Usado principalmente por Laravel framework",
+        "relatedHeaders": [
+            "X-CSRF-TOKEN",
+            "Cookie",
+            "Set-Cookie"
+        ],
+        "relatedCodes": [
+            401,
+            403
+        ],
+        "technicalNotes": "419 NO es un código HTTP estándar oficial. No aparece en ninguna RFC de IETF. Es una extensión no estándar popularizada por Laravel framework para indicar tokens CSRF expirados. Otros frameworks/servidores a veces usan 419 para timeouts de autenticación similares. MEJOR PRÁCTICA: Usar códigos estándar como 403 Forbidden con error específico en el cuerpo en lugar de códigos inventados. Ventajas de códigos estándar: mejor interoperabilidad, clientes HTTP genéricos los entienden, no confunde herramientas de debugging. El uso de 419 por Laravel está tan extendido que es reconocido en la comunidad PHP, pero puede causar confusión fuera de ese ecosistema. Clientes HTTP estándar tratarán 419 como un error genérico 4xx.",
+        "images": []
+    },
+    {
+        "code": 420,
+        "status": "Method Failure / Enhance Your Calm",
+        "category": "Client Error",
+        "description": "El código 420 NO es un código de estado HTTP oficial estándar, pero ha sido utilizado históricamente por diferentes servicios y frameworks con significados completamente distintos, lo que lo hace particularmente confuso. Existen al menos tres usos diferentes y contradictorios de 420: (1) Twitter (antes de X) utilizó '420 Enhance Your Calm' como respuesta cuando un cliente estaba siendo rate-limited por hacer demasiadas solicitudes. El mensaje humorístico 'Enhance Your Calm' (Mejora tu calma) era la forma de Twitter de decir 'relájate y deja de hacer tantas solicitudes'. (2) Spring Framework (Java) en versiones antiguas utilizó '420 Method Failure' para indicar que un método específico falló durante el procesamiento. (3) En la cultura de internet, 420 es un número asociado con la cultura del cannabis, lo que ha llevado a algunos desarrolladores a usarlo humorísticamente en contextos relacionados. La falta de estandarización del código 420 ilustra perfectamente por qué es importante que los desarrolladores se adhieran a los códigos de estado HTTP oficiales en lugar de inventar los suyos propios. Cada servicio que usa 420 le da un significado diferente, lo que causa confusión para los clientes que intentan manejar las respuestas. En la práctica moderna, el uso de 420 ha disminuido significativamente: Twitter migró a usar el código estándar 429 Too Many Requests para rate limiting, que es el código correcto y oficial para ese propósito. Spring Framework también dejó de usar 420 en favor de códigos más apropiados y estándar. Hoy en día, 420 ocasionalmente aparece como easter egg humorístico en APIs (especialmente el 20 de abril, '4/20' en formato de fecha estadounidense), pero NO debe usarse en aplicaciones de producción serias. Los desarrolladores deben usar códigos estándar como 429 para rate limiting, 500 para fallos de métodos del servidor, o códigos apropiados según el contexto específico.",
+        "useCases": [
+            "Twitter (deprecado): Rate limiting - 'Enhance Your Calm' (ahora usa 429)",
+            "Spring Framework (antiguo): Fallo de método (deprecado)",
+            "Easter eggs humorísticos (especialmente 4/20)",
+            "Uso en cultura de internet relacionado con cannabis (humorístico)",
+            "NOTA: NO es estándar y NO debe usarse en producción"
+        ],
+        "examples": [
+            {
+                "scenario": "Twitter legacy - Rate limiting (uso histórico)",
+                "request": "GET /1.1/statuses/user_timeline.json?count=200 HTTP/1.1\nHost: api.twitter.com\nAuthorization: Bearer user_access_token\n\n[solicitud número 181 en la última hora, excediendo límite de 180]",
+                "response": "HTTP/1.1 420 Enhance Your Calm\nX-Rate-Limit-Limit: 180\nX-Rate-Limit-Remaining: 0\nX-Rate-Limit-Reset: 1705512000\nRetry-After: 3600\nContent-Type: application/json\n\n{\n  \"errors\": [\n    {\n      \"code\": 88,\n      \"message\": \"Rate limit exceeded\"\n    }\n  ],\n  \"status\": 420,\n  \"status_text\": \"Enhance Your Calm\",\n  \"explanation\": \"You have exceeded the rate limit for this endpoint\",\n  \"limit\": 180,\n  \"remaining\": 0,\n  \"reset_time\": \"2024-01-17T20:00:00Z\",\n  \"retry_after_seconds\": 3600,\n  \"humorous_message\": \"Whoa there, partner! Slow down and enhance your calm. You've made too many requests.\",\n  \"note\": \"This is a deprecated Twitter-specific code. Modern APIs should use 429 Too Many Requests instead.\"\n}",
+                "explanation": "USO HISTÓRICO: Twitter usaba 420 con el mensaje humorístico 'Enhance Your Calm' para rate limiting. Este código ya NO se usa; Twitter/X migró al estándar 429 Too Many Requests. Se muestra solo con propósitos históricos/educativos."
+            },
+            {
+                "scenario": "Alternativa CORRECTA usando 429 Too Many Requests",
+                "request": "GET /api/data HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer user_token",
+                "response": "HTTP/1.1 429 Too Many Requests\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 0\nX-RateLimit-Reset: 1705512000\nRetry-After: 3600\nContent-Type: application/json\n\n{\n  \"error\": \"rate_limit_exceeded\",\n  \"message\": \"You have exceeded the rate limit\",\n  \"limit\": 100,\n  \"limit_window\": \"1 hour\",\n  \"remaining\": 0,\n  \"reset_at\": \"2024-01-17T20:00:00Z\",\n  \"retry_after_seconds\": 3600,\n  \"current_plan\": \"free\",\n  \"upgrade_info\": {\n    \"basic_plan\": \"500 requests/hour for $9.99/month\",\n    \"pro_plan\": \"5,000 requests/hour for $29.99/month\"\n  },\n  \"best_practice\": \"This uses standard HTTP 429, not non-standard 420\",\n  \"documentation\": \"https://api.example.com/docs/rate-limits\"\n}",
+                "explanation": "MEJOR PRÁCTICA: Usar el código estándar 429 Too Many Requests para rate limiting en lugar del no estándar 420. Esto garantiza compatibilidad con todos los clientes HTTP y herramientas."
+            },
+            {
+                "scenario": "Easter egg humorístico (4/20 reference)",
+                "request": "GET /api/secret-endpoint HTTP/1.1\nHost: fun-api.example.com\nX-Special-Date: 2024-04-20",
+                "response": "HTTP/1.1 420 Enhance Your Calm\nContent-Type: application/json\nX-Easter-Egg: true\n\n{\n  \"status\": 420,\n  \"message\": \"Enhance Your Calm\",\n  \"special_message\": \"Happy 4/20! 🌿\",\n  \"easter_egg\": true,\n  \"fun_facts\": [\n    \"420 is not an official HTTP status code\",\n    \"Twitter used it for rate limiting (now uses 429)\",\n    \"In internet culture, 420 has... other meanings\",\n    \"This is just a fun easter egg, not a real error!\"\n  ],\n  \"actual_response\": {\n    \"status\": 200,\n    \"data\": \"Your actual data here\",\n    \"message\": \"Everything is fine, this was just a playful response\"\n  },\n  \"note\": \"This is purely for entertainment. In production, always use standard HTTP codes.\",\n  \"seriously_though\": \"Don't use 420 in real APIs. Use proper codes like 429, 500, etc.\"\n}",
+                "explanation": "Algunos desarrolladores usan 420 como easter egg humorístico, especialmente el 20 de abril (4/20). Aunque divertido, NO debe usarse para errores reales en producción. Este ejemplo es puramente educativo sobre el uso cultural del código."
+            }
+        ],
+        "httpVersion": "N/A (No es estándar HTTP oficial)",
+        "specification": "No oficial - Múltiples usos conflictivos no estandarizados",
+        "relatedHeaders": [
+            "X-RateLimit-Limit",
+            "X-RateLimit-Remaining",
+            "X-RateLimit-Reset",
+            "Retry-After"
+        ],
+        "relatedCodes": [
+            429,
+            500
+        ],
+        "technicalNotes": "420 NO es un código HTTP estándar oficial. Múltiples usos conflictivos: (1) Twitter: 'Enhance Your Calm' para rate limiting (DEPRECADO, ahora usa 429), (2) Spring Framework: 'Method Failure' (DEPRECADO), (3) Referencias culturales de internet (4/20). NUNCA usar en producción. Para rate limiting: usa 429 Too Many Requests (estándar oficial desde RFC 6585). Para fallos de método del servidor: usa 500 Internal Server Error o códigos 5xx apropiados. El uso de códigos no estándar causa: problemas de interoperabilidad, confusión en clientes HTTP, dificultades de debugging, incompatibilidad con herramientas de monitoreo. La historia de 420 es un ejemplo perfecto de por qué NO inventar códigos propios. Twitter eventualmente migró a 429 estándar, demostrando que los estándares existen por buenas razones.",
+        "images": []
+    },
+    {
+        "code": 421,
+        "status": "Misdirected Request",
+        "category": "Client Error",
+        "description": "El código 421 Misdirected Request indica que la solicitud fue dirigida a un servidor que no es capaz de producir una respuesta. Este código fue introducido específicamente para HTTP/2 y está relacionado con la característica de multiplexación de conexiones de HTTP/2, donde múltiples nombres de host pueden compartir la misma conexión TCP. El servidor está diciendo: 'Recibí tu solicitud, pero está dirigida al nombre de host o esquema incorrecto para este servidor, y no puedo procesarla'. Este código es particularmente relevante en escenarios de HTTP/2 donde un cliente puede reutilizar una conexión existente para hacer solicitudes a diferentes hosts que comparten la misma dirección IP (algo común con CDNs, hosting compartido, o cuando múltiples dominios están detrás del mismo servidor). El problema surge cuando el cliente asume incorrectamente que el servidor puede manejar solicitudes para un host específico solo porque comparte la misma conexión o IP. Por ejemplo, imagine que un cliente establece una conexión HTTP/2 con 'www.example.com' (IP: 192.0.2.1). Luego descubre que 'api.example.com' también apunta a 192.0.2.1. El cliente podría intentar reutilizar la conexión existente para hacer solicitudes a 'api.example.com'. Si el servidor en esa conexión no está configurado para manejar 'api.example.com', responderá con 421. Las causas comunes incluyen: certificado TLS/SSL que no incluye el nombre de host solicitado en su Subject Alternative Name (SAN), servidor configurado para solo responder a ciertos nombres de host específicos, proxy o CDN que no puede enrutar la solicitud al backend correcto, o configuración de virtual host que no incluye el dominio solicitado. Cuando un cliente recibe 421, debe reintentar la solicitud en una nueva conexión directamente al host correcto, sin intentar reutilizar la conexión existente. El código 421 es fundamental para la seguridad en HTTP/2, ya que previene que los clientes hagan suposiciones incorrectas sobre qué hosts puede manejar una conexión compartida.",
+        "useCases": [
+            "HTTP/2: Solicitud a host incorrecto en conexión compartida/multiplexada",
+            "Certificado TLS no incluye el dominio solicitado en SAN",
+            "Virtual host no configurado para el nombre de host solicitado",
+            "CDN o proxy no puede enrutar solicitud al backend apropiado",
+            "Cliente intenta reutilizar conexión para host no autorizado",
+            "Mismatch entre SNI (Server Name Indication) y Host header",
+            "Configuración de servidor que restringe hosts permitidos por conexión"
+        ],
+        "examples": [
+            {
+                "scenario": "HTTP/2 - Reutilización incorrecta de conexión para diferente host",
+                "request": "GET /api/data HTTP/2\nHost: api.example.com\nUser-Agent: HTTP2-Client/1.0\n\n[Esta solicitud se envió por una conexión HTTP/2 existente que fue establecida originalmente para www.example.com]",
+                "response": "HTTP/2 421 Misdirected Request\nContent-Type: application/json\n\n{\n  \"error\": \"misdirected_request\",\n  \"message\": \"This server cannot produce a response for the requested host\",\n  \"requested_host\": \"api.example.com\",\n  \"connection_established_for\": \"www.example.com\",\n  \"issue\": \"Connection was established for www.example.com but request is for api.example.com\",\n  \"explanation\": \"While both domains may share the same IP address, this server is not configured to handle requests for api.example.com on this connection\",\n  \"http_version\": \"HTTP/2\",\n  \"reason\": \"The TLS certificate or virtual host configuration does not include api.example.com\",\n  \"action_required\": \"Establish a new connection specifically to api.example.com and retry the request\",\n  \"technical_details\": {\n    \"connection_reuse_attempted\": true,\n    \"tls_sni\": \"www.example.com\",\n    \"requested_authority\": \"api.example.com\",\n    \"certificate_sans\": [\"www.example.com\", \"example.com\"],\n    \"api_example_com_in_certificate\": false\n  },\n  \"recommendation\": \"Do not reuse this connection for api.example.com. Open a new connection.\",\n  \"rfc_reference\": \"RFC 7540, Section 9.1.2\"\n}",
+                "explanation": "El cliente intentó reutilizar una conexión HTTP/2 existente (establecida para www.example.com) para hacer una solicitud a api.example.com. Sin embargo, el certificado TLS del servidor no incluye api.example.com en sus Subject Alternative Names, por lo que responde con 421 indicando que esta solicitud está mal dirigida."
+            },
+            {
+                "scenario": "Certificado TLS sin el dominio solicitado",
+                "request": ":method: GET\n:scheme: https\n:authority: subdomain.example.com\n:path: /resource\nuser-agent: Mozilla/5.0",
+                "response": "HTTP/2 421 Misdirected Request\nContent-Type: application/json\n\n{\n  \"error\": \"misdirected_request\",\n  \"message\": \"TLS certificate does not cover the requested hostname\",\n  \"requested_hostname\": \"subdomain.example.com\",\n  \"tls_certificate_info\": {\n    \"common_name\": \"example.com\",\n    \"subject_alternative_names\": [\n      \"example.com\",\n      \"www.example.com\",\n      \"*.apps.example.com\"\n    ],\n    \"subdomain_covered\": false,\n    \"wildcard_match\": false\n  },\n  \"issue\": \"The SSL/TLS certificate presented during connection establishment does not include subdomain.example.com\",\n  \"security_concern\": \"Serving content for a hostname not in the certificate would be a security violation\",\n  \"resolution\": [\n    \"Establish a new HTTPS connection directly to subdomain.example.com\",\n    \"Verify that subdomain.example.com has a valid certificate\",\n    \"Do not attempt to reuse connections established for other domains\"\n  ],\n  \"note\": \"HTTP/2 connection multiplexing is limited to hosts covered by the TLS certificate\",\n  \"correct_hosts_for_this_connection\": [\n    \"example.com\",\n    \"www.example.com\",\n    \"*.apps.example.com\"\n  ]\n}",
+                "explanation": "El certificado TLS de la conexión no incluye 'subdomain.example.com' en su lista de nombres alternativos. Por razones de seguridad, el servidor no puede servir contenido para un hostname que no está en el certificado, por lo que responde 421."
+            },
+            {
+                "scenario": "Virtual host no configurado para el dominio solicitado",
+                "request": "GET /home HTTP/2\nHost: newdomain.example.com",
+                "response": "HTTP/2 421 Misdirected Request\nContent-Type: application/json\n\n{\n  \"error\": \"misdirected_request\",\n  \"message\": \"Server is not configured to handle this hostname\",\n  \"requested_host\": \"newdomain.example.com\",\n  \"server_ip\": \"203.0.113.50\",\n  \"configured_virtual_hosts\": [\n    \"example.com\",\n    \"www.example.com\",\n    \"blog.example.com\",\n    \"shop.example.com\"\n  ],\n  \"issue\": \"This server does not have a virtual host configuration for newdomain.example.com\",\n  \"explanation\": \"While newdomain.example.com may DNS-resolve to this server's IP, the server is not configured to serve content for this domain\",\n  \"possible_causes\": [\n    \"The domain was recently added but server config not updated\",\n    \"DNS was updated but points to wrong server\",\n    \"Virtual host configuration is missing or incomplete\"\n  ],\n  \"action_for_client\": \"Do not retry on this connection. Verify the correct server for newdomain.example.com\",\n  \"action_for_admin\": \"If newdomain.example.com should be served from this server, add virtual host configuration and reload server\",\n  \"dns_info\": \"Verify that newdomain.example.com DNS points to the correct server\"\n}",
+                "explanation": "Aunque newdomain.example.com puede resolver a la misma IP que esta conexión, el servidor no tiene una configuración de virtual host para ese dominio. El servidor responde 421 indicando que no puede manejar solicitudes para ese hostname."
+            }
+        ],
+        "httpVersion": "HTTP/2, HTTP/3",
+        "specification": "RFC 7540, Section 9.1.2 (HTTP/2)",
+        "relatedHeaders": [
+            "Host",
+            ":authority (HTTP/2 pseudo-header)"
+        ],
+        "relatedCodes": [
+            400,
+            404
+        ],
+        "technicalNotes": "421 fue introducido específicamente para HTTP/2 para manejar problemas de multiplexación de conexiones. En HTTP/2, múltiples requests a diferentes hosts pueden compartir la misma conexión TCP si los hosts comparten la misma IP. Sin embargo, esto está limitado por: (1) el certificado TLS debe cubrir todos los hosts (via SAN), (2) el servidor debe estar configurado para manejar esos hosts. Cuando un cliente recibe 421, DEBE reintentar la solicitud en una nueva conexión, no puede seguir usando la conexión actual para ese host. Esto previene problemas de seguridad donde un servidor podría servir contenido para un host que no está autorizado a manejar. 421 es diferente de 404: 404 significa que el recurso no existe en el host correcto; 421 significa que el host en sí es incorrecto para esta conexión. En HTTP/1.1, 421 es raro porque cada conexión típicamente va a un solo host.",
+        "images": []
+    },
+    {
+        "code": 422,
+        "status": "Unprocessable Entity",
+        "category": "Client Error",
+        "description": "El código 422 Unprocessable Entity indica que el servidor entiende el tipo de contenido de la solicitud (el formato es correcto), y la sintaxis de la entidad de la solicitud es correcta, pero fue incapaz de procesar las instrucciones contenidas debido a errores de validación semántica o lógica de negocio. Este código es fundamental para distinguir entre diferentes tipos de errores de validación. La diferencia clave con otros códigos similares es: 400 Bad Request se usa para errores de sintaxis o formato (JSON malformado, parámetros faltantes), 409 Conflict se usa cuando hay un conflicto con el estado actual del recurso (email duplicado, versión incorrecta), mientras que 422 se usa específicamente cuando la sintaxis es correcta pero los datos no tienen sentido semántico o violan reglas de negocio. El servidor está diciendo: 'Entiendo tu solicitud perfectamente en términos de formato, pero los datos que enviaste no son válidos según las reglas de mi lógica de negocio'. El código 422 fue originalmente definido en WebDAV (RFC 4918) pero ha sido ampliamente adoptado por APIs RESTful modernas porque llena un vacío importante: proporciona un código específico para errores de validación semántica. Los ejemplos típicos incluyen: una fecha de nacimiento en el futuro (sintácticamente es una fecha válida, pero semánticamente no tiene sentido), un número de teléfono con formato correcto pero con longitud inválida para el país especificado, un precio negativo donde solo se permiten valores positivos, un enum con valor sintácticamente válido pero que no existe en el sistema, o reglas de negocio complejas como 'la fecha de fin debe ser posterior a la fecha de inicio'. Las respuestas 422 bien diseñadas deben incluir información detallada sobre qué campos específicos fallaron la validación, qué regla fue violada, y cómo corregir el problema. Esto hace que las APIs sean más fáciles de usar y debuggear.",
+        "useCases": [
+            "Errores de validación semántica (datos bien formados pero inválidos)",
+            "Violación de reglas de negocio en los datos enviados",
+            "Valores fuera de rango permitido (edad negativa, precio negativo)",
+            "Fechas lógicamente inválidas (fecha de nacimiento en el futuro)",
+            "Relaciones de datos inconsistentes (fecha fin antes de fecha inicio)",
+            "Enums o valores de lista que no existen en el sistema",
+            "Campos que no cumplen reglas de formato específicas del negocio",
+            "Validaciones que dependen del contexto o estado del sistema"
+        ],
+        "examples": [
+            {
+                "scenario": "Validación semántica - Fecha de nacimiento en el futuro",
+                "request": "POST /api/users HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"birth_date\": \"2030-05-15\",\n  \"country\": \"US\"\n}",
+                "response": "HTTP/1.1 422 Unprocessable Entity\nContent-Type: application/json\n\n{\n  \"error\": \"validation_failed\",\n  \"message\": \"The request contains semantically invalid data\",\n  \"errors\": [\n    {\n      \"field\": \"birth_date\",\n      \"value\": \"2030-05-15\",\n      \"error_code\": \"date_in_future\",\n      \"message\": \"Birth date cannot be in the future\",\n      \"current_date\": \"2024-01-17\",\n      \"validation_rule\": \"birth_date must be <= current_date\",\n      \"suggestion\": \"Please provide a valid birth date in the past\"\n    }\n  ],\n  \"note\": \"The JSON syntax is correct and the date format is valid, but the value doesn't make semantic sense\",\n  \"documentation\": \"https://api.example.com/docs/validation-rules\"\n}",
+                "explanation": "El JSON está bien formado y la fecha tiene el formato correcto (YYYY-MM-DD), pero semánticamente no tiene sentido tener una fecha de nacimiento en el futuro. Este es un error de validación lógica, no sintáctica, por lo que se usa 422."
+            },
+            {
+                "scenario": "Violación de reglas de negocio - Relaciones de datos inconsistentes",
+                "request": "POST /api/events HTTP/1.1\nHost: calendar.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"title\": \"Project Meeting\",\n  \"start_date\": \"2024-02-15T14:00:00Z\",\n  \"end_date\": \"2024-02-15T13:00:00Z\",\n  \"location\": \"Conference Room A\",\n  \"attendees\": [\"user1@example.com\", \"user2@example.com\"]\n}",
+                "response": "HTTP/1.1 422 Unprocessable Entity\nContent-Type: application/json\n\n{\n  \"error\": \"validation_failed\",\n  \"message\": \"Event data violates business rules\",\n  \"errors\": [\n    {\n      \"field\": \"end_date\",\n      \"error_code\": \"invalid_date_range\",\n      \"message\": \"End date must be after start date\",\n      \"start_date\": \"2024-02-15T14:00:00Z\",\n      \"end_date\": \"2024-02-15T13:00:00Z\",\n      \"issue\": \"End date (13:00) is before start date (14:00)\",\n      \"business_rule\": \"end_date > start_date\",\n      \"suggestion\": \"Ensure the end time is later than the start time\"\n    }\n  ],\n  \"fields_validated\": {\n    \"title\": \"valid\",\n    \"start_date\": \"valid format\",\n    \"end_date\": \"valid format, but violates business rule\",\n    \"location\": \"valid\",\n    \"attendees\": \"valid\"\n  },\n  \"note\": \"All fields have correct syntax and format, but the relationship between start_date and end_date is logically invalid\"\n}",
+                "explanation": "Ambas fechas tienen formato correcto (ISO 8601), pero la lógica de negocio requiere que end_date sea posterior a start_date. Esta es una validación semántica que requiere 422, no 400 (que sería para formato inválido)."
+            },
+            {
+                "scenario": "Múltiples errores de validación semántica",
+                "request": "POST /api/products HTTP/1.1\nHost: shop.example.com\nContent-Type: application/json\n\n{\n  \"name\": \"AB\",\n  \"price\": -25.99,\n  \"stock\": 150,\n  \"category\": \"invalid_category_xyz\",\n  \"discount_percentage\": 105,\n  \"weight\": 0,\n  \"dimensions\": {\n    \"length\": 10,\n    \"width\": -5,\n    \"height\": 8\n  }\n}",
+                "response": "HTTP/1.1 422 Unprocessable Entity\nContent-Type: application/json\n\n{\n  \"error\": \"validation_failed\",\n  \"message\": \"Multiple validation errors in product data\",\n  \"total_errors\": 5,\n  \"errors\": [\n    {\n      \"field\": \"name\",\n      \"value\": \"AB\",\n      \"error_code\": \"min_length\",\n      \"message\": \"Product name must be at least 3 characters long\",\n      \"current_length\": 2,\n      \"required_length\": 3\n    },\n    {\n      \"field\": \"price\",\n      \"value\": -25.99,\n      \"error_code\": \"negative_value\",\n      \"message\": \"Price cannot be negative\",\n      \"constraint\": \"price >= 0\"\n    },\n    {\n      \"field\": \"category\",\n      \"value\": \"invalid_category_xyz\",\n      \"error_code\": \"invalid_enum\",\n      \"message\": \"Category is not valid\",\n      \"valid_categories\": [\"electronics\", \"clothing\", \"books\", \"food\", \"toys\"],\n      \"suggestion\": \"Choose from the list of valid categories\"\n    },\n    {\n      \"field\": \"discount_percentage\",\n      \"value\": 105,\n      \"error_code\": \"out_of_range\",\n      \"message\": \"Discount percentage must be between 0 and 100\",\n      \"min\": 0,\n      \"max\": 100\n    },\n    {\n      \"field\": \"dimensions.width\",\n      \"value\": -5,\n      \"error_code\": \"negative_dimension\",\n      \"message\": \"Width cannot be negative\",\n      \"constraint\": \"width > 0\"\n    }\n  ],\n  \"note\": \"All fields are syntactically correct (proper types, valid JSON), but fail semantic/business validation\"\n}",
+                "explanation": "El JSON está perfectamente formado y todos los tipos de datos son correctos, pero múltiples campos fallan validaciones de lógica de negocio: nombre muy corto, precio negativo, categoría inexistente, descuento mayor a 100%, dimensión negativa. Todos son errores semánticos, no sintácticos."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 4918 (WebDAV), adoptado ampliamente por APIs REST",
+        "relatedHeaders": [
+            "Content-Type"
+        ],
+        "relatedCodes": [
+            400,
+            409
+        ],
+        "technicalNotes": "422 es para errores de VALIDACIÓN SEMÁNTICA/LÓGICA, no sintáctica. Diferencias clave: 400 Bad Request = sintaxis incorrecta, JSON malformado, tipos incorrectos; 422 Unprocessable Entity = sintaxis correcta, pero datos semánticamente inválidos o violan reglas de negocio; 409 Conflict = datos válidos pero conflicto con estado actual del recurso. Originalmente de WebDAV (RFC 4918) pero ampliamente adoptado por APIs REST modernas. Las mejores prácticas para respuestas 422: incluir array detallado de errores, especificar qué campo falló, explicar qué regla fue violada, proporcionar valores aceptables/rangos, sugerir cómo corregir. 422 hace APIs más usables al distinguir claramente entre errores de sintaxis vs semántica.",
+        "images": []
+    },
+    {
+        "code": 423,
+        "status": "Locked",
+        "category": "Client Error",
+        "description": "El código 423 Locked indica que el recurso al que se está intentando acceder está bloqueado (locked). Este código fue definido originalmente como parte de la extensión WebDAV (Web Distributed Authoring and Versioning) del protocolo HTTP, que permite a los usuarios editar y gestionar archivos en servidores web remotos de forma colaborativa. El concepto de 'locking' es fundamental en sistemas de edición colaborativa para prevenir conflictos cuando múltiples usuarios intentan modificar el mismo recurso simultáneamente. El servidor está diciendo: 'Este recurso está bloqueado actualmente y no puede ser modificado hasta que se libere el bloqueo'. Los bloqueos en WebDAV pueden ser de dos tipos: (1) bloqueos exclusivos (exclusive locks) donde solo el propietario del bloqueo puede modificar el recurso, y (2) bloqueos compartidos (shared locks) donde múltiples usuarios pueden leer pero ninguno puede modificar hasta que todos los bloqueos se liberen. Cuando un recurso está bloqueado, las operaciones que intentan modificarlo (PUT, PATCH, DELETE, MOVE, COPY) fallarán con 423. Sin embargo, las operaciones de solo lectura (GET, HEAD) generalmente siguen siendo permitidas. Los bloqueos típicamente incluyen: un token de bloqueo único que identifica el bloqueo, información sobre quién tiene el bloqueo, un timeout después del cual el bloqueo expira automáticamente si no se renueva, y el alcance del bloqueo (el recurso específico o una colección completa). Aunque 423 se originó en WebDAV, también puede ser útil en APIs REST modernas que implementan mecanismos de bloqueo pesimista para gestionar concurrencia. Por ejemplo, un sistema de gestión de documentos podría bloquear un documento cuando un usuario comienza a editarlo, respondiendo con 423 a otros usuarios que intenten modificarlo simultáneamente. El código 423 es diferente de 409 Conflict: 409 se usa para conflictos de concurrencia optimista (donde detectas el conflicto después de que ocurrió), mientras que 423 se usa para concurrencia pesimista (donde previenes el conflicto bloqueando el recurso por adelantado).",
+        "useCases": [
+            "WebDAV: Recurso bloqueado durante edición colaborativa de archivos",
+            "Documentos bloqueados mientras un usuario los está editando",
+            "Recursos administrativos bloqueados durante operaciones de mantenimiento",
+            "Archivos en proceso de revisión o aprobación que no pueden modificarse",
+            "Registros de base de datos bloqueados para prevenir modificaciones concurrentes",
+            "Recursos en workflow que requieren completar pasos antes de modificación",
+            "Contenido bloqueado por razones legales o de cumplimiento",
+            "Sistemas de checkout/checkin donde el recurso está 'checked out' por otro usuario"
+        ],
+        "examples": [
+            {
+                "scenario": "WebDAV - Intento de modificar archivo bloqueado",
+                "request": "PUT /documents/quarterly-report.docx HTTP/1.1\nHost: webdav.example.com\nContent-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document\nAuthorization: Bearer user_token_jane\nContent-Length: 524288\n\n[binary document data]",
+                "response": "HTTP/1.1 423 Locked\nContent-Type: application/xml; charset=\"utf-8\"\n\n<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<D:error xmlns:D=\"DAV:\">\n  <D:lock-token-submitted>\n    <D:href>/documents/quarterly-report.docx</D:href>\n  </D:lock-token-submitted>\n  <D:resource-locked>\n    <D:message>The resource is locked and cannot be modified</D:message>\n    <D:lock-owner>john.smith@example.com</D:lock-owner>\n    <D:lock-type>exclusive write</D:lock-type>\n    <D:lock-scope>exclusive</D:lock-scope>\n    <D:lock-token>opaquelocktoken:f81d4fae-7dec-11d0-a765-00a0c91e6bf6</D:lock-token>\n    <D:lock-created>2024-01-17T14:30:00Z</D:lock-created>\n    <D:lock-timeout>Second-7200</D:lock-timeout>\n    <D:lock-expires>2024-01-17T16:30:00Z</D:lock-expires>\n  </D:resource-locked>\n</D:error>",
+                "explanation": "El usuario Jane intenta modificar un documento, pero está bloqueado exclusivamente por John Smith quien lo está editando. El servidor responde con 423 proporcionando información sobre quién tiene el bloqueo y cuándo expira."
+            },
+            {
+                "scenario": "API REST moderna - Documento en edición",
+                "request": "PATCH /api/documents/789 HTTP/1.1\nHost: docs.example.com\nContent-Type: application/json\nAuthorization: Bearer user_b_token\n\n{\n  \"title\": \"Updated Title\",\n  \"content\": \"Updated content...\"\n}",
+                "response": "HTTP/1.1 423 Locked\nContent-Type: application/json\n\n{\n  \"error\": \"resource_locked\",\n  \"message\": \"This document is currently locked by another user\",\n  \"resource_id\": 789,\n  \"resource_type\": \"document\",\n  \"resource_title\": \"Project Proposal Q1 2024\",\n  \"lock_info\": {\n    \"locked\": true,\n    \"lock_type\": \"exclusive\",\n    \"locked_by\": {\n      \"user_id\": \"user_a_123\",\n      \"name\": \"Alice Johnson\",\n      \"email\": \"alice.johnson@example.com\"\n    },\n    \"locked_at\": \"2024-01-17T15:00:00Z\",\n    \"lock_duration\": \"30 minutes\",\n    \"lock_expires_at\": \"2024-01-17T15:30:00Z\",\n    \"time_remaining\": \"15 minutes\",\n    \"reason\": \"User is actively editing the document\"\n  },\n  \"allowed_operations\": [\n    \"GET /api/documents/789 (view document)\",\n    \"GET /api/documents/789/history (view history)\",\n    \"POST /api/documents/789/comments (add comments)\"\n  ],\n  \"suggestions\": [\n    \"Wait until the lock expires (15 minutes remaining)\",\n    \"Contact alice.johnson@example.com to request they release the lock\",\n    \"Subscribe to lock release notifications: POST /api/documents/789/watch\"\n  ],\n  \"note\": \"The document can still be viewed but cannot be modified while locked\"\n}",
+                "explanation": "En una API REST moderna, el usuario B intenta modificar un documento que está siendo editado por el usuario A. El sistema usa bloqueo pesimista (423) en lugar de control de concurrencia optimista (409) para prevenir conflictos antes de que ocurran."
+            },
+            {
+                "scenario": "Recurso bloqueado administrativamente",
+                "request": "DELETE /api/products/critical-item-001 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer regular_user_token",
+                "response": "HTTP/1.1 423 Locked\nContent-Type: application/json\n\n{\n  \"error\": \"resource_locked\",\n  \"message\": \"This product is locked and cannot be deleted\",\n  \"resource_id\": \"critical-item-001\",\n  \"resource_name\": \"Legacy System Integration Component\",\n  \"lock_info\": {\n    \"locked\": true,\n    \"lock_type\": \"administrative\",\n    \"locked_by\": \"system_administrator\",\n    \"locked_at\": \"2024-01-10T09:00:00Z\",\n    \"lock_reason\": \"Critical component required for legacy system integration. Deletion would break production systems.\",\n    \"lock_permanent\": true,\n    \"unlock_requires\": \"System administrator approval and impact assessment\"\n  },\n  \"impact_warning\": {\n    \"dependent_systems\": 15,\n    \"active_integrations\": 23,\n    \"estimated_downtime_if_deleted\": \"4-8 hours\",\n    \"affected_users\": \"approximately 5,000\"\n  },\n  \"alternative_actions\": [\n    \"Mark as deprecated instead: PATCH /api/products/critical-item-001/deprecate\",\n    \"Create replacement: POST /api/products (then migrate integrations)\",\n    \"Request administrative unlock: POST /api/admin/unlock-requests\"\n  ],\n  \"contact\": \"For unlock requests, contact: admin-team@example.com\",\n  \"documentation\": \"https://docs.example.com/critical-resources\"\n}",
+                "explanation": "Un producto crítico está bloqueado administrativamente para prevenir eliminación accidental que causaría problemas en producción. El bloqueo es permanente y requiere aprobación administrativa para removerse. Se proporcionan alternativas y contexto sobre el impacto."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 4918 (WebDAV), Section 11.3",
+        "relatedHeaders": [
+            "Lock-Token",
+            "If",
+            "Timeout"
+        ],
+        "relatedCodes": [
+            409
+        ],
+        "technicalNotes": "423 es específico de WebDAV pero puede usarse en APIs REST para bloqueo pesimista. Diferencias clave: 423 Locked = recurso activamente bloqueado, prevención proactiva de conflictos (concurrencia pesimista); 409 Conflict = conflicto detectado después de ocurrir (concurrencia optimista). En WebDAV, los bloqueos se crean con LOCK method, se liberan con UNLOCK method. Los bloqueos incluyen: lock token (identificador único), owner (quién tiene el bloqueo), timeout (cuándo expira), scope (exclusive o shared), depth (recurso individual o colección). Las operaciones de lectura (GET) generalmente están permitidas en recursos bloqueados. Los bloqueos pueden ser: temporales (con timeout) o indefinidos. La respuesta 423 debe incluir información sobre el bloqueo para ayudar al usuario a entender cuándo/cómo proceder. En APIs modernas, considerar si bloqueo pesimista (423) o optimista (409 con ETags) es más apropiado.",
+        "images": []
+    },
+    {
+        "code": 424,
+        "status": "Failed Dependency",
+        "category": "Client Error",
+        "description": "El código 424 Failed Dependency indica que la solicitud falló debido a que una solicitud previa ha fallado. Este código fue definido originalmente en la extensión WebDAV (RFC 4918) y se utiliza principalmente en contexto de solicitudes que dependen de otras solicitudes previas para tener éxito. El servidor está diciendo: 'No puedo procesar tu solicitud porque depende de otra operación que falló anteriormente'. Este código es especialmente relevante en operaciones batch o transaccionales donde múltiples acciones están relacionadas y el fallo de una causa que las subsecuentes también fallen. En el contexto WebDAV original, esto ocurre típicamente con el método PROPPATCH (que modifica propiedades de recursos) o en operaciones complejas que involucran múltiples recursos. Por ejemplo, si intentas copiar una estructura completa de directorios pero una de las carpetas intermedias no puede ser creada, las operaciones subsecuentes que dependían de esa carpeta fallarán con 424. El código 424 comunica que el fallo no es culpa de la solicitud actual en sí misma, sino de una dependencia que no se cumplió. Aunque 424 se originó en WebDAV, también puede ser útil en APIs REST modernas que implementan operaciones transaccionales o en cadena. Por ejemplo, en una API que procesa un flujo de trabajo de múltiples pasos, si el paso 2 falla, el paso 3 podría fallar con 424 indicando que no pudo proceder debido a la falla del paso 2. Es importante distinguir 424 de otros códigos similares: 412 Precondition Failed se usa cuando una precondición especificada en headers no se cumple, 422 Unprocessable Entity se usa para errores de validación semántica de la solicitud actual, mientras que 424 se usa específicamente cuando el fallo es debido a una dependencia externa o previa que falló. El código 424 es relativamente raro en APIs web modernas porque muchos sistemas prefieren manejar dependencias de manera diferente, como transacciones all-or-nothing o respuestas parciales con códigos de éxito/error individuales.",
+        "useCases": [
+            "WebDAV: Operación que depende de otra operación que falló",
+            "APIs batch donde una operación falla y causa que dependencias fallen",
+            "Workflows de múltiples pasos donde paso anterior falló",
+            "Operaciones transaccionales en cadena con dependencias",
+            "Creación de recursos jerárquicos donde padre no pudo crearse",
+            "Procesamiento de solicitudes compuestas donde componentes dependen entre sí",
+            "Operaciones que requieren recursos previos que no se pudieron crear"
+        ],
+        "examples": [
+            {
+                "scenario": "WebDAV - Copia de estructura con dependencias fallidas",
+                "request": "COPY /source-folder/ HTTP/1.1\nHost: webdav.example.com\nDestination: /backup/source-folder/\nDepth: infinity\nOverwrite: F",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/xml; charset=\"utf-8\"\n\n<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<D:multistatus xmlns:D=\"DAV:\">\n  <D:response>\n    <D:href>/source-folder/</D:href>\n    <D:status>HTTP/1.1 201 Created</D:status>\n  </D:response>\n  <D:response>\n    <D:href>/source-folder/subfolder1/</D:href>\n    <D:status>HTTP/1.1 403 Forbidden</D:status>\n    <D:error>\n      <D:message>Insufficient permissions to create this folder</D:message>\n    </D:error>\n  </D:response>\n  <D:response>\n    <D:href>/source-folder/subfolder1/document.txt</D:href>\n    <D:status>HTTP/1.1 424 Failed Dependency</D:status>\n    <D:error>\n      <D:message>Cannot copy file because parent folder creation failed</D:message>\n      <D:failed-dependency>/source-folder/subfolder1/</D:failed-dependency>\n      <D:dependency-error>403 Forbidden</D:dependency-error>\n    </D:error>\n  </D:response>\n  <D:response>\n    <D:href>/source-folder/subfolder1/image.jpg</D:href>\n    <D:status>HTTP/1.1 424 Failed Dependency</D:status>\n    <D:error>\n      <D:message>Cannot copy file because parent folder creation failed</D:message>\n      <D:failed-dependency>/source-folder/subfolder1/</D:failed-dependency>\n    </D:error>\n  </D:response>\n  <D:response>\n    <D:href>/source-folder/readme.txt</D:href>\n    <D:status>HTTP/1.1 201 Created</D:status>\n  </D:response>\n</D:multistatus>",
+                "explanation": "Se intentó copiar una estructura de carpetas completa. La carpeta raíz se creó exitosamente (201), pero subfolder1 falló con 403 por permisos insuficientes. Como resultado, los archivos dentro de subfolder1 (document.txt, image.jpg) no pudieron copiarse y reciben 424 Failed Dependency porque dependen de que la carpeta padre exista, lo cual falló."
+            },
+            {
+                "scenario": "API REST - Workflow de múltiples pasos con dependencia fallida",
+                "request": "POST /api/workflows/order-processing HTTP/1.1\nHost: api.example.com\nContent-Type: application/json\nAuthorization: Bearer valid_token\n\n{\n  \"order_id\": \"ORD-12345\",\n  \"steps\": [\n    {\"step\": \"validate_inventory\"},\n    {\"step\": \"reserve_items\"},\n    {\"step\": \"process_payment\"},\n    {\"step\": \"create_shipment\"},\n    {\"step\": \"send_confirmation\"}\n  ]\n}",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/json\n\n{\n  \"workflow_id\": \"WF-67890\",\n  \"order_id\": \"ORD-12345\",\n  \"overall_status\": \"partially_failed\",\n  \"steps_results\": [\n    {\n      \"step\": \"validate_inventory\",\n      \"status\": 200,\n      \"result\": \"success\",\n      \"message\": \"All items available in inventory\",\n      \"timestamp\": \"2024-01-17T16:00:00Z\"\n    },\n    {\n      \"step\": \"reserve_items\",\n      \"status\": 200,\n      \"result\": \"success\",\n      \"message\": \"Items reserved successfully\",\n      \"reservation_id\": \"RES-11111\",\n      \"timestamp\": \"2024-01-17T16:00:01Z\"\n    },\n    {\n      \"step\": \"process_payment\",\n      \"status\": 402,\n      \"result\": \"failed\",\n      \"error\": \"payment_declined\",\n      \"message\": \"Payment method declined by bank\",\n      \"decline_reason\": \"Insufficient funds\",\n      \"timestamp\": \"2024-01-17T16:00:02Z\"\n    },\n    {\n      \"step\": \"create_shipment\",\n      \"status\": 424,\n      \"result\": \"failed_dependency\",\n      \"error\": \"dependency_failed\",\n      \"message\": \"Cannot create shipment because payment processing failed\",\n      \"failed_dependency\": \"process_payment\",\n      \"dependency_error\": \"payment_declined\",\n      \"explanation\": \"Shipment creation requires successful payment\",\n      \"timestamp\": \"2024-01-17T16:00:02Z\"\n    },\n    {\n      \"step\": \"send_confirmation\",\n      \"status\": 424,\n      \"result\": \"failed_dependency\",\n      \"error\": \"dependency_failed\",\n      \"message\": \"Cannot send confirmation because payment failed\",\n      \"failed_dependency\": \"process_payment\",\n      \"explanation\": \"Confirmation can only be sent for successful orders\",\n      \"timestamp\": \"2024-01-17T16:00:02Z\"\n    }\n  ],\n  \"successful_steps\": 2,\n  \"failed_steps\": 1,\n  \"failed_dependency_steps\": 2,\n  \"rollback_actions\": [\n    {\n      \"action\": \"release_reservation\",\n      \"reservation_id\": \"RES-11111\",\n      \"status\": \"completed\",\n      \"message\": \"Items returned to available inventory\"\n    }\n  ],\n  \"next_actions\": [\n    \"Update payment method\",\n    \"Retry workflow with valid payment\"\n  ]\n}",
+                "explanation": "Un workflow de procesamiento de orden ejecuta múltiples pasos secuenciales. Los pasos 1 y 2 tienen éxito, pero el paso 3 (process_payment) falla con 402 porque la tarjeta fue declinada. Los pasos 4 y 5 (create_shipment, send_confirmation) no pueden proceder porque dependen de un pago exitoso, por lo que reciben 424 Failed Dependency. El sistema automáticamente revierte las reservaciones exitosas."
+            },
+            {
+                "scenario": "Operación batch con dependencias entre items",
+                "request": "POST /api/batch/create-project-structure HTTP/1.1\nHost: pm.example.com\nContent-Type: application/json\n\n{\n  \"project_name\": \"New Website Redesign\",\n  \"operations\": [\n    {\"type\": \"create_project\", \"name\": \"Website Redesign\"},\n    {\"type\": \"create_team\", \"project_ref\": \"@project\", \"name\": \"Design Team\"},\n    {\"type\": \"create_milestone\", \"project_ref\": \"@project\", \"name\": \"Design Phase\"},\n    {\"type\": \"assign_team_to_milestone\", \"team_ref\": \"@team\", \"milestone_ref\": \"@milestone\"}\n  ]\n}",
+                "response": "HTTP/1.1 207 Multi-Status\nContent-Type: application/json\n\n{\n  \"batch_id\": \"BATCH-999\",\n  \"operations_result\": [\n    {\n      \"operation\": 1,\n      \"type\": \"create_project\",\n      \"status\": 201,\n      \"result\": \"success\",\n      \"project_id\": \"PROJ-456\",\n      \"message\": \"Project created successfully\"\n    },\n    {\n      \"operation\": 2,\n      \"type\": \"create_team\",\n      \"status\": 409,\n      \"result\": \"failed\",\n      \"error\": \"team_name_conflict\",\n      \"message\": \"A team with name 'Design Team' already exists\",\n      \"existing_team_id\": \"TEAM-123\"\n    },\n    {\n      \"operation\": 3,\n      \"type\": \"create_milestone\",\n      \"status\": 201,\n      \"result\": \"success\",\n      \"milestone_id\": \"MILE-789\",\n      \"message\": \"Milestone created successfully\"\n    },\n    {\n      \"operation\": 4,\n      \"type\": \"assign_team_to_milestone\",\n      \"status\": 424,\n      \"result\": \"failed_dependency\",\n      \"error\": \"team_creation_failed\",\n      \"message\": \"Cannot assign team to milestone because team creation failed\",\n      \"failed_dependency\": \"create_team (operation 2)\",\n      \"dependency_error\": \"team_name_conflict\",\n      \"explanation\": \"This operation requires a newly created team, but team creation failed due to name conflict\"\n    }\n  ],\n  \"summary\": {\n    \"total_operations\": 4,\n    \"successful\": 2,\n    \"failed\": 1,\n    \"failed_dependencies\": 1\n  },\n  \"partial_success\": true,\n  \"created_resources\": [\n    {\"type\": \"project\", \"id\": \"PROJ-456\"},\n    {\"type\": \"milestone\", \"id\": \"MILE-789\"}\n  ],\n  \"resolution\": \"Use existing team TEAM-123 or rename the new team and retry operation 4\"\n}",
+                "explanation": "Una operación batch intenta crear una estructura de proyecto completa. La creación de proyecto y milestone tienen éxito, pero la creación de equipo falla porque ya existe un equipo con ese nombre (409). La operación final de asignar el equipo al milestone recibe 424 Failed Dependency porque depende de la creación exitosa del nuevo equipo, que falló."
+            }
+        ],
+        "httpVersion": "HTTP/1.1",
+        "specification": "RFC 4918 (WebDAV), Section 11.4",
+        "relatedHeaders": [],
+        "relatedCodes": [
+            207,
+            412,
+            422
+        ],
+        "technicalNotes": "424 indica que la solicitud actual falló debido a fallo de DEPENDENCIA PREVIA, no por error en la solicitud misma. Diferencias clave: 412 Precondition Failed = precondición en headers no cumplida; 422 Unprocessable Entity = error de validación en la solicitud actual; 424 Failed Dependency = fallo debido a dependencia externa/previa. Originalmente de WebDAV pero aplicable a APIs REST con operaciones dependientes. Típicamente aparece en respuestas 207 Multi-Status donde algunas operaciones tienen éxito y otras fallan. La respuesta debe indicar claramente QUÉ dependencia falló y POR QUÉ. Útil en: operaciones batch, workflows, transacciones complejas, jerarquías de recursos. Alternativas: algunas APIs prefieren all-or-nothing transactions con rollback completo en lugar de permitir fallos parciales con 424.",
+        "images": []
     }
 ]
