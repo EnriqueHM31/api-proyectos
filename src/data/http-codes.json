@@ -969,7 +969,7 @@
         "technicalNotes": "Este código está OFICIALMENTE DEPRECADO desde HTTP/1.1. Fue removido de la especificación debido a serias preocupaciones de seguridad. Los navegadores modernos NO lo implementan y lo ignoran. Representaba un vector de ataque para man-in-the-middle. NUNCA debe ser usado en implementaciones nuevas. Las configuraciones de proxy deben manejarse a nivel de sistema operativo, configuración de red del usuario, o PAC (Proxy Auto-Config) files, NO mediante respuestas HTTP.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701324/305_paioqd.png",
                 "alt": "Imagen que representa el nombre del código 305 Use Proxy"
             },
             {
@@ -1009,7 +1009,7 @@
         "technicalNotes": "El código 306 fue propuesto en borradores tempranos de HTTP/1.1 pero fue eliminado antes de la especificación final. En RFC 7231, aparece listado como '306 (Unused)' indicando que el número está reservado pero sin significado asignado. A diferencia del 305 que fue deprecado después de uso, el 306 simplemente nunca existió oficialmente. NO debe ser implementado ni usado en sistemas modernos. Su presencia en listados de códigos HTTP es puramente histórica.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701322/306_egqdxk.png",
                 "alt": "Imagen que representa el nombre del código 306 Switch Proxy"
             },
             {
@@ -1077,7 +1077,7 @@
         "technicalNotes": "El código 307 fue introducido en HTTP/1.1 para eliminar la ambigüedad del 302. La diferencia clave es que 307 GARANTIZA que el método HTTP se preserve (POST sigue siendo POST, PUT sigue siendo PUT, etc.), mientras que 302 en la práctica causa que navegadores cambien POST a GET. Para redirecciones temporales donde el método debe preservarse, siempre usa 307. Para redirecciones temporales donde cambiar a GET es aceptable o deseado, usa 302 o mejor aún 303. Los navegadores NO cachean 307 agresivamente, similar a 302. Los motores de búsqueda mantienen el URL original en índices.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701321/307_zejcdc.png",
                 "alt": "Imagen que representa el nombre del código 307 Temporary Redirect"
             },
             {
@@ -1149,7 +1149,7 @@
         "technicalNotes": "El código 308 es relativamente nuevo (RFC 7538, 2015) y fue creado para llenar el vacío de un código de redirección permanente que preserve el método HTTP. Es a 301 lo que 307 es a 302. Combina permanencia (como 301) con preservación de método (como 307). Los navegadores modernos lo soportan bien desde ~2015-2016. Al igual que 301, los navegadores y motores de búsqueda deben cachear 308 y actualizar índices. La diferencia crítica con 301 es que 308 GARANTIZA que POST/PUT/DELETE/PATCH se preserven, mientras que 301 históricamente causa que navegadores cambien POST a GET. Para APIs RESTful con redirecciones permanentes, 308 es casi siempre la elección correcta.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768701324/308_ypkqc3.png",
                 "alt": "Imagen que representa el nombre del código 308 Permanent Redirect"
             },
             {
