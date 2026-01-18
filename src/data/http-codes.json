@@ -1944,7 +1944,7 @@
         "technicalNotes": "413 se usa cuando el payload EXCEDE un límite, mientras que 411 Length Required se usa cuando falta el encabezado Content-Length. El nombre cambió de 'Request Entity Too Large' a 'Payload Too Large' en especificaciones recientes para mayor claridad. La respuesta puede incluir Retry-After si la condición es temporal (cuotas por periodo). Los límites pueden ser: por solicitud individual, agregados por periodo de tiempo, por usuario/plan, o por tipo de contenido. Los servidores deben documentar claramente sus límites. Para archivos grandes, considerar: chunked upload APIs, compresión, procesamiento asíncrono con polling. Los límites comunes: nginx default 1MB, Apache default 2GB (configurable), servicios cloud 5-100MB para APIs.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754170/413_s69lyx.png",
                 "alt": "Imagen que representa el nombre del código 413 Payload Too Large"
             },
             {
@@ -1999,7 +1999,7 @@
         "technicalNotes": "414 es específico para longitud de URI (URL completa incluyendo query string), mientras que 413 Payload Too Large es para el cuerpo de la solicitud. No hay límite máximo definido en la especificación HTTP, cada servidor implementa sus propios límites. Límites típicos: navegadores ~2,000 caracteres (IE: 2,083), servidores web 2K-8K bytes. Mejores prácticas: usar POST para datos complejos, mantener URLs bajo 2,000 caracteres para compatibilidad, usar IDs/tokens en lugar de datos completos, implementar mecanismos de 'saved searches' o 'saved filters'. Query strings largos también pueden causar problemas de seguridad (datos sensibles en logs) y caching issues.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754170/414_o8x00s.png",
                 "alt": "Imagen que representa el nombre del código 414 URI Too Long"
             },
             {
@@ -2055,7 +2055,7 @@
         "technicalNotes": "415 es sobre el Content-Type de lo que el cliente ENVÍA (request body), mientras que 406 Not Acceptable es sobre lo que el cliente puede ACEPTAR en la respuesta (Accept header). El servidor debería incluir información sobre qué tipos de contenido acepta, aunque no hay un encabezado estándar específico para esto en respuestas 415 (algunos usan Accept, otros lo incluyen en el cuerpo de la respuesta). Content-Type común aceptados: application/json, application/xml, application/x-www-form-urlencoded, multipart/form-data, text/plain. Para uploads de archivos, el Content-Type debe coincidir con el tipo real del archivo. APIs RESTful modernas típicamente requieren application/json. La validación puede ser estricta (solo tipos específicos) o permisiva (cualquier tipo pero con advertencias).",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754170/415_tl94ln.png",
                 "alt": "Imagen que representa el nombre del código 415 Unsupported Media Type"
             },
             {
@@ -2114,7 +2114,7 @@
         "technicalNotes": "416 es la respuesta cuando un rango NO puede satisfacerse. Cuando un rango SÍ puede satisfacerse, el servidor responde 206 Partial Content. La respuesta 416 DEBE incluir Content-Range con el formato 'bytes */size' donde size es el tamaño total del recurso. El encabezado If-Range puede usarse para hacer requests de rango condicionales: si el recurso cambió, el servidor ignora el Range y envía 200 con el recurso completo en lugar de 416. Formato válido de Range: bytes=start-end (ambos inclusivos), bytes=start- (desde start hasta el final), bytes=-suffix (últimos suffix bytes). Los índices comienzan en 0. Un archivo de 1000 bytes va de 0 a 999. Múltiples rangos son soportados: Range: bytes=0-100,200-300.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754170/416_rsmaxq.png",
                 "alt": "Imagen que representa el nombre del código 416 Range Not Satisfiable"
             },
             {
@@ -2168,7 +2168,7 @@
         "technicalNotes": "417 es específicamente para fallos relacionados con el encabezado Expect. El caso más común es Expect: 100-continue. Cuando un cliente envía Expect: 100-continue, el servidor tiene tres opciones: (1) responder 100 Continue si puede procesar la solicitud, (2) responder 417 Expectation Failed si no puede cumplir la expectativa, (3) responder directamente con código de error apropiado (401, 403, 413, etc.) si ya sabe que la solicitud fallará. El código 417 es raro en la práctica porque muchos servidores ignoran Expect o no lo implementan completamente. Si el servidor no entiende/soporta el encabezado Expect, puede ignorarlo y procesar normalmente. 417 NO debe usarse para otros tipos de validación o precondiciones - usar códigos apropiados como 400, 412, 428.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754171/417_kh1l57.png",
                 "alt": "Imagen que representa el nombre del código 417 Expectation Failed"
             },
             {
@@ -2218,7 +2218,7 @@
         "technicalNotes": "418 I'm a teapot es oficialmente un código reservado pero NO debe usarse para indicar errores reales en aplicaciones de producción. Origen: RFC 2324 (1998) como parte del protocolo HTCPCP para controlar cafeteras por internet (broma del April Fools'). A pesar de ser una broma, está oficialmente reservado en el registro IANA desde entonces. En 2017 hubo intento de eliminarlo (save418.com movement lo preservó). RFC 7168 (2014) actualizó HTCPCP pero mantuvo 418. Uso moderno: principalmente easter eggs y humor en APIs. Los clientes HTTP estándar no tienen lógica especial para 418. Es un símbolo de la cultura geek/developer y del lado humano de las especificaciones técnicas. NO usar en lugar de códigos apropiados como 400, 404, 501.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768754171/418_sx9w7l.png",
                 "alt": "Imagen que representa el nombre del código 418 I'm a teapot"
             },
             {
