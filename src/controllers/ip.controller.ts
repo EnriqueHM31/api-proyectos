@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { IpModel } from "../models/local/ip.model.js";
 import { crearUrlGeolocalizacion, validarSiEsUnaIp, validarStringVacio } from "../utils/Geolocalizacion/index.js";
+import { validarMessageError } from "../utils/index.js";
 
 const modelIp = new IpModel();
 
@@ -22,7 +23,7 @@ export class IpController {
             res.status(200).json(data);
 
         } catch (error) {
-            const message = error instanceof Error ? error.message : "Error interno del servidor";
+            const message = validarMessageError(error, "Error interno del servidor");
             if (!res.headersSent) {
                 res.status(500).json({
                     error: message

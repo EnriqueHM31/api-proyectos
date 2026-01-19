@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { HttpCodesModel } from "../models/local/http-codes.model.js";
 import { ValidarNumero, ValidarStringVacio } from "../utils/HttpCodes/index.js";
+import { validarMessageError } from "../utils/index.js";
 
 const httpCodesModel = new HttpCodesModel();
 
@@ -11,7 +12,7 @@ export class HttpCodesController {
             res.status(200).json(dataHttpCodes);
 
         } catch (error) {
-            const message = error instanceof Error ? error.message : "Error interno del servidor";
+            const message = validarMessageError(error, "Error interno del servidor");
             res.status(500).json({ error: { message: message } });
         }
     };
@@ -27,7 +28,7 @@ export class HttpCodesController {
 
             res.status(200).json(httpCodeFound);
         } catch (error) {
-            const message = error instanceof Error ? error.message : "Error interno del servidor";
+            const message = validarMessageError(error, "Error interno del servidor");
             res.status(400).json({ error: { message } });
         }
     };
