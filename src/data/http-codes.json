@@ -2273,7 +2273,7 @@
         "technicalNotes": "419 NO es un código HTTP estándar oficial. No aparece en ninguna RFC de IETF. Es una extensión no estándar popularizada por Laravel framework para indicar tokens CSRF expirados. Otros frameworks/servidores a veces usan 419 para timeouts de autenticación similares. MEJOR PRÁCTICA: Usar códigos estándar como 403 Forbidden con error específico en el cuerpo en lugar de códigos inventados. Ventajas de códigos estándar: mejor interoperabilidad, clientes HTTP genéricos los entienden, no confunde herramientas de debugging. El uso de 419 por Laravel está tan extendido que es reconocido en la comunidad PHP, pero puede causar confusión fuera de ese ecosistema. Clientes HTTP estándar tratarán 419 como un error genérico 4xx.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783438/419_ou4ooa.png",
                 "alt": "Imagen que representa el nombre del código 419 Authentication Timeout"
             },
             {
@@ -2329,7 +2329,7 @@
         "technicalNotes": "420 NO es un código HTTP estándar oficial. Múltiples usos conflictivos: (1) Twitter: 'Enhance Your Calm' para rate limiting (DEPRECADO, ahora usa 429), (2) Spring Framework: 'Method Failure' (DEPRECADO), (3) Referencias culturales de internet (4/20). NUNCA usar en producción. Para rate limiting: usa 429 Too Many Requests (estándar oficial desde RFC 6585). Para fallos de método del servidor: usa 500 Internal Server Error o códigos 5xx apropiados. El uso de códigos no estándar causa: problemas de interoperabilidad, confusión en clientes HTTP, dificultades de debugging, incompatibilidad con herramientas de monitoreo. La historia de 420 es un ejemplo perfecto de por qué NO inventar códigos propios. Twitter eventualmente migró a 429 estándar, demostrando que los estándares existen por buenas razones.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783438/420_m0ml53.png",
                 "alt": "Imagen que representa el nombre del código 420 Method Failure"
             },
             {
@@ -2385,7 +2385,7 @@
         "technicalNotes": "421 fue introducido específicamente para HTTP/2 para manejar problemas de multiplexación de conexiones. En HTTP/2, múltiples requests a diferentes hosts pueden compartir la misma conexión TCP si los hosts comparten la misma IP. Sin embargo, esto está limitado por: (1) el certificado TLS debe cubrir todos los hosts (via SAN), (2) el servidor debe estar configurado para manejar esos hosts. Cuando un cliente recibe 421, DEBE reintentar la solicitud en una nueva conexión, no puede seguir usando la conexión actual para ese host. Esto previene problemas de seguridad donde un servidor podría servir contenido para un host que no está autorizado a manejar. 421 es diferente de 404: 404 significa que el recurso no existe en el host correcto; 421 significa que el host en sí es incorrecto para esta conexión. En HTTP/1.1, 421 es raro porque cada conexión típicamente va a un solo host.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783439/421_w2uwvz.png",
                 "alt": "Imagen que representa el nombre del código 421 Misdirected Request"
             },
             {
@@ -2441,7 +2441,7 @@
         "technicalNotes": "422 es para errores de VALIDACIÓN SEMÁNTICA/LÓGICA, no sintáctica. Diferencias clave: 400 Bad Request = sintaxis incorrecta, JSON malformado, tipos incorrectos; 422 Unprocessable Entity = sintaxis correcta, pero datos semánticamente inválidos o violan reglas de negocio; 409 Conflict = datos válidos pero conflicto con estado actual del recurso. Originalmente de WebDAV (RFC 4918) pero ampliamente adoptado por APIs REST modernas. Las mejores prácticas para respuestas 422: incluir array detallado de errores, especificar qué campo falló, explicar qué regla fue violada, proporcionar valores aceptables/rangos, sugerir cómo corregir. 422 hace APIs más usables al distinguir claramente entre errores de sintaxis vs semántica.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783439/422_auwvoq.png",
                 "alt": "Imagen que representa el nombre del código 422 Unprocessable Entity"
             },
             {
@@ -2498,7 +2498,7 @@
         "technicalNotes": "423 es específico de WebDAV pero puede usarse en APIs REST para bloqueo pesimista. Diferencias clave: 423 Locked = recurso activamente bloqueado, prevención proactiva de conflictos (concurrencia pesimista); 409 Conflict = conflicto detectado después de ocurrir (concurrencia optimista). En WebDAV, los bloqueos se crean con LOCK method, se liberan con UNLOCK method. Los bloqueos incluyen: lock token (identificador único), owner (quién tiene el bloqueo), timeout (cuándo expira), scope (exclusive o shared), depth (recurso individual o colección). Las operaciones de lectura (GET) generalmente están permitidas en recursos bloqueados. Los bloqueos pueden ser: temporales (con timeout) o indefinidos. La respuesta 423 debe incluir información sobre el bloqueo para ayudar al usuario a entender cuándo/cómo proceder. En APIs modernas, considerar si bloqueo pesimista (423) o optimista (409 con ETags) es más apropiado.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783439/423_vqb1x2.png",
                 "alt": "Imagen que representa el nombre del código 423 Locked"
             },
             {
@@ -2552,7 +2552,7 @@
         "technicalNotes": "424 indica que la solicitud actual falló debido a fallo de DEPENDENCIA PREVIA, no por error en la solicitud misma. Diferencias clave: 412 Precondition Failed = precondición en headers no cumplida; 422 Unprocessable Entity = error de validación en la solicitud actual; 424 Failed Dependency = fallo debido a dependencia externa/previa. Originalmente de WebDAV pero aplicable a APIs REST con operaciones dependientes. Típicamente aparece en respuestas 207 Multi-Status donde algunas operaciones tienen éxito y otras fallan. La respuesta debe indicar claramente QUÉ dependencia falló y POR QUÉ. Útil en: operaciones batch, workflows, transacciones complejas, jerarquías de recursos. Alternativas: algunas APIs prefieren all-or-nothing transactions con rollback completo en lugar de permitir fallos parciales con 424.",
         "images": [
             {
-                "imageCover": "",
+                "imageCover": "https://res.cloudinary.com/dovznesem/image/upload/v1768783444/424_ghhg82.png",
                 "alt": "Imagen que representa el nombre del código 424 Failed Dependency"
             },
             {
