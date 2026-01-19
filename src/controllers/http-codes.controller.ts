@@ -1,38 +1,36 @@
-import HttpCodes from "../data/http-codes.json" with { type: "json" };
 import type { Request, Response } from "express";
-import type { HttpCode } from "../types/http-codes.d.ts";
+import { HttpCodesModel } from "../models/local/http-codes.model.js";
+import { ValidarNumero, ValidarStringVacio } from "../utils/HttpCodes/index.js";
+
+const httpCodesModel = new HttpCodesModel();
 
 export class HttpCodesController {
-    getHttpCodesAll = (_req: Request, res: Response) => {
-        console.log("Solicitud recibida para obtener códigos HTTP");
+    getHttpCodesAll = async (_req: Request, res: Response) => {
+        try {
+            const dataHttpCodes = await httpCodesModel.getHttpCodes();
+            res.status(200).json(dataHttpCodes);
 
-        res.status(200).json(HttpCodes);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Error interno del servidor";
+            res.status(500).json({ error: { message: message } });
+        }
     };
 
-    getHttpCode = (req: Request, res: Response) => {
-        console.log("Solicitud recibida para obtener un código HTTP");
+    getHttpCode = async (req: Request, res: Response) => {
+        try {
+            const codeParam = req.params.code as string;
 
-        const code = req.params.code;
-        const httpCode = HttpCodes as HttpCode[] | undefined;
+            const codeString = ValidarStringVacio(codeParam);
+            const codeNumber = ValidarNumero(codeString);
 
-        if (!code) {
-            res.status(400).json({ error: "Falta el código" });
-            return;
+            const httpCodeFound = await httpCodesModel.getHttpCode({ code: codeNumber });
+
+            res.status(200).json(httpCodeFound);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Error interno del servidor";
+            res.status(400).json({ error: { message } });
         }
-
-        const codeNumber = parseInt(code as string);
-
-        if (isNaN(codeNumber)) {
-            res.status(400).json({ error: "El código debe ser un número" });
-            return;
-        }
-
-        httpCode?.forEach((httpCode) => {
-            if (httpCode.code === codeNumber) {
-                res.status(200).json(httpCode);
-                return;
-            }
-        });
-
     };
+
+
 }
