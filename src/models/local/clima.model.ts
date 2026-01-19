@@ -15,7 +15,6 @@ export class ClimaModel {
 
             return data;
         } catch (error) {
-            console.error("Error interno del servidor:", error);
             return {
                 error: {
                     code: 500,
