@@ -2,27 +2,24 @@ export class ClimaModel {
     async getClima({ url }: { url: string }) {
         try {
             const response = await fetch(url);
+            const data = await response.json() as { error?: { code: number, message: string } };
 
-            // 4️⃣ Manejo de error HTTP
             if (!response.ok) {
-                const data = await response.json() as { error?: { code: number, message: string } };
                 return {
                     error: {
-                        code: data.error?.code,
-                        message: data.error?.message
+                        code: data.error?.code ?? response.status,
+                        message: data.error?.message ?? "Error desconocido"
                     }
                 };
             }
 
-            // 5️⃣ Parseo seguro
-            const data = await response.json();
             return data;
-            
         } catch (error) {
+            console.error("Error interno del servidor:", error);
             return {
                 error: {
                     code: 500,
-                    message: "Error interno del servidor"
+                    message: error
                 }
             };
         }
