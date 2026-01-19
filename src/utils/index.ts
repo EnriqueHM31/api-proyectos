@@ -11,3 +11,9 @@ const __dirname = path.dirname(__filename);
 const SRC_ROOT = path.resolve(__dirname, "..");
 
 export { __filename, __dirname, SRC_ROOT };
+
+
+export function validarMessageError(error: any, messageDefecto: string) {
+    return error instanceof Error ? error.message : messageDefecto;
+
+}
