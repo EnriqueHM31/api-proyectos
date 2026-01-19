@@ -31,5 +31,5 @@ export function validarString(valor: any, valorPorDefecto: string = ""): string 
     if (typeof valor === "string" && valor.trim() !== "") {
         return valor.trim(); // eliminamos espacios al inicio y final
     }
-    return valorPorDefecto;
+    throw new Error("El valor no es una cadena de texto");
 }
