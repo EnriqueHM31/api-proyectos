@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { EmailModel } from "../models/local/email.model.js";
+import { validarString } from "../utils/Email/index.js";
 import { construirEmail } from "../utils/Email/index.js";
-import { validarString } from "../utils/Clima/index.js";
 
 const emailModel = new EmailModel();
 
@@ -10,13 +10,13 @@ export class EmailController {
     try {
       const { email: emailRecibido, comentario: comentarioRecibido, page: paginaRecibida } = req.body;
 
+      console.log({ emailRecibido, comentarioRecibido, paginaRecibida });
       // ✅ Validaciones básicas
-      const email = validarString(emailRecibido);
+      const email = validarString(emailRecibido, "email");
 
-      const comentario = validarString(comentarioRecibido);
+      const comentario = validarString(comentarioRecibido, "comentario");
 
-      const page = validarString(paginaRecibida);
-
+      const page = validarString(paginaRecibida, "pagina");
 
       const html = construirEmail({ page, comentario, email });
       const paginaDondeFueMandado = `Mensaje desde la pagina ${page}`
@@ -26,6 +26,7 @@ export class EmailController {
       return res.status(200).json({
         ok: true,
         message: "Correo enviado correctamente",
+        error: null
       });
 
     } catch (error: any) {
