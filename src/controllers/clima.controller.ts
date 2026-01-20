@@ -13,12 +13,15 @@ export class ClimaController {
             const { lugar: lugarParam } = req.params;
             const { days: daysParam } = req.query;
 
+            console.log({ lugarParam, daysParam });
+
             const days = validarDays(daysParam);
             const lugar = validarString(lugarParam);
             const url = crearUrlClima(this.urlClima, { lugar, days });
 
             const data = await climaModel.getClima({ url });
 
+            console.log(data);
             res.status(200).json(data);
 
         } catch (error) {
