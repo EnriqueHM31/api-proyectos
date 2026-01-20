@@ -9,7 +9,7 @@ export class EmailModel {
         const response: CreateEmailResponse = await resend.emails.send({
             from: process.env.RESEND_FROM || "onboarding@resend.dev",
             to: "luisenriquehernandezmarin0@gmail.com",
-            subject: `Mensaje desde la pagina ${paginaDondeFueMandado}`,
+            subject: `${paginaDondeFueMandado}`,
             html,
         });
 
