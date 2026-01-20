@@ -8,6 +8,7 @@ import { climaRouter } from "./routes/clima.routes.js";
 import { geoIpRouter } from "./routes/geoIp.routes.js";
 import { homeRouter } from "./routes/home.routes.js";
 import { httpCodesRouter } from "./routes/http-codes.routes.js";
+import emailRouter from "./routes/email.routes.js";
 
 /*------------------ APP ------------------*/
 const app = express();
@@ -23,6 +24,7 @@ app.use(homeRouter);
 app.use("/geolocalizacion", geoIpRouter);
 app.use("/clima", climaRouter);
 app.use("/http-codes", httpCodesRouter);
+app.use("/email", emailRouter);
 
 /*------------------ LISTEN ------------------*/
 app.listen(PORT, '192.168.1.73', () => {
