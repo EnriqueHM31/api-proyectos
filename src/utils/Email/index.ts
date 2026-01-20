@@ -85,9 +85,10 @@ export const construirEmail = ({ page, comentario, email }: { page: string, come
 }
 
 
-export const validarString = (valor: any): string => {
+export const validarString = (valor: any, campo: string): string => {
     if (typeof valor === "string" && valor.trim() !== "") {
         return valor.trim(); // eliminamos espacios al inicio y final
     }
-    throw new Error("El valor no es una cadena de texto");
+    const mensaje = `En el campo ${campo} no se ha proporcionado un valor válido`;
+    throw new Error(mensaje);
 };
