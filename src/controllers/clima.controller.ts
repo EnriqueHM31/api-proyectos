@@ -13,23 +13,27 @@ export class ClimaController {
             const { lugar: lugarParam } = req.params;
             const { days: daysParam } = req.query;
 
-            console.log({ lugarParam, daysParam });
-
             const days = validarDays(daysParam);
             const lugar = validarString(lugarParam);
             const url = crearUrlClima(this.urlClima, { lugar, days });
 
             const data = await climaModel.getClima({ url });
 
-            console.log(data);
-            res.status(200).json(data);
+            res.status(200).json({
+                ok: true,
+                message: "Datos obtenidos correctamente",
+                data: data,
+                error: null
+            });
 
         } catch (error) {
 
             const message = validarMessageError(error, "Error interno del servidor");
             if (!res.headersSent) {
                 res.status(500).json({
-                    error: message
+                    ok: false,
+                    message: message,
+                    error: error
                 });
             }
         }
