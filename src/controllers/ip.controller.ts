@@ -29,13 +29,14 @@ export class IpController {
 
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
+            console.log(message);
             if (!res.headersSent) {
                 res.status(500).json(
                     {
                         ok: false,
                         data: null,
-                        message: message,
-                        error: error
+                        message: "Error interno del servidor",
+                        error: message
                     }
                 );
             }
