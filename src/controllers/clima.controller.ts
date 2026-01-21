@@ -18,6 +18,14 @@ export class ClimaController {
             const url = crearUrlClima(this.urlClima, { lugar, days });
 
             const data = await climaModel.getClima({ url });
+            if (data.error) {
+                res.status(400).json({
+                    ok: false,
+                    message: data.error.message,
+                    error: data.error,
+                    data: null,
+                });
+            }
 
             res.status(200).json({
                 ok: true,
