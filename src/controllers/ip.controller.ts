@@ -20,14 +20,24 @@ export class IpController {
 
             const data = await modelIp.getIp({ url: urlGeolocalizacion });
 
-            res.status(200).json(data);
+            res.status(200).json({
+                ok: true,
+                message: "Datos obtenidos correctamente",
+                data: data,
+                error: null
+            });
 
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
             if (!res.headersSent) {
-                res.status(500).json({
-                    error: message
-                });
+                res.status(500).json(
+                    {
+                        ok: false,
+                        data: null,
+                        message: message,
+                        error: error
+                    }
+                );
             }
         }
     };
