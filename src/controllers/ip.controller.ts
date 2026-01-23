@@ -29,7 +29,6 @@ export class IpController {
 
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
-            console.log(message);
             if (!res.headersSent) {
                 res.status(500).json(
                     {

@@ -10,6 +10,7 @@ export class EmailController {
     try {
       const { email: emailRecibido, comentario: comentarioRecibido, page: paginaRecibida } = req.body;
 
+
       // ✅ Validaciones básicas
       const email = validarString(emailRecibido, "email");
 
