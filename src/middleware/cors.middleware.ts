@@ -9,7 +9,8 @@ const allowedOrigins = [
     'http://localhost:4321',
     'http://192.168.1.73:5173/',
     'http://192.168.1.73:4321/',
-    'http://192.168.1.73:5173'
+    'http://192.168.1.73:5173',
+    "https://hoppscotch.io"
 
 
 ];
