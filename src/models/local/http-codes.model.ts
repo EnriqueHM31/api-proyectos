@@ -10,12 +10,12 @@ export class HttpCodesModel {
         return HttpCodes;
     }
 
-    async getHttpCode({ code }: { code: number }) {
+    async getHttpCode({ code }: { code: string }) {
         if (!HttpCodes) {
             throw new Error("No hay códigos HTTP disponibles");
         }
 
-        const httpCode = HttpCodes.find((httpCode) => httpCode.code === code);
+        const httpCode = HttpCodes.find((httpCode) => httpCode.code === Number(code));
 
         if (!httpCode) {
             throw new Error("Código HTTP no encontrado");
