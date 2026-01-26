@@ -8,12 +8,13 @@ export function middlewareEmail(req: Request, res: Response, next: NextFunction)
 
     if (!result.success) {
         const message = result.error.issues.map(issue => issue.message);
+        const path = result.error.issues.map(issue => issue.path);
         res.status(400).json({
             ok: false,
             message: "Error en los parámetros",
             error: {
-                code: result.error.name,
-                message: message.join(", "),
+                code: `${result.error.name}`,
+                message: `${path.join(", ")}:  ${message.join(", ")}`,
             },
             data: null,
         });
