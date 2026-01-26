@@ -7,14 +7,14 @@ export function middlewareEmail(req: Request, res: Response, next: NextFunction)
     const result = validarPartialEmailCampos({ email, comentario, page });
 
     if (!result.success) {
-        const message = result.error.issues.map(issue => issue.message);
-        const path = result.error.issues.map(issue => issue.path);
+        const message = result.error.issues[0]?.message ?? "Error en los parámetros";
+        const path = result.error.issues[0]?.path ?? "Datos";
         res.status(400).json({
             ok: false,
             message: "Error en los parámetros",
             error: {
                 code: `${result.error.name}`,
-                message: `${path.join(", ")}:  ${message.join(", ")}`,
+                message: `${path}:  ${message}`,
             },
             data: null,
         });
