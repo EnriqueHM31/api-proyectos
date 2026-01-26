@@ -1,12 +1,12 @@
 type ClimaParams = {
     lugar: string;
-    days?: number; // opcional, por si quieres dejar un valor por defecto
+    days?: string; // opcional, por si quieres dejar un valor por defecto
 };
 
-export function crearUrlClima(baseUrl: string, { lugar, days = 1 }: ClimaParams): string {
+export function crearUrlClima(baseUrl: string, { lugar, days = "1" }: ClimaParams): string {
     const params = new URLSearchParams({
         q: lugar,
-        days: days.toString()
+        days: days
     });
 
     return `${baseUrl}&${params.toString()}`;
