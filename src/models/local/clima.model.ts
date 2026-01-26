@@ -1,5 +1,5 @@
 export class ClimaModel {
-    async getClima({ url }: { url: string }) {
+    async getClima({ url }: { url: string }): Promise<{ error?: { code: number, message: string } }> {
         try {
             const response = await fetch(url);
             const data = await response.json() as { error?: { code: number, message: string } };
@@ -18,7 +18,7 @@ export class ClimaModel {
             return {
                 error: {
                     code: 500,
-                    message: error
+                    message: error as string
                 }
             };
         }
