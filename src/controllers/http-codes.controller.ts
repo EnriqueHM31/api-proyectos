@@ -9,6 +9,7 @@ export class HttpCodesController {
     getHttpCodesAll = async (_req: Request, res: Response) => {
         try {
             const dataHttpCodes = await httpCodesModel.getHttpCodes();
+
             res.status(200).json({
                 ok: true,
                 message: "Datos obtenidos correctamente",
@@ -29,12 +30,9 @@ export class HttpCodesController {
 
     getHttpCode = async (req: Request, res: Response) => {
         try {
-            const codeParam = req.params.code as string;
+            const code = req.params.code as string;
 
-            const codeString = ValidarStringVacio(codeParam);
-            const codeNumber = ValidarNumero(codeString);
-
-            const httpCodeFound = await httpCodesModel.getHttpCode({ code: codeNumber });
+            const httpCodeFound = await httpCodesModel.getHttpCode({ code });
 
             res.status(200).json({
                 ok: true,
