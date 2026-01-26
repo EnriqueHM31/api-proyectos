@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { IpModel } from "../models/local/ip.model.js";
-import { crearUrlGeolocalizacion, validarSiEsUnaIp, validarStringVacio } from "../utils/Geolocalizacion/index.js";
+import { crearUrlGeolocalizacion } from "../utils/Geolocalizacion/index.js";
 import { validarMessageError } from "../utils/index.js";
 
 const modelIp = new IpModel();
@@ -10,13 +10,10 @@ export class IpController {
 
     getIp = async (req: Request, res: Response) => {
         try {
-            const { ip } = req.params;
+            const { ip } = req.params as { ip: string };
 
-            const ipString = validarStringVacio(ip);
 
-            const ipFormat = validarSiEsUnaIp(ipString);
-
-            const urlGeolocalizacion = crearUrlGeolocalizacion(this.urlGeolocalizacion, ipFormat);
+            const urlGeolocalizacion = crearUrlGeolocalizacion(this.urlGeolocalizacion, ip);
 
             const data = await modelIp.getIp({ url: urlGeolocalizacion });
 
