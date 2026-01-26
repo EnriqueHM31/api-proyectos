@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { HttpCodesModel } from "../models/local/http-codes.model.js";
-import { ValidarNumero, ValidarStringVacio } from "../utils/HttpCodes/index.js";
 import { validarMessageError } from "../utils/index.js";
 
 const httpCodesModel = new HttpCodesModel();
