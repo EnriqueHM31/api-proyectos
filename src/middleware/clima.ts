@@ -5,6 +5,7 @@ export function middlewareClima(req: Request, res: Response, next: NextFunction)
     const { days } = req.query as { days: string };
     const { lugar } = req.params as { lugar: string };
 
+    console.log({ days, lugar });
     const result = validarPartialClimaCampos({ lugar, days });
 
     if (!result.success) {
