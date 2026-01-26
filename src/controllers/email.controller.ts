@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { EmailModel } from "../models/local/email.model.js";
-import { validarString } from "../utils/Email/index.js";
 import { construirEmail } from "../utils/Email/index.js";
 
 const emailModel = new EmailModel();
@@ -8,15 +7,7 @@ const emailModel = new EmailModel();
 export class EmailController {
   sendEmailController = async (req: Request, res: Response) => {
     try {
-      const { email: emailRecibido, comentario: comentarioRecibido, page: paginaRecibida } = req.body;
-
-
-      // ✅ Validaciones básicas
-      const email = validarString(emailRecibido, "email");
-
-      const comentario = validarString(comentarioRecibido, "comentario");
-
-      const page = validarString(paginaRecibida, "pagina");
+      const { email, comentario, page } = req.body;
 
       const html = construirEmail({ page, comentario, email });
       const paginaDondeFueMandado = `Mensaje desde la pagina ${page}`
