@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { HttpCodesModel } from "../models/local/http-codes.model.js";
-import { validarMessageError } from "../utils/index.js";
+import { formatoRespuesta, validarMessageError } from "../utils/index.js";
 
 const httpCodesModel = new HttpCodesModel();
 
@@ -9,21 +9,13 @@ export class HttpCodesController {
         try {
             const dataHttpCodes = await httpCodesModel.getHttpCodes();
 
-            res.status(200).json({
-                ok: true,
-                message: "Datos obtenidos correctamente",
-                data: dataHttpCodes,
-                error: null
-            });
+            const response = formatoRespuesta({ ok: true, message: "Datos obtenidos correctamente", error: null, data: dataHttpCodes });
+            res.status(200).json(response);
 
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
-            res.status(500).json({
-                ok: false,
-                data: null,
-                message: message,
-                error: error
-            });
+            const response = formatoRespuesta({ ok: false, message: message, error: error, data: null });
+            res.status(500).json(response);
         }
     };
 
@@ -33,20 +25,12 @@ export class HttpCodesController {
 
             const httpCodeFound = await httpCodesModel.getHttpCode({ code });
 
-            res.status(200).json({
-                ok: true,
-                message: "Datos obtenidos correctamente",
-                data: httpCodeFound,
-                error: null
-            });
+            const response = formatoRespuesta({ ok: true, message: "Datos obtenidos correctamente", error: null, data: httpCodeFound });
+            res.status(200).json(response);
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
-            res.status(400).json({
-                ok: false,
-                data: null,
-                message: message,
-                error: error
-            });
+            const response = formatoRespuesta({ ok: false, message: message, error: error, data: null });
+            res.status(400).json(response);
         }
     };
 
