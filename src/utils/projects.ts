@@ -15,7 +15,7 @@ export function getProjects(): Project[] {
       endpoints: [
         {
           method: "GET",
-          path: "/clima?q={lugar}&days={days}",
+          path: "/clima?q={lugar}?days={days}",
           description: "Obtiene el clima según el lugar y la cantidad de días"
         }
       ]
