@@ -8,9 +8,13 @@ const bibliotecaModel = new BibliotecaModel();
 export class BibliotecaController {
     async getAll(req: Request, res: Response) {
 
-        const data = await bibliotecaModel.getBiblioteca();
+        try {
+            const { data } = await bibliotecaModel.getBiblioteca();
 
-        res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+        } catch (error) {
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+        }
 
     }
 }
