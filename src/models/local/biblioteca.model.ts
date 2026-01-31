@@ -9,12 +9,7 @@ export class BibliotecaModel {
 
             return { data: items };
         } catch (error) {
-            return {
-                error: {
-                    code: 500,
-                    message: error as string
-                }
-            };
+            throw new Error(error as string);
         }
     }
 }
