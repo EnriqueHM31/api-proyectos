@@ -33,6 +33,7 @@ export class BibliotecaController {
         try {
             const { data } = await bibliotecaModel.createBiblioteca(req.body);
 
+            console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
         } catch (error) {
             res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
