@@ -209,27 +209,6 @@
                 },
                 "language": "es"
             }
-        },
-        {
-            "id": "de180b00-eea5-4a62-82a8-1e6c80319a7e",
-            "volumeInfo": {
-                "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
-                "subtitle": "a la bestia",
-                "authors": [
-                    "Juan Carlos Orós Cabello"
-                ],
-                "publisher": "Ra-Ma Editorial",
-                "publishedDate": "2010-11-03",
-                "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
-                "pageCount": 376,
-                "categories": [
-                    "Computers"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
         }
     ]
 }
