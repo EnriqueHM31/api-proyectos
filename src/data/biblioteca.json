@@ -13,7 +13,7 @@
                 "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
                 "pageCount": 376,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -34,7 +34,7 @@
                 "description": "En este volumen profundizarás en el uso de JavaScript para crear aplicaciones web completas.",
                 "pageCount": 108,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -55,7 +55,7 @@
                 "description": "Libro introductorio para aprender JavaScript desde cero de forma sencilla.",
                 "pageCount": 78,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -76,7 +76,7 @@
                 "description": "Guía completa para dominar JavaScript desde nivel básico hasta avanzado.",
                 "pageCount": 319,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -97,7 +97,7 @@
                 "description": "Manual extenso para aprender JavaScript de forma profesional.",
                 "pageCount": 742,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -118,7 +118,7 @@
                 "description": "Introducción práctica al lenguaje JavaScript para principiantes.",
                 "pageCount": 72,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -139,7 +139,7 @@
                 "description": "Libro para principiantes que explica la evolución y fundamentos de JavaScript.",
                 "pageCount": 240,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
@@ -160,7 +160,7 @@
                 "description": "Guía introductoria para comenzar a programar en JavaScript.",
                 "pageCount": 146,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -181,7 +181,7 @@
                 "description": "Guía avanzada sobre las APIs JavaScript disponibles en HTML5.",
                 "pageCount": 520,
                 "categories": [
-                    "Computers"
+                    "Computadoras"
                 ],
                 "imageLinks": {
                     "thumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
@@ -208,6 +208,26 @@
                     "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                 },
                 "language": "es"
+            }
+        },
+        {
+            "id": "7187b554-2e58-4e71-92f5-9f904f32a779",
+            "volumeInfo": {
+                "title": "hola",
+                "subtitle": "hola",
+                "authors": [
+                    "luis",
+                    "paulo"
+                ],
+                "publisher": "didsmdsds",
+                "publishedDate": "2025-01-01",
+                "description": "holaaa",
+                "pageCount": 400,
+                "categories": [],
+                "imageLinks": {
+                    "thumbnail": "https://flagservice.net/ES/flag.svg"
+                },
+                "language": "mx"
             }
         }
     ]
