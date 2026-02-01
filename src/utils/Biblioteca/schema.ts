@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const bibliotecaBook = z.object({
-    id: z.string({ message: "El id es requerido" }).min(1, { message: "El id no puede ser vacío" }),
+    id: z.string({ message: "El id es requerido" }).min(1, { message: "El id no puede ser vacío" }).uuid({ message: "El id debe ser un UUID válido" }),
     volumeInfo: z.object({
         title: z.string({ message: "El título es requerido" }).min(1, { message: "El título no puede ser vacío" }),
         subtitle: z.string({ message: "El subtítulo es requerido" }).min(1, { message: "El subtítulo no puede ser vacío" }),
