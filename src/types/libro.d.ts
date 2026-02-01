@@ -1,7 +1,7 @@
 // libro.d.ts
 
 /* =========================
-   RESPUESTA GENERAL API (NORMALIZADA)
+   RESPUESTA GENERAL API
 ========================= */
 
 export interface GoogleBooksResponse {
@@ -23,6 +23,7 @@ export interface GoogleBook {
 
 export interface VolumeInfo {
     title: string;
+    subtitle: string;
 
     authors: string[];
     publisher: string;
@@ -35,10 +36,6 @@ export interface VolumeInfo {
     imageLinks: ImageLinks;
 
     language: string;
-
-    previewLink: string;
-    infoLink: string;
-    canonicalVolumeLink: string;
 }
 
 /* =========================
@@ -46,6 +43,5 @@ export interface VolumeInfo {
 ========================= */
 
 export interface ImageLinks {
-    smallThumbnail: string;
     thumbnail: string;
 }
