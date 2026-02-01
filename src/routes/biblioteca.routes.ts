@@ -8,7 +8,7 @@ const bibliotecaController = new BibliotecaController();
 
 bibliotecaRouter.get("/", bibliotecaController.getAll);
 
-bibliotecaRouter.get("/:id", bibliotecaController.getBook);
+bibliotecaRouter.get("/:id", middlewareBibliotecaId, bibliotecaController.getBook);
 
 bibliotecaRouter.post("/", middlewareBibliotecaCreate, bibliotecaController.create);
 
