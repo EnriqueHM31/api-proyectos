@@ -28,6 +28,7 @@ export class BibliotecaModel {
         try {
             const { items } = dataBiblioteca;
             const newItem = { ...data, id: randomUUID() };
+            console.log(newItem);
 
             items.push(newItem);
 
