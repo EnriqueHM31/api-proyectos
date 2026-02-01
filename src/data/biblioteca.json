@@ -4,6 +4,7 @@
             "id": "aaa6EAAAQBAJ",
             "volumeInfo": {
                 "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+                "subtitle": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
                 "authors": [
                     "Juan Carlos Orós Cabello"
                 ],
@@ -15,19 +16,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=aaa6EAAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=aaa6EAAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=aaa6EAAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "4ezvEAAAQBAJ",
             "volumeInfo": {
                 "title": "Javascript Práctico - Vol.2",
+                "subtitle": "Javascript Práctico - Vol.2",
                 "authors": [
                     "Román Arenas"
                 ],
@@ -39,19 +37,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=4ezvEAAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=4ezvEAAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=4ezvEAAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "B47tCgAAQBAJ",
             "volumeInfo": {
                 "title": "La Guia Básica de JavaScript",
+                "subtitle": "La Guia Básica de JavaScript",
                 "authors": [
                     "Miguel A. Arias"
                 ],
@@ -63,19 +58,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=B47tCgAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=B47tCgAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=B47tCgAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "1c-4EAAAQBAJ",
             "volumeInfo": {
                 "title": "Domine JavaScript 4ª Edición",
+                "subtitle": "Domine JavaScript 4ª Edición",
                 "authors": [
                     "Pablo Enrique Fernández Casado"
                 ],
@@ -87,19 +79,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=1c-4EAAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=1c-4EAAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=1c-4EAAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "nDNwM_5IDLIC",
             "volumeInfo": {
                 "title": "Aprender a desarrollar con JavaScript",
+                "subtitle": "Aprender a desarrollar con JavaScript",
                 "authors": [
                     "Christian Vigouroux"
                 ],
@@ -111,19 +100,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=nDNwM_5IDLIC&printsec=frontcover",
-                "infoLink": "http://books.google.com.mx/books?id=nDNwM_5IDLIC",
-                "canonicalVolumeLink": "https://books.google.com/books/about/Aprender_a_desarrollar_con_JavaScript.html?id=nDNwM_5IDLIC"
+                "language": "es"
             }
         },
         {
             "id": "DADnDQAAQBAJ",
             "volumeInfo": {
                 "title": "La programación JavaScript",
+                "subtitle": "La programación JavaScript",
                 "authors": [
                     "Preston Prescott"
                 ],
@@ -135,19 +121,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=DADnDQAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=DADnDQAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=DADnDQAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "f4NGzgEACAAJ",
             "volumeInfo": {
                 "title": "Programación JavaScript",
+                "subtitle": "Programación JavaScript",
                 "authors": [
                     "John Bach"
                 ],
@@ -159,19 +142,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=f4NGzgEACAAJ",
-                "infoLink": "http://books.google.com.mx/books?id=f4NGzgEACAAJ",
-                "canonicalVolumeLink": "https://books.google.com/books/about/Programación_JavaScript.html?id=f4NGzgEACAAJ"
+                "language": "es"
             }
         },
         {
             "id": "SqikDwAAQBAJ",
             "volumeInfo": {
                 "title": "JavaScript - Aprende a programar en el lenguaje de la web",
+                "subtitle": "JavaScript - Aprende a programar en el lenguaje de la web",
                 "authors": [
                     "Fernando Luna"
                 ],
@@ -183,19 +163,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=SqikDwAAQBAJ&printsec=frontcover",
-                "infoLink": "https://play.google.com/store/books/details?id=SqikDwAAQBAJ",
-                "canonicalVolumeLink": "https://play.google.com/store/books/details?id=SqikDwAAQBAJ"
+                "language": "es"
             }
         },
         {
             "id": "77RyxBl1tCAC",
             "volumeInfo": {
                 "title": "Los API JavaScript de HTML5",
+                "subtitle": "Los API JavaScript de HTML5",
                 "authors": [
                     "Luc Van Lancker"
                 ],
@@ -207,19 +184,16 @@
                     "Computers"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=77RyxBl1tCAC&printsec=frontcover",
-                "infoLink": "http://books.google.com.mx/books?id=77RyxBl1tCAC",
-                "canonicalVolumeLink": "https://books.google.com/books/about/Los_API_JavaScript_de_HTML5.html?id=77RyxBl1tCAC"
+                "language": "es"
             }
         },
         {
             "id": "rpGutgAACAAJ",
             "volumeInfo": {
                 "title": "JavaScript y jQuery",
+                "subtitle": "JavaScript y jQuery",
                 "authors": [
                     "David Sawyer McFarland"
                 ],
@@ -231,13 +205,30 @@
                     "Business & Economics"
                 ],
                 "imageLinks": {
-                    "smallThumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
                     "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                 },
-                "language": "es",
-                "previewLink": "http://books.google.com.mx/books?id=rpGutgAACAAJ",
-                "infoLink": "http://books.google.com.mx/books?id=rpGutgAACAAJ",
-                "canonicalVolumeLink": "https://books.google.com/books/about/JavaScript_y_jQuery.html?id=rpGutgAACAAJ"
+                "language": "es"
+            }
+        },
+        {
+            "id": "de180b00-eea5-4a62-82a8-1e6c80319a7e",
+            "volumeInfo": {
+                "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+                "subtitle": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+                "authors": [
+                    "Juan Carlos Orós Cabello"
+                ],
+                "publisher": "Ra-Ma Editorial",
+                "publishedDate": "2010-11-03",
+                "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
+                "pageCount": 376,
+                "categories": [
+                    "Computers"
+                ],
+                "imageLinks": {
+                    "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                },
+                "language": "es"
             }
         }
     ]
