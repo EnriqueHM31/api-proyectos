@@ -31,7 +31,9 @@ export class BibliotecaController {
 
     async create(req: Request, res: Response) {
         try {
+            console.log(req.body);
             const { data } = await bibliotecaModel.createBiblioteca(req.body);
+
 
             console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));

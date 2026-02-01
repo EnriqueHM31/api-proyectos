@@ -31,6 +31,7 @@ export class BibliotecaModel {
     ): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             // 1️⃣ Leer archivo JSON
+            console.log(data);
             const file = await fs.readFile(filePath, "utf-8");
             const dataBiblioteca = JSON.parse(file);
 
