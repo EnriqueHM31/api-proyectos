@@ -125,18 +125,54 @@ export class BibliotecaModel {
 
 
 
-    async deleteBiblioteca(id: string): Promise<{ data?: GoogleBook, error?: { code: number, message: string } }> {
+    async deleteBiblioteca(
+        id: string
+    ): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             const { items } = dataBiblioteca;
-            const index = items.findIndex((item) => item.id === id);
 
+            const index = items.findIndex(item => item.id === id);
+
+            if (index === -1) {
+                return {
+                    error: {
+                        code: 404,
+                        message: "Libro no encontrado"
+                    }
+                };
+            }
+
+            // 🧠 Guardamos el libro antes de eliminarlo
+            const deletedItem = items[index];
+
+            // 🗑 Eliminamos
             items.splice(index, 1);
 
+            // 💾 Persistencia REAL
+            fs.writeFile(
+                filePath,
+                JSON.stringify({ items }, null, 2),
+                "utf-8"
+            );
 
+            if (!deletedItem) {
+                return {
+                    error: {
+                        code: 404,
+                        message: "Ocurrio un error al eliminar el libro"
+                    }
+                };
+            }
+            return { data: deletedItem };
 
-            return { data: items[index] as GoogleBook };
-        } catch (error) {
-            throw new Error(error as string);
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al eliminar el libro"
+                }
+            };
         }
     }
+
 }
