@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { BibliotecaController } from "../controllers/biblioteca.controller.js";
+import { middlewareBibliotecaCreate } from "../middleware/biblioteca.middleware.js";
 
 export const bibliotecaRouter = Router();
 
@@ -9,7 +10,7 @@ bibliotecaRouter.get("/", bibliotecaController.getAll);
 
 bibliotecaRouter.get("/:id", bibliotecaController.getBook);
 
-bibliotecaRouter.post("/", bibliotecaController.create);
+bibliotecaRouter.post("/", middlewareBibliotecaCreate, bibliotecaController.create);
 
 bibliotecaRouter.put("/:id", bibliotecaController.update);
 
