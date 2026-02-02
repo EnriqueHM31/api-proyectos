@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { BibliotecaCategoriesController } from "../../controllers/biblioteca/bibliotecaCategories.controller.js";
 
-import { middlewareBibliotecaCategoriesId, middlewareBibliotecaCategoriesCreate } from "../../middleware/biblioteca/bibliotecaCategories.middleware.js";
+import { middlewareBibliotecaCategoriesId, middlewareBibliotecaCategoriesCreate, middlewareBibliotecaCategoriesUpdate } from "../../middleware/biblioteca/bibliotecaCategories.middleware.js";
 
 export const bibliotecaCategoriesRouter = Router();
 
@@ -14,6 +14,6 @@ bibliotecaCategoriesRouter.get("/:id", middlewareBibliotecaCategoriesId, bibliot
 
 bibliotecaCategoriesRouter.post("/", middlewareBibliotecaCategoriesCreate, bibliotecaCategoriesController.create);
 
-bibliotecaCategoriesRouter.put("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriesController.update);
+bibliotecaCategoriesRouter.put("/:id", middlewareBibliotecaCategoriesUpdate, bibliotecaCategoriesController.update);
 
 bibliotecaCategoriesRouter.delete("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriesController.delete);
