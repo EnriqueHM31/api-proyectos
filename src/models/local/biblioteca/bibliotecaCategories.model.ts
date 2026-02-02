@@ -65,7 +65,10 @@ export class BibliotecaCategoriesModel {
             };
         }
     }
-    async updateBibliotecaCategories(id: string, data: Partial<Categories>): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async updateBibliotecaCategories(
+        id: string,
+        data: Partial<Categories>
+    ): Promise<{ data?: Partial<Categories>; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
@@ -75,43 +78,49 @@ export class BibliotecaCategoriesModel {
                 return {
                     error: {
                         code: 404,
-                        message: "Libro no encontrado",
+                        message: "Categoría no encontrada",
                     },
                 };
             }
 
             const currentItem = items[index];
 
-            if (!currentItem) {
-                return {
-                    error: {
-                        code: 404,
-                        message: "Libro no encontrado",
-                    },
-                };
-            }
-            console.log(currentItem);
+            if (!currentItem) return { error: { code: 404, message: "Categoría no encontrada" } };
 
             const updatedItem: Categories = {
                 id: currentItem.id,
-                nombre: currentItem.nombre,
-                descripcion: currentItem.descripcion,
+                nombre: data.nombre ?? currentItem.nombre,
+                descripcion: data.descripcion ?? currentItem.descripcion,
             };
 
             items[index] = updatedItem;
 
-            fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
+            await fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
 
-            return { data: updatedItem };
+            /* =========================
+               RESPUESTA SOLO CON CAMBIOS
+            ========================= */
+            const response: Partial<Categories> = { id };
+
+            if ("nombre" in data) {
+                response.nombre = updatedItem.nombre;
+            }
+
+            if ("descripcion" in data) {
+                response.descripcion = updatedItem.descripcion;
+            }
+
+            return { data: response };
         } catch {
             return {
                 error: {
                     code: 500,
-                    message: "Error al actualizar la biblioteca",
+                    message: "Error al actualizar la categoría",
                 },
             };
         }
     }
+
 
     async deleteBibliotecaCategories(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {

@@ -1,32 +1,75 @@
-import { validarPartialBibliotecaCategoriesCampos } from "../../utils/Biblioteca/schemaCategories.js";
 import type { NextFunction, Request, Response } from "express";
+import type { ZodError } from "zod";
+
+import {
+    validarBibliotecaCategoriesCreate,
+    validarBibliotecaCategoriesUpdate,
+    validarBibliotecaCategoriesId,
+} from "../../utils/Biblioteca/schemaCategories.js";
+
 import { middlewareError } from "../../utils/middleware.js";
 
-export function middlewareBibliotecaCategoriesCreate(req: Request, res: Response, next: NextFunction) {
-    const data = req.body;
+/* =========================
+   CREATE (POST)
+   ➜ NO recibe id
+========================= */
+export function middlewareBibliotecaCategoriesCreate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    try {
+        const result = validarBibliotecaCategoriesCreate(req.body);
 
-    const result = validarPartialBibliotecaCategoriesCampos(data);
-    console.log(result);
+        // solo nombre y descripcion
+        const { nombre, descripcion } = result;
+
+        req.body = { nombre, descripcion };
+        next();
+    } catch (error) {
+        middlewareError(error as ZodError, res);
+    }
+}
+
+/* =========================
+   UPDATE (PUT / PATCH)
+   ➜ todo opcional
+========================= */
+export function middlewareBibliotecaCategoriesUpdate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const result = validarBibliotecaCategoriesUpdate(req.body);
 
     if (!result.success) {
         middlewareError(result.error, res);
         return;
     }
-    const { id, nombre, descripcion } = result.data;
-    req.body = { id, nombre, descripcion };
+
+    req.body = result.data;
     next();
 }
 
-export function middlewareBibliotecaCategoriesId(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params as { id: string };
-
-    const result = validarPartialBibliotecaCategoriesCampos({ id });
+/* =========================
+   ID PARAM (GET / DELETE)
+   ➜ solo UUID
+========================= */
+export function middlewareBibliotecaCategoriesId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const result = validarBibliotecaCategoriesId(req.params);
 
     if (!result.success) {
         middlewareError(result.error, res);
         return;
     }
-    const { id: idParam } = result.data as { id: string };
-    req.params = { id: idParam.toString() };
+
+    req.params = {
+        id: result.data.id,
+    };
+
     next();
 }
