@@ -1,17 +1,11 @@
 import { Router } from "express";
-import { BibliotecaController } from "../controllers/biblioteca.controller.js";
-import { middlewareBibliotecaId, middlewareBibliotecaCreate } from "../middleware/biblioteca.middleware.js";
+import { bibliotecaBooksRouter } from "./biblioteca/bibliotecaBooks.routes.js";
+import { bibliotecaCategoriesRouter } from "./biblioteca/bibiliotecaCategories.routes.js";
 
-export const bibliotecaRouter = Router();
+export const bibliotecaRoouter = Router();
 
-const bibliotecaController = new BibliotecaController();
 
-bibliotecaRouter.get("/", bibliotecaController.getAll);
+bibliotecaBooksRouter.use("/book", bibliotecaBooksRouter);
 
-bibliotecaRouter.get("/:id", middlewareBibliotecaId, bibliotecaController.getBook);
+bibliotecaBooksRouter.use("/categories", bibliotecaCategoriesRouter);
 
-bibliotecaRouter.post("/", middlewareBibliotecaCreate, bibliotecaController.create);
-
-bibliotecaRouter.put("/:id", middlewareBibliotecaId, bibliotecaController.update);
-
-bibliotecaRouter.delete("/:id", middlewareBibliotecaId, bibliotecaController.delete);
