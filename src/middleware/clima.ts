@@ -11,7 +11,7 @@ export function middlewareClima(req: Request, res: Response, next: NextFunction)
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { lugar: lugarParam, days: daysParam } = result.data;
     req.params = { lugar: lugarParam, days: daysParam.toString() };

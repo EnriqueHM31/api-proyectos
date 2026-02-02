@@ -11,8 +11,7 @@ interface Categories {
 const filePath = path.resolve("src/data/categories.json");
 
 export class BibliotecaCategoriesModel {
-
-    async getBiblioteca(): Promise<{ data?: Categories[], error?: { code: number, message: string } }> {
+    async getBiblioteca(): Promise<{ data?: Categories[]; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
@@ -21,7 +20,7 @@ export class BibliotecaCategoriesModel {
             throw new Error(error as string);
         }
     }
-    async getBibliotecaById(id: string): Promise<{ data?: Categories, error?: { code: number, message: string } }> {
+    async getBibliotecaById(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
             const data = items.find((item) => item.id === id);
@@ -32,9 +31,7 @@ export class BibliotecaCategoriesModel {
             throw new Error(error as string);
         }
     }
-    async createBiblioteca(
-        data: Categories
-    ): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async createBiblioteca(data: Categories): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             // 1️⃣ Leer archivo JSON
             console.log(data);
@@ -56,11 +53,7 @@ export class BibliotecaCategoriesModel {
             dataBiblioteca.items.push(newItem);
 
             // 5️⃣ Guardar cambios
-            await fs.writeFile(
-                filePath,
-                JSON.stringify(dataBiblioteca, null, 2),
-                "utf-8"
-            );
+            await fs.writeFile(filePath, JSON.stringify(dataBiblioteca, null, 2), "utf-8");
 
             return { data: newItem };
         } catch (error) {
@@ -72,21 +65,18 @@ export class BibliotecaCategoriesModel {
             };
         }
     }
-    async updateBiblioteca(
-        id: string,
-        data: Partial<Categories>
-    ): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async updateBiblioteca(id: string, data: Partial<Categories>): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
-            const index = items.findIndex(item => item.id === id);
+            const index = items.findIndex((item) => item.id === id);
 
             if (index === -1) {
                 return {
                     error: {
                         code: 404,
-                        message: "Libro no encontrado"
-                    }
+                        message: "Libro no encontrado",
+                    },
                 };
             }
 
@@ -96,8 +86,8 @@ export class BibliotecaCategoriesModel {
                 return {
                     error: {
                         code: 404,
-                        message: "Libro no encontrado"
-                    }
+                        message: "Libro no encontrado",
+                    },
                 };
             }
             console.log(currentItem);
@@ -110,40 +100,31 @@ export class BibliotecaCategoriesModel {
 
             items[index] = updatedItem;
 
-            fs.writeFile(
-                filePath,
-                JSON.stringify({ items }, null, 2),
-                "utf-8"
-            );
+            fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
 
             return { data: updatedItem };
-
         } catch {
             return {
                 error: {
                     code: 500,
-                    message: "Error al actualizar la biblioteca"
-                }
+                    message: "Error al actualizar la biblioteca",
+                },
             };
         }
     }
 
-
-
-    async deleteBiblioteca(
-        id: string
-    ): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async deleteBiblioteca(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
-            const index = items.findIndex(item => item.id === id);
+            const index = items.findIndex((item) => item.id === id);
 
             if (index === -1) {
                 return {
                     error: {
                         code: 404,
-                        message: "Libro no encontrado"
-                    }
+                        message: "Libro no encontrado",
+                    },
                 };
             }
 
@@ -154,30 +135,24 @@ export class BibliotecaCategoriesModel {
             items.splice(index, 1);
 
             // 💾 Persistencia REAL
-            fs.writeFile(
-                filePath,
-                JSON.stringify({ items }, null, 2),
-                "utf-8"
-            );
+            fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
 
             if (!deletedItem) {
                 return {
                     error: {
                         code: 404,
-                        message: "Ocurrio un error al eliminar el libro"
-                    }
+                        message: "Ocurrio un error al eliminar el libro",
+                    },
                 };
             }
             return { data: deletedItem };
-
         } catch {
             return {
                 error: {
                     code: 500,
-                    message: "Error al eliminar el libro"
-                }
+                    message: "Error al eliminar el libro",
+                },
             };
         }
     }
-
 }

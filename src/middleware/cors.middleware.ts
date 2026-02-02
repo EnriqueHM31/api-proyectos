@@ -1,15 +1,14 @@
 // src/middlewares/cors.middleware.ts
-import cors, { type CorsOptions } from 'cors';
-
+import cors, { type CorsOptions } from "cors";
 
 const allowedOrigins = [
-    'http://localhost:3000',
-    'https://api-proyectos.vercel.app',
-    'http://localhost:5173',
-    'http://localhost:4321',
-    'http://192.168.1.73:5173/',
-    'http://192.168.1.73:4321/',
-    'http://192.168.1.73:5173/'
+    "http://localhost:3000",
+    "https://api-proyectos.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:4321",
+    "http://192.168.1.73:5173/",
+    "http://192.168.1.73:4321/",
+    "http://192.168.1.73:5173/",
 ];
 export function createCorsMiddleware() {
     const options: CorsOptions = {
@@ -23,7 +22,7 @@ export function createCorsMiddleware() {
 
             return callback(new Error(`CORS not allowed for origin: ${origin}`));
         },
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
         credentials: true,
     };
 

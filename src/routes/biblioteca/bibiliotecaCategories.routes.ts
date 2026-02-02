@@ -16,4 +16,4 @@ bibliotecaCategoriesRouter.post("/", middlewareBibliotecaCategoriesCreate, bibli
 
 bibliotecaCategoriesRouter.put("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriesController.update);
 
-bibliotecaCategoriesRouter.delete("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriesController.delete); 
+bibliotecaCategoriesRouter.delete("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriesController.delete);

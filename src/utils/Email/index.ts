@@ -1,5 +1,4 @@
-export const construirEmail = ({ page, comentario, email }: { page: string, comentario: string, email: string }) => {
-
+export const construirEmail = ({ page, comentario, email }: { page: string; comentario: string; email: string }) => {
     const year = new Date().getFullYear();
     return `
                 <!DOCTYPE html>
@@ -82,8 +81,7 @@ export const construirEmail = ({ page, comentario, email }: { page: string, come
                 </body>
                 </html>     
             `;
-}
-
+};
 
 export const validarString = (valor: any, campo: string): string => {
     if (typeof valor === "string" && valor.trim() !== "") {

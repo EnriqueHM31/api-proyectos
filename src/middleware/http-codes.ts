@@ -9,7 +9,7 @@ export function middlewareHttpCodes(req: Request, res: Response, next: NextFunct
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { code: codeParam } = result.data;
     req.params = { code: codeParam.toString() };

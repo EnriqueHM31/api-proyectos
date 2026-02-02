@@ -9,7 +9,7 @@ export function middlewareIpGeo(req: Request, res: Response, next: NextFunction)
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
 
     const { ip: ipParam } = result.data;

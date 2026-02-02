@@ -10,7 +10,7 @@ export function middlewareBibliotecaCategoriesCreate(req: Request, res: Response
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { id, nombre, descripcion } = result.data;
     req.body = { id, nombre, descripcion };
@@ -24,9 +24,9 @@ export function middlewareBibliotecaCategoriesId(req: Request, res: Response, ne
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { id: idParam } = result.data as { id: string };
     req.params = { id: idParam.toString() };
     next();
-}   
+}

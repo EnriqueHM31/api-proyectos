@@ -1,6 +1,5 @@
 import HttpCodes from "../../data/http-codes.json" with { type: "json" };
 
-
 export class HttpCodesModel {
     async getHttpCodes() {
         if (!HttpCodes) {

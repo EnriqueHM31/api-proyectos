@@ -11,7 +11,6 @@ export class HttpCodesController {
 
             const response = formatoRespuesta({ ok: true, message: "Datos obtenidos correctamente", error: null, data: dataHttpCodes });
             res.status(200).json(response);
-
         } catch (error) {
             const message = validarMessageError(error, "Error interno del servidor");
             const response = formatoRespuesta({ ok: false, message: message, error: error, data: null });
@@ -33,6 +32,4 @@ export class HttpCodesController {
             res.status(400).json(response);
         }
     };
-
-
 }

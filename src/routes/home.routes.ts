@@ -11,5 +11,4 @@ homeRouter.get("/health", (_req, res) => {
         message: "API is running",
         time: process.uptime(),
     });
-
 });

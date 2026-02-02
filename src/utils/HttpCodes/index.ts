@@ -5,7 +5,6 @@ export function ValidarStringVacio(valor: any, valorPorDefecto: string = ""): st
     throw new Error("El valor no es una cadena de texto");
 }
 
-
 export function ValidarNumero(valor: any, valorPorDefecto: number = 0): number {
     const numero = Number(valor);
     if (isNaN(numero)) {

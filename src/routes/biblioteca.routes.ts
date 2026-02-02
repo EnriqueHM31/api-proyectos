@@ -4,8 +4,6 @@ import { bibliotecaCategoriesRouter } from "./biblioteca/bibiliotecaCategories.r
 
 export const bibliotecaRoouter = Router();
 
-
 bibliotecaBooksRouter.use("/book", bibliotecaBooksRouter);
 
 bibliotecaBooksRouter.use("/categories", bibliotecaCategoriesRouter);
-

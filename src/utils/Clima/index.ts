@@ -6,12 +6,11 @@ type ClimaParams = {
 export function crearUrlClima(baseUrl: string, { lugar, days = "1" }: ClimaParams): string {
     const params = new URLSearchParams({
         q: lugar,
-        days: days
+        days: days,
     });
 
     return `${baseUrl}&${params.toString()}`;
 }
-
 
 export function validarDays(days: any, defaultDays = 1, maxDays = 10): number {
     const numero = Number(days);

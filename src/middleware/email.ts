@@ -9,7 +9,7 @@ export function middlewareEmail(req: Request, res: Response, next: NextFunction)
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { email: emailParam, comentario: comentarioParam, page: pageParam } = result.data;
     req.body = { email: emailParam, comentario: comentarioParam, page: pageParam };

@@ -10,7 +10,7 @@ export function middlewareBibliotecaBooksCreate(req: Request, res: Response, nex
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { id, volumeInfo } = result.data;
     req.body = { id, volumeInfo };
@@ -24,7 +24,7 @@ export function middlewareBibliotecaBooksId(req: Request, res: Response, next: N
 
     if (!result.success) {
         middlewareError(result.error, res);
-        return
+        return;
     }
     const { id: idParam } = result.data as { id: string };
     req.params = { id: idParam.toString() };

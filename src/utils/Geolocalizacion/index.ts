@@ -26,8 +26,6 @@ export const construirUrlApi = (baseUrl: string, params: Record<string, string |
     return url.toString();
 };
 
-
 export function crearUrlGeolocalizacion(baseUrl: string, ip: string): string {
-
     return `${baseUrl}&ip=${encodeURIComponent(ip)}`;
 }

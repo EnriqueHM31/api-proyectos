@@ -1,4 +1,3 @@
-
 export interface HttpExample {
     scenario: string;
     request: string;
@@ -21,7 +20,6 @@ export interface HttpImage {
     imageCharacter?: string;
     alt: string;
 }
-
 
 export interface HttpCode {
     code: number;

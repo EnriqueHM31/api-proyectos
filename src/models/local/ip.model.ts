@@ -3,7 +3,7 @@ export class IpModel {
         const response = await fetch(url);
 
         if (!response.ok) {
-            const data = await response.json() as { message?: string };
+            const data = (await response.json()) as { message?: string };
 
             throw new Error(data.message ?? "Error en el servicio de geolocalización");
         }
