@@ -1,13 +1,10 @@
-
 import { formatoRespuesta } from "../../utils/index.js";
 import type { Request, Response } from "express";
 import { BibliotecaCategoriesModel } from "../../models/local/biblioteca/bibliotecaCategories.model.js";
 
-
 const bibliotecaCategoriesModel = new BibliotecaCategoriesModel();
 export class BibliotecaCategoriesController {
     async getAll(req: Request, res: Response) {
-
         try {
             const { data } = await bibliotecaCategoriesModel.getBibliotecaCategories();
 
@@ -15,7 +12,6 @@ export class BibliotecaCategoriesController {
         } catch (error) {
             res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Categorias Obtenidas", error: error as string, data: null }));
         }
-
     }
 
     async getCategories(req: Request, res: Response) {
@@ -23,9 +19,9 @@ export class BibliotecaCategoriesController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaCategoriesModel.getBibliotecaCategoriesById(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Categorías encontradas", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido encontrada`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener las categorías", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: `Ocurrio un error al obtener la categoría`, error: error as string, data: null }));
         }
     }
 
@@ -33,7 +29,6 @@ export class BibliotecaCategoriesController {
         try {
             console.log(req.body);
             const { data } = await bibliotecaCategoriesModel.createBibliotecaCategories(req.body);
-
 
             console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido creada`, error: null, data }));
@@ -45,7 +40,7 @@ export class BibliotecaCategoriesController {
     async update(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const campos = req.body
+            const campos = req.body;
             const { data } = await bibliotecaCategoriesModel.updateBibliotecaCategories(id, campos);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido actualizada`, error: null, data }));

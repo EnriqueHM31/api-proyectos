@@ -121,7 +121,6 @@ export class BibliotecaCategoriesModel {
         }
     }
 
-
     async deleteBibliotecaCategories(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
