@@ -9,7 +9,7 @@ export class BibliotecaCategoriesController {
     async getAll(req: Request, res: Response) {
 
         try {
-            const { data } = await bibliotecaCategoriesModel.getBiblioteca();
+            const { data } = await bibliotecaCategoriesModel.getBibliotecaCategories();
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
         } catch (error) {
@@ -21,7 +21,7 @@ export class BibliotecaCategoriesController {
     async getCategories(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaCategoriesModel.getBibliotecaById(id);
+            const { data } = await bibliotecaCategoriesModel.getBibliotecaCategoriesById(id);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
         } catch (error) {
@@ -32,7 +32,7 @@ export class BibliotecaCategoriesController {
     async create(req: Request, res: Response) {
         try {
             console.log(req.body);
-            const { data } = await bibliotecaCategoriesModel.createBiblioteca(req.body);
+            const { data } = await bibliotecaCategoriesModel.createBibliotecaCategories(req.body);
 
 
             console.log(data);
@@ -46,7 +46,7 @@ export class BibliotecaCategoriesController {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body
-            const { data } = await bibliotecaCategoriesModel.updateBiblioteca(id, campos);
+            const { data } = await bibliotecaCategoriesModel.updateBibliotecaCategories(id, campos);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
         } catch (error) {
@@ -57,7 +57,7 @@ export class BibliotecaCategoriesController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaCategoriesModel.deleteBiblioteca(id);
+            const { data } = await bibliotecaCategoriesModel.deleteBibliotecaCategories(id);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
         } catch (error) {

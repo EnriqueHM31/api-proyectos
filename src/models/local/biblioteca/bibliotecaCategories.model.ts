@@ -11,7 +11,7 @@ interface Categories {
 const filePath = path.resolve("src/data/categories.json");
 
 export class BibliotecaCategoriesModel {
-    async getBiblioteca(): Promise<{ data?: Categories[]; error?: { code: number; message: string } }> {
+    async getBibliotecaCategories(): Promise<{ data?: Categories[]; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
@@ -20,7 +20,7 @@ export class BibliotecaCategoriesModel {
             throw new Error(error as string);
         }
     }
-    async getBibliotecaById(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async getBibliotecaCategoriesById(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
             const data = items.find((item) => item.id === id);
@@ -31,7 +31,7 @@ export class BibliotecaCategoriesModel {
             throw new Error(error as string);
         }
     }
-    async createBiblioteca(data: Categories): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async createBibliotecaCategories(data: Categories): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             // 1️⃣ Leer archivo JSON
             console.log(data);
@@ -65,7 +65,7 @@ export class BibliotecaCategoriesModel {
             };
         }
     }
-    async updateBiblioteca(id: string, data: Partial<Categories>): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async updateBibliotecaCategories(id: string, data: Partial<Categories>): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
@@ -113,7 +113,7 @@ export class BibliotecaCategoriesModel {
         }
     }
 
-    async deleteBiblioteca(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
+    async deleteBibliotecaCategories(id: string): Promise<{ data?: Categories; error?: { code: number; message: string } }> {
         try {
             const { items } = dataCategories;
 
