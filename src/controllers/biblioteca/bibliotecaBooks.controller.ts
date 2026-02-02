@@ -9,9 +9,9 @@ export class BibliotecaBooksController {
         try {
             const { data } = await bibliotecaModel.getBiblioteca();
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
         }
     }
 
@@ -20,9 +20,9 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.getBibliotecaById(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
         }
     }
 
@@ -32,9 +32,9 @@ export class BibliotecaBooksController {
             const { data } = await bibliotecaModel.createBiblioteca(req.body);
 
             console.log(data);
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
         }
     }
 
@@ -44,9 +44,9 @@ export class BibliotecaBooksController {
             const campos = req.body;
             const { data } = await bibliotecaModel.updateBiblioteca(id, campos);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
         }
     }
 
@@ -55,9 +55,9 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.deleteBiblioteca(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
         }
     }
 }
