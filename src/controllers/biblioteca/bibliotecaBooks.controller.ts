@@ -9,9 +9,9 @@ export class BibliotecaBooksController {
         try {
             const { data } = await bibliotecaModel.getBibliotecaBooks();
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Libros encontrados", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener los libros", error: error as string, data: null }));
         }
     }
 
@@ -20,9 +20,9 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.getBibliotecaBooksById(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido encontrado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener el libro", error: error as string, data: null }));
         }
     }
 
@@ -32,9 +32,9 @@ export class BibliotecaBooksController {
             const { data } = await bibliotecaModel.createBibliotecaBooks(req.body);
 
             console.log(data);
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al crear el libro", error: error as string, data: null }));
         }
     }
 
@@ -44,9 +44,9 @@ export class BibliotecaBooksController {
             const campos = req.body;
             const { data } = await bibliotecaModel.updateBibliotecaBooks(id, campos);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido actualizado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al actualizar el libro", error: error as string, data: null }));
         }
     }
 
@@ -55,9 +55,9 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.deleteBibliotecaBooks(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Libros Obtenidos", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al eliminar el libro", error: error as string, data: null }));
         }
     }
 }

@@ -23,9 +23,9 @@ export class BibliotecaCategoriesController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaCategoriesModel.getBibliotecaCategoriesById(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Categorías encontradas", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Categorias Obtenidas", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener las categorías", error: error as string, data: null }));
         }
     }
 
@@ -36,9 +36,9 @@ export class BibliotecaCategoriesController {
 
 
             console.log(data);
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido creada`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Categorias Obtenidas", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al crear la categoría", error: error as string, data: null }));
         }
     }
 
@@ -48,9 +48,9 @@ export class BibliotecaCategoriesController {
             const campos = req.body
             const { data } = await bibliotecaCategoriesModel.updateBibliotecaCategories(id, campos);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido actualizada`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Categorias Obtenidas", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al actualizar la categoría", error: error as string, data: null }));
         }
     }
 
@@ -59,9 +59,9 @@ export class BibliotecaCategoriesController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaCategoriesModel.deleteBibliotecaCategories(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Categorias Obtenidas", error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `${`La categoría ${data?.nombre ?? ""} ha sido eliminada`}`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Biblioteca Categorias Obtenidas", error: error as string, data: null }));
+            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al eliminar la categoría", error: error as string, data: null }));
         }
     }
 }
