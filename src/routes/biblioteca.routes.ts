@@ -2,8 +2,8 @@ import { Router } from "express";
 import { bibliotecaBooksRouter } from "./biblioteca/bibliotecaBooks.routes.js";
 import { bibliotecaCategoriesRouter } from "./biblioteca/bibiliotecaCategories.routes.js";
 
-export const bibliotecaRoouter = Router();
+export const bibliotecaRouter = Router();
 
-bibliotecaBooksRouter.use("/book", bibliotecaBooksRouter);
+bibliotecaRouter.use("/book", bibliotecaBooksRouter);
 
-bibliotecaBooksRouter.use("/categories", bibliotecaCategoriesRouter);
+bibliotecaRouter.use("/categories", bibliotecaCategoriesRouter);
