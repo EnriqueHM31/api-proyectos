@@ -7,7 +7,7 @@ const bibliotecaModel = new BibliotecaBooksModel();
 export class BibliotecaBooksController {
     async getAll(req: Request, res: Response) {
         try {
-            const { data } = await bibliotecaModel.getBiblioteca();
+            const { data } = await bibliotecaModel.getBibliotecaBooks();
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
@@ -18,7 +18,7 @@ export class BibliotecaBooksController {
     async getBook(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaModel.getBibliotecaById(id);
+            const { data } = await bibliotecaModel.getBibliotecaBooksById(id);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
@@ -29,7 +29,7 @@ export class BibliotecaBooksController {
     async create(req: Request, res: Response) {
         try {
             console.log(req.body);
-            const { data } = await bibliotecaModel.createBiblioteca(req.body);
+            const { data } = await bibliotecaModel.createBibliotecaBooks(req.body);
 
             console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
@@ -42,7 +42,7 @@ export class BibliotecaBooksController {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body;
-            const { data } = await bibliotecaModel.updateBiblioteca(id, campos);
+            const { data } = await bibliotecaModel.updateBibliotecaBooks(id, campos);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {
@@ -53,7 +53,7 @@ export class BibliotecaBooksController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaModel.deleteBiblioteca(id);
+            const { data } = await bibliotecaModel.deleteBibliotecaBooks(id);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Biblioteca Libros Obtenidos", error: null, data }));
         } catch (error) {

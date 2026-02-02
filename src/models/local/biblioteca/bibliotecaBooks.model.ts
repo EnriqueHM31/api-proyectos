@@ -6,7 +6,7 @@ import type { GoogleBook } from "../../../types/libro.js";
 const filePath = path.resolve("src/data/biblioteca.json");
 
 export class BibliotecaBooksModel {
-    async getBiblioteca(): Promise<{ data?: GoogleBook[]; error?: { code: number; message: string } }> {
+    async getBibliotecaBooks(): Promise<{ data?: GoogleBook[]; error?: { code: number; message: string } }> {
         try {
             const { items } = dataBiblioteca;
 
@@ -15,7 +15,7 @@ export class BibliotecaBooksModel {
             throw new Error(error as string);
         }
     }
-    async getBibliotecaById(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
+    async getBibliotecaBooksById(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             const { items } = dataBiblioteca;
             const data = items.find((item) => item.id === id);
@@ -26,7 +26,7 @@ export class BibliotecaBooksModel {
             throw new Error(error as string);
         }
     }
-    async createBiblioteca(data: GoogleBook): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
+    async createBibliotecaBooks(data: GoogleBook): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             // 1️⃣ Leer archivo JSON
             console.log(data);
@@ -60,7 +60,7 @@ export class BibliotecaBooksModel {
             };
         }
     }
-    async updateBiblioteca(id: string, data: Partial<GoogleBook>): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
+    async updateBibliotecaBooks(id: string, data: Partial<GoogleBook>): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             const { items } = dataBiblioteca;
 
@@ -110,7 +110,7 @@ export class BibliotecaBooksModel {
         }
     }
 
-    async deleteBiblioteca(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
+    async deleteBibliotecaBooks(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
         try {
             const { items } = dataBiblioteca;
 
