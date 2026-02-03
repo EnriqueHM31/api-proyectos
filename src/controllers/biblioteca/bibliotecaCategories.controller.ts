@@ -45,7 +45,14 @@ export class BibliotecaCategoriesController {
 
             const CamposModificados = Object.keys(campos);
             const inicio = CamposModificados.length > 1 ? "Los campos" : "El campo";
-            res.status(200).json(formatoRespuesta({ ok: true, message: `${inicio}  ${CamposModificados.length > 0 ? CamposModificados.join(", ") : ""} ha sido actualizada`, error: null, data }));
+            res.status(200).json(
+                formatoRespuesta({
+                    ok: true,
+                    message: `${inicio}  ${CamposModificados.length > 0 ? CamposModificados.join(", ") : ""} ha sido actualizada`,
+                    error: null,
+                    data,
+                })
+            );
         } catch (error) {
             res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al actualizar la categoría", error: error as string, data: null }));
         }
