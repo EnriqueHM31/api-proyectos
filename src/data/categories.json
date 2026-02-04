@@ -66,9 +66,14 @@
       "descripcion": "Materiales didácticos y académicos enfocados en el aprendizaje, la enseñanza y la formación profesional."
     },
     {
-      "id": "ee5f5343-077c-42b6-9cc5-a531a398847b",
-      "nombre": "CATEGORIA",
-      "descripcion": "vale"
+      "nombre": "Empleo",
+      "descripcion": "Libros enfocados en el mundo laboral, búsqueda de trabajo, desarrollo profesional, habilidades para el empleo y crecimiento en la carrera.",
+      "id": "bb45ed00-f3fa-44e6-98ef-8d659480864f"
+    },
+    {
+      "nombre": "Economía",
+      "descripcion": "Obras que abordan temas económicos como mercados, finanzas, políticas económicas, desarrollo económico y análisis del sistema financiero.\n",
+      "id": "11b24cb9-780c-4633-9b8a-0e2b977fcb70"
     }
   ]
 }

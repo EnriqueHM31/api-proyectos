@@ -202,32 +202,11 @@
         "description": "Manual para aprender JavaScript con énfasis en jQuery.",
         "pageCount": 560,
         "categories": [
-          "Business & Economics"
+          "Empleo",
+          "Economía"
         ],
         "imageLinks": {
           "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-        },
-        "language": "es"
-      }
-    },
-    {
-      "id": "5549a4a8-06ba-4e36-ab3b-b2756de9bdce",
-      "volumeInfo": {
-        "title": "fggdf",
-        "subtitle": "ddfgdfgdfg",
-        "authors": [
-          "fdgfdgdfg"
-        ],
-        "publisher": "fgdfdgfgd",
-        "publishedDate": "fgddfgdfgweweweweweweweweewwe",
-        "description": "dsdds",
-        "pageCount": 3443,
-        "categories": [
-          "Ciencia Ficción",
-          "Biografía"
-        ],
-        "imageLinks": {
-          "thumbnail": "https://ffdfd"
         },
         "language": "es"
       }
