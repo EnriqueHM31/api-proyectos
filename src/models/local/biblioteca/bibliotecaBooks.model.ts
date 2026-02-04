@@ -92,12 +92,11 @@ export class BibliotecaBooksModel {
                 id: currentItem.id,
                 volumeInfo: {
                     ...currentItem.volumeInfo,
-                    ...data.volumeInfo
+                    ...data.volumeInfo,
                 },
             };
 
             console.log(updatedItem);
-
 
             items[index] = updatedItem;
 
