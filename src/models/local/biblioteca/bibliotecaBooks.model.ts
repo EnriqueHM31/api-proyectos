@@ -85,7 +85,6 @@ export class BibliotecaBooksModel {
                     },
                 };
             }
-            console.log(currentItem);
 
             console.log(data);
             const updatedItem: GoogleBook = {
@@ -96,7 +95,6 @@ export class BibliotecaBooksModel {
                 },
             };
 
-            console.log(updatedItem);
 
             items[index] = updatedItem;
 
