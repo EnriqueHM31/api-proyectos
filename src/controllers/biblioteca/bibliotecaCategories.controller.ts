@@ -41,6 +41,7 @@ export class BibliotecaCategoriesController {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body;
+
             const { data } = await bibliotecaCategoriesModel.updateBibliotecaCategories(id, campos);
 
             const CamposModificados = Object.keys(campos);
