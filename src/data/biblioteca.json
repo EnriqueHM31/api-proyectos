@@ -1,234 +1,250 @@
 {
-    "items": [
-        {
-            "id": "aaa6EAAAQBAJ",
-            "volumeInfo": {
-                "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
-                "subtitle": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
-                "authors": [
-                    "Juan Carlos Orós Cabello"
-                ],
-                "publisher": "Ra-Ma Editorial",
-                "publishedDate": "2010-11-03",
-                "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
-                "pageCount": 376,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+  "items": [
+    {
+      "id": "aaa6EAAAQBAJ",
+      "volumeInfo": {
+        "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+        "subtitle": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+        "authors": [
+          "Juan Carlos Orós Cabello"
+        ],
+        "publisher": "Ra-Ma Editorial",
+        "publishedDate": "2010-11-03",
+        "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
+        "pageCount": 376,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "4ezvEAAAQBAJ",
-            "volumeInfo": {
-                "title": "Javascript Práctico - Vol.2",
-                "subtitle": "Javascript Práctico - Vol.2",
-                "authors": [
-                    "Román Arenas"
-                ],
-                "publisher": "RedUSERS",
-                "publishedDate": "2024-01-23",
-                "description": "En este volumen profundizarás en el uso de JavaScript para crear aplicaciones web completas.",
-                "pageCount": 108,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "4ezvEAAAQBAJ",
+      "volumeInfo": {
+        "title": "Javascript Práctico - Vol.2",
+        "subtitle": "Javascript Práctico - Vol.2",
+        "authors": [
+          "Román Arenas"
+        ],
+        "publisher": "RedUSERS",
+        "publishedDate": "2024-01-23",
+        "description": "En este volumen profundizarás en el uso de JavaScript para crear aplicaciones web completas.",
+        "pageCount": 108,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "B47tCgAAQBAJ",
-            "volumeInfo": {
-                "title": "La Guia Básica de JavaScript",
-                "subtitle": "La Guia Básica de JavaScript",
-                "authors": [
-                    "Miguel A. Arias"
-                ],
-                "publisher": "IT Campus Academy",
-                "publishedDate": "2013-08-29",
-                "description": "Libro introductorio para aprender JavaScript desde cero de forma sencilla.",
-                "pageCount": 78,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "B47tCgAAQBAJ",
+      "volumeInfo": {
+        "title": "La Guia Básica de JavaScript",
+        "subtitle": "La Guia Básica de JavaScript",
+        "authors": [
+          "Miguel A. Arias"
+        ],
+        "publisher": "IT Campus Academy",
+        "publishedDate": "2013-08-29",
+        "description": "Libro introductorio para aprender JavaScript desde cero de forma sencilla.",
+        "pageCount": 78,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "1c-4EAAAQBAJ",
-            "volumeInfo": {
-                "title": "Domine JavaScript 4ª Edición",
-                "subtitle": "Domine JavaScript 4ª Edición",
-                "authors": [
-                    "Pablo Enrique Fernández Casado"
-                ],
-                "publisher": "Ra-Ma Editorial",
-                "publishedDate": "2020-02-13",
-                "description": "Guía completa para dominar JavaScript desde nivel básico hasta avanzado.",
-                "pageCount": 319,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "1c-4EAAAQBAJ",
+      "volumeInfo": {
+        "title": "Domine JavaScript 4ª Edición",
+        "subtitle": "Domine JavaScript 4ª Edición",
+        "authors": [
+          "Pablo Enrique Fernández Casado"
+        ],
+        "publisher": "Ra-Ma Editorial",
+        "publishedDate": "2020-02-13",
+        "description": "Guía completa para dominar JavaScript desde nivel básico hasta avanzado.",
+        "pageCount": 319,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "nDNwM_5IDLIC",
-            "volumeInfo": {
-                "title": "Aprender a desarrollar con JavaScript",
-                "subtitle": "Aprender a desarrollar con JavaScript",
-                "authors": [
-                    "Christian Vigouroux"
-                ],
-                "publisher": "Ediciones ENI",
-                "publishedDate": "2017",
-                "description": "Manual extenso para aprender JavaScript de forma profesional.",
-                "pageCount": 742,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "nDNwM_5IDLIC",
+      "volumeInfo": {
+        "title": "Aprender a desarrollar con JavaScript",
+        "subtitle": "Aprender a desarrollar con JavaScript",
+        "authors": [
+          "Christian Vigouroux"
+        ],
+        "publisher": "Ediciones ENI",
+        "publishedDate": "2017",
+        "description": "Manual extenso para aprender JavaScript de forma profesional.",
+        "pageCount": 742,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "DADnDQAAQBAJ",
-            "volumeInfo": {
-                "title": "La programación JavaScript",
-                "subtitle": "La programación JavaScript",
-                "authors": [
-                    "Preston Prescott"
-                ],
-                "publisher": "Babelcube Inc.",
-                "publishedDate": "2017-02-01",
-                "description": "Introducción práctica al lenguaje JavaScript para principiantes.",
-                "pageCount": 72,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "DADnDQAAQBAJ",
+      "volumeInfo": {
+        "title": "La programación JavaScript",
+        "subtitle": "La programación JavaScript",
+        "authors": [
+          "Preston Prescott"
+        ],
+        "publisher": "Babelcube Inc.",
+        "publishedDate": "2017-02-01",
+        "description": "Introducción práctica al lenguaje JavaScript para principiantes.",
+        "pageCount": 72,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "f4NGzgEACAAJ",
-            "volumeInfo": {
-                "title": "Programación JavaScript",
-                "subtitle": "Programación JavaScript",
-                "authors": [
-                    "John Bach"
-                ],
-                "publisher": "",
-                "publishedDate": "2021-03-03",
-                "description": "Libro para principiantes que explica la evolución y fundamentos de JavaScript.",
-                "pageCount": 240,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "f4NGzgEACAAJ",
+      "volumeInfo": {
+        "title": "Programación JavaScript",
+        "subtitle": "Programación JavaScript",
+        "authors": [
+          "John Bach"
+        ],
+        "publisher": "",
+        "publishedDate": "2021-03-03",
+        "description": "Libro para principiantes que explica la evolución y fundamentos de JavaScript.",
+        "pageCount": 240,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
         },
-        {
-            "id": "SqikDwAAQBAJ",
-            "volumeInfo": {
-                "title": "JavaScript - Aprende a programar en el lenguaje de la web",
-                "subtitle": "JavaScript - Aprende a programar en el lenguaje de la web",
-                "authors": [
-                    "Fernando Luna"
-                ],
-                "publisher": "RedUsers",
-                "publishedDate": "2019-07-23",
-                "description": "Guía introductoria para comenzar a programar en JavaScript.",
-                "pageCount": 146,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "SqikDwAAQBAJ",
+      "volumeInfo": {
+        "title": "JavaScript - Aprende a programar en el lenguaje de la web",
+        "subtitle": "JavaScript - Aprende a programar en el lenguaje de la web",
+        "authors": [
+          "Fernando Luna"
+        ],
+        "publisher": "RedUsers",
+        "publishedDate": "2019-07-23",
+        "description": "Guía introductoria para comenzar a programar en JavaScript.",
+        "pageCount": 146,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "77RyxBl1tCAC",
-            "volumeInfo": {
-                "title": "Los API JavaScript de HTML5",
-                "subtitle": "Los API JavaScript de HTML5",
-                "authors": [
-                    "Luc Van Lancker"
-                ],
-                "publisher": "Ediciones ENI",
-                "publishedDate": "2013",
-                "description": "Guía avanzada sobre las APIs JavaScript disponibles en HTML5.",
-                "pageCount": 520,
-                "categories": [
-                    "Computadoras"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "77RyxBl1tCAC",
+      "volumeInfo": {
+        "title": "Los API JavaScript de HTML5",
+        "subtitle": "Los API JavaScript de HTML5",
+        "authors": [
+          "Luc Van Lancker"
+        ],
+        "publisher": "Ediciones ENI",
+        "publishedDate": "2013",
+        "description": "Guía avanzada sobre las APIs JavaScript disponibles en HTML5.",
+        "pageCount": 520,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        {
-            "id": "rpGutgAACAAJ",
-            "volumeInfo": {
-                "title": "JavaScript y jQuery",
-                "subtitle": "JavaScript y jQuery",
-                "authors": [
-                    "David Sawyer McFarland"
-                ],
-                "publisher": "",
-                "publishedDate": "2012-03",
-                "description": "Manual para aprender JavaScript con énfasis en jQuery.",
-                "pageCount": 560,
-                "categories": [
-                    "Business & Economics"
-                ],
-                "imageLinks": {
-                    "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                },
-                "language": "es"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "rpGutgAACAAJ",
+      "volumeInfo": {
+        "title": "JavaScript y jQuery",
+        "subtitle": "JavaScript y jQuery",
+        "authors": [
+          "David Sawyer McFarland"
+        ],
+        "publisher": "",
+        "publishedDate": "2012-03",
+        "description": "Manual para aprender JavaScript con énfasis en jQuery.",
+        "pageCount": 560,
+        "categories": [
+          "Business & Economics"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
         },
-        {
-            "id": "7187b554-2e58-4e71-92f5-9f904f32a779",
-            "volumeInfo": {
-                "title": "hola",
-                "subtitle": "hola",
-                "authors": [
-                    "luis",
-                    "paulo"
-                ],
-                "publisher": "didsmdsds",
-                "publishedDate": "2025-01-01",
-                "description": "holaaa",
-                "pageCount": 400,
-                "categories": [],
-                "imageLinks": {
-                    "thumbnail": "https://flagservice.net/ES/flag.svg"
-                },
-                "language": "mx"
-            }
+        "language": "es"
+      }
+    },
+    {
+      "id": "5549a4a8-06ba-4e36-ab3b-b2756de9bdce",
+      "volumeInfo": {
+        "title": "fggdf",
+        "subtitle": "ddfgdfgdfg",
+        "authors": [
+          "fdgfdgdfg"
+        ],
+        "publisher": "fgdfdgfgd",
+        "publishedDate": "cbcxvcxvdfdfsdfsdsdsfds",
+        "description": "dsdds",
+        "pageCount": 3443,
+        "categories": [],
+        "imageLinks": {
+          "thumbnail": "https://ffdfd"
+        },
+        "language": "es",
+        "id": "5549a4a8-06ba-4e36-ab3b-b2756de9bdce",
+        "volumeInfo": {
+          "title": "fggdf",
+          "subtitle": "ddfgdfgdfg",
+          "authors": [
+            "fdgfdgdfg"
+          ],
+          "publisher": "fgdfdgfgd",
+          "publishedDate": "fgddfgdfgweweweweweweweweewwe",
+          "description": "dsdds",
+          "pageCount": 3443,
+          "categories": [],
+          "imageLinks": {
+            "thumbnail": "https://ffdfd"
+          },
+          "language": "es"
         }
-    ]
+      }
+    }
+  ]
 }
