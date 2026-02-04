@@ -86,15 +86,17 @@ export class BibliotecaBooksModel {
                 };
             }
 
-            console.log(data);
+            console.log({ data });
+            console.log({ volumenInfo: data.volumeInfo });
             const updatedItem: GoogleBook = {
                 id: currentItem.id,
                 volumeInfo: {
                     ...currentItem.volumeInfo,
-                    ...data.volumeInfo,
+                    ...data,
                 },
             };
 
+            console.log({ updatedItem });
 
             items[index] = updatedItem;
 
