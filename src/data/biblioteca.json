@@ -222,7 +222,10 @@
         "publishedDate": "fgddfgdfgweweweweweweweweewwe",
         "description": "dsdds",
         "pageCount": 3443,
-        "categories": [],
+        "categories": [
+          "Ciencia Ficción",
+          "Biografía"
+        ],
         "imageLinks": {
           "thumbnail": "https://ffdfd"
         },
