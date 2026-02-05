@@ -55,9 +55,10 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.deleteBibliotecaBooks(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data }));
+            res.status(200).json(
+                formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data })
+            );
         } catch (error) {
-
             const { messageError, errorName } = extraerDatosError(error);
 
             res.status(500).json(
@@ -69,6 +70,5 @@ export class BibliotecaBooksController {
                 })
             );
         }
-
     }
 }
