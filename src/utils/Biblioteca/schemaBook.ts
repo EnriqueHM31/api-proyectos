@@ -1,30 +1,69 @@
 import { z } from "zod";
 
-const bibliotecaBook = z.object({
-    id: z.string({ message: "El id es requerido" }).min(1, { message: "El id no puede ser vacío" }).uuid({ message: "El id debe ser un UUID válido" }),
-    volumeInfo: z.object({
-        title: z.string({ message: "El título es requerido" }).min(1, { message: "El título no puede ser vacío" }),
-        subtitle: z.string({ message: "El subtítulo es requerido" }).min(1, { message: "El subtítulo no puede ser vacío" }),
-        authors: z.array(z.string({ message: "Los autores deben ser cadenas de caracteres" }), { message: "Los autores estan mal formados" }),
-        publisher: z.string({ message: "El publisher es requerido" }).min(1, { message: "El publisher no puede ser vacío" }),
-        publishedDate: z.string({ message: "La fecha de publicación es requerida" }).min(1, { message: "La fecha de publicación no puede ser vacío" }),
-        description: z.string({ message: "La descripción es requerida" }).min(1, { message: "La descripción no puede ser vacío" }),
-        pageCount: z.number({ message: "El número de páginas es requerido" }),
-        categories: z.array(z.string({ message: "Las categorías son requeridas" }), { message: "Las categorías estan mal formadas" }),
-        imageLinks: z.object({
-            thumbnail: z
-                .string({ message: "La imagen es requerida" })
-                .min(1, { message: "La imagen no puede ser vacío" })
-                .url({ message: "La imagen no es una URL válida" }),
-        }),
-        language: z.string({ message: "El idioma es requerido" }).min(1, { message: "El idioma no puede ser vacío" }),
+/* =========================
+   BASE
+========================= */
+
+const bibliotecaBookSchema = z.object({
+  id: z
+    .string({ message: "El id es requerido" })
+    .uuid({ message: "El id debe ser un UUID válido" }),
+
+  volumeInfo: z.object({
+    title: z.string({ message: "El título es requerido" }).min(1),
+    subtitle: z.string({ message: "El subtitulo es requerido" }).min(1, { message: "El subtitulo es requerido" }),
+    authors: z.array(z.string({ message: "Los autores estan mal formateados" })).min(1, { message: "Los autores estan mal formateados" }),
+    publisher: z.string({ message: "El editor es requerido" }).min(1, { message: "El editor es requerido" }),
+    publishedDate: z.string({ message: "La fecha de publicación es requerida" }).min(1, { message: "La fecha de publicación es requerida" }),
+    description: z.string({ message: "La descripción es requerida" }).min(1, { message: "La descripción es requerida" }),
+    pageCount: z.number({ message: "El numero de paginas es requerido" }).min(1, { message: "El numero de paginas es requerido" }),
+    categories: z.array(z.string({ message: "Las categorias estan mal formateadas" })).min(1, { message: "Las categorias estan mal formateadas" }),
+    imageLinks: z.object({
+      thumbnail: z.string({ message: "El link de la imagen es requerido" }).min(1, { message: "El link de la imagen es requerido" }),
     }),
+    language: z.string({ message: "El idioma es requerido" }).min(1, { message: "El idioma es requerido" }),
+  }, { message: "Los datos del libro son requeridos" }),
 });
 
-export function validarBibliotecaBooksCampos(data: unknown) {
-    return bibliotecaBook.parse(data);
+/* =========================
+   CREATE
+   ➜ NO recibe id
+========================= */
+
+const bibliotecaBookCreateSchema = bibliotecaBookSchema.omit({
+  id: true,
+});
+
+export function validarBibliotecaBooksCreate(data: unknown) {
+  return bibliotecaBookCreateSchema.parse(data);
 }
 
-export function validarPartialBibliotecaBooksCampos(data: unknown) {
-    return bibliotecaBook.partial().safeParse(data);
+/* =========================
+   UPDATE
+   ➜ parcial pero NO vacío
+========================= */
+
+const bibliotecaBookUpdateSchema = bibliotecaBookSchema
+  .omit({ id: true })
+  .partial()
+  .refine(data => Object.keys(data).length > 0, {
+    message: "Debe enviar al menos un campo para actualizar",
+  });
+
+export function validarBibliotecaBooksUpdate(data: unknown) {
+  return bibliotecaBookUpdateSchema.safeParse(data);
+}
+
+/* =========================
+   ID PARAM
+========================= */
+
+const bibliotecaBookIdSchema = z.object({
+  id: z
+    .string({ message: "El id es requerido" })
+    .uuid({ message: "El id debe ser un UUID válido" }),
+});
+
+export function validarBibliotecaBooksId(data: unknown) {
+  return bibliotecaBookIdSchema.safeParse(data);
 }
