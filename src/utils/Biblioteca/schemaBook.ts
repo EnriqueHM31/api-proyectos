@@ -5,24 +5,25 @@ import { z } from "zod";
 ========================= */
 
 const bibliotecaBookSchema = z.object({
-  id: z
-    .string({ message: "El id es requerido" })
-    .uuid({ message: "El id debe ser un UUID válido" }),
+    id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
 
-  volumeInfo: z.object({
-    title: z.string({ message: "El título es requerido" }).min(1),
-    subtitle: z.string({ message: "El subtitulo es requerido" }).min(1, { message: "El subtitulo es requerido" }),
-    authors: z.array(z.string({ message: "Los autores estan mal formateados" })).min(1, { message: "Los autores estan mal formateados" }),
-    publisher: z.string({ message: "El editor es requerido" }).min(1, { message: "El editor es requerido" }),
-    publishedDate: z.string({ message: "La fecha de publicación es requerida" }).min(1, { message: "La fecha de publicación es requerida" }),
-    description: z.string({ message: "La descripción es requerida" }).min(1, { message: "La descripción es requerida" }),
-    pageCount: z.number({ message: "El numero de paginas es requerido" }).min(1, { message: "El numero de paginas es requerido" }),
-    categories: z.array(z.string({ message: "Las categorias estan mal formateadas" })).min(1, { message: "Las categorias estan mal formateadas" }),
-    imageLinks: z.object({
-      thumbnail: z.string({ message: "El link de la imagen es requerido" }).min(1, { message: "El link de la imagen es requerido" }),
-    }),
-    language: z.string({ message: "El idioma es requerido" }).min(1, { message: "El idioma es requerido" }),
-  }, { message: "Los datos del libro son requeridos" }),
+    volumeInfo: z.object(
+        {
+            title: z.string({ message: "El título es requerido" }).min(1),
+            subtitle: z.string({ message: "El subtitulo es requerido" }).min(1, { message: "El subtitulo es requerido" }),
+            authors: z.array(z.string({ message: "Los autores estan mal formateados" })).min(1, { message: "Los autores estan mal formateados" }),
+            publisher: z.string({ message: "El editor es requerido" }).min(1, { message: "El editor es requerido" }),
+            publishedDate: z.string({ message: "La fecha de publicación es requerida" }).min(1, { message: "La fecha de publicación es requerida" }),
+            description: z.string({ message: "La descripción es requerida" }).min(1, { message: "La descripción es requerida" }),
+            pageCount: z.number({ message: "El numero de paginas es requerido" }).min(1, { message: "El numero de paginas es requerido" }),
+            categories: z.array(z.string({ message: "Las categorias estan mal formateadas" })).min(1, { message: "Las categorias estan mal formateadas" }),
+            imageLinks: z.object({
+                thumbnail: z.string({ message: "El link de la imagen es requerido" }).min(1, { message: "El link de la imagen es requerido" }),
+            }),
+            language: z.string({ message: "El idioma es requerido" }).min(1, { message: "El idioma es requerido" }),
+        },
+        { message: "Los datos del libro son requeridos" }
+    ),
 });
 
 /* =========================
@@ -31,11 +32,11 @@ const bibliotecaBookSchema = z.object({
 ========================= */
 
 const bibliotecaBookCreateSchema = bibliotecaBookSchema.omit({
-  id: true,
+    id: true,
 });
 
 export function validarBibliotecaBooksCreate(data: unknown) {
-  return bibliotecaBookCreateSchema.parse(data);
+    return bibliotecaBookCreateSchema.parse(data);
 }
 
 /* =========================
@@ -44,14 +45,14 @@ export function validarBibliotecaBooksCreate(data: unknown) {
 ========================= */
 
 const bibliotecaBookUpdateSchema = bibliotecaBookSchema
-  .omit({ id: true })
-  .partial()
-  .refine(data => Object.keys(data).length > 0, {
-    message: "Debe enviar al menos un campo para actualizar",
-  });
+    .omit({ id: true })
+    .partial()
+    .refine((data) => Object.keys(data).length > 0, {
+        message: "Debe enviar al menos un campo para actualizar",
+    });
 
 export function validarBibliotecaBooksUpdate(data: unknown) {
-  return bibliotecaBookUpdateSchema.safeParse(data);
+    return bibliotecaBookUpdateSchema.safeParse(data);
 }
 
 /* =========================
@@ -59,11 +60,9 @@ export function validarBibliotecaBooksUpdate(data: unknown) {
 ========================= */
 
 const bibliotecaBookIdSchema = z.object({
-  id: z
-    .string({ message: "El id es requerido" })
-    .uuid({ message: "El id debe ser un UUID válido" }),
+    id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
 });
 
 export function validarBibliotecaBooksId(data: unknown) {
-  return bibliotecaBookIdSchema.safeParse(data);
+    return bibliotecaBookIdSchema.safeParse(data);
 }
