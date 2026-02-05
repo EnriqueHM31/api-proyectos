@@ -1,11 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import type { ZodError } from "zod";
 
-import {
-  validarBibliotecaBooksCreate,
-  validarBibliotecaBooksUpdate,
-  validarBibliotecaBooksId,
-} from "../../utils/Biblioteca/schemaBook.js";
+import { validarBibliotecaBooksCreate, validarBibliotecaBooksUpdate, validarBibliotecaBooksId } from "../../utils/Biblioteca/schemaBook.js";
 
 import { middlewareError } from "../../utils/middleware.js";
 
@@ -13,62 +9,50 @@ import { middlewareError } from "../../utils/middleware.js";
    CREATE (POST)
    ➜ NO recibe id
 ========================= */
-export function middlewareBibliotecaBooksCreate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const result = validarBibliotecaBooksCreate(req.body);
+export function middlewareBibliotecaBooksCreate(req: Request, res: Response, next: NextFunction) {
+    try {
+        const result = validarBibliotecaBooksCreate(req.body);
 
-    const { volumeInfo } = result;
+        const { volumeInfo } = result;
 
-    req.body = { volumeInfo };
-    next();
-  } catch (error) {
-    middlewareError(error as ZodError, res);
-  }
+        req.body = { volumeInfo };
+        next();
+    } catch (error) {
+        middlewareError(error as ZodError, res);
+    }
 }
 
 /* =========================
    UPDATE (PUT / PATCH)
    ➜ parcial pero NO vacío
 ========================= */
-export function middlewareBibliotecaBooksUpdate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const result = validarBibliotecaBooksUpdate(req.body);
+export function middlewareBibliotecaBooksUpdate(req: Request, res: Response, next: NextFunction) {
+    const result = validarBibliotecaBooksUpdate(req.body);
 
-  if (!result.success) {
-    middlewareError(result.error, res);
-    return;
-  }
+    if (!result.success) {
+        middlewareError(result.error, res);
+        return;
+    }
 
-  req.body = result.data;
-  next();
+    req.body = result.data;
+    next();
 }
 
 /* =========================
    ID PARAM (GET / DELETE)
    ➜ solo UUID
 ========================= */
-export function middlewareBibliotecaBooksId(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const result = validarBibliotecaBooksId(req.params);
+export function middlewareBibliotecaBooksId(req: Request, res: Response, next: NextFunction) {
+    const result = validarBibliotecaBooksId(req.params);
 
-  if (!result.success) {
-    middlewareError(result.error, res);
-    return;
-  }
+    if (!result.success) {
+        middlewareError(result.error, res);
+        return;
+    }
 
-  req.params = {
-    id: result.data.id,
-  };
+    req.params = {
+        id: result.data.id,
+    };
 
-  next();
+    next();
 }
