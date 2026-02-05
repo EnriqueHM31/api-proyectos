@@ -16,10 +16,8 @@ export function validarMessageError(error: any, messageDefecto: string) {
     return error instanceof Error ? error.message : messageDefecto;
 }
 
-
 export function extraerDatosError(error: any) {
-    const messageError =
-        error instanceof Error ? error.message : "Error desconocido";
+    const messageError = error instanceof Error ? error.message : "Error desconocido";
 
     const errorName = error instanceof Error ? error.name : "Error ";
 
@@ -33,4 +31,3 @@ export function formatoRespuesta({ ok, message, error, data }: { ok: boolean; me
         data: data,
     };
 }
-
