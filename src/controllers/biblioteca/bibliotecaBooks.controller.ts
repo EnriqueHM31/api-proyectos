@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
-import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 import { BibliotecaBooksModel } from "../../models/local/biblioteca/bibliotecaBooks.model.js";
+import type { GoogleBook } from "../../types/libro.js";
+import { validarCategorias } from "../../utils/Biblioteca/validaciones.js";
+import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 
 const bibliotecaModel = new BibliotecaBooksModel();
 
@@ -22,7 +24,6 @@ export class BibliotecaBooksController {
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido encontrado`, error: null, data }));
         } catch (error) {
-
             const { messageError, errorName } = extraerDatosError(error);
 
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
@@ -31,15 +32,31 @@ export class BibliotecaBooksController {
 
     async create(req: Request, res: Response) {
         try {
-            console.log(req.body);
-            const { data } = await bibliotecaModel.createBibliotecaBooks(req.body);
+            const dataBody = req.body as GoogleBook;
 
-            console.log(data);
-            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`, error: null, data }));
+            validarCategorias(dataBody.volumeInfo.categories);
+
+            const { data } = await bibliotecaModel.createBibliotecaBooks(dataBody);
+
+            res.status(200).json(
+                formatoRespuesta({
+                    ok: true,
+                    message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`,
+                    error: null,
+                    data,
+                })
+            );
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
 
-            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
+            res.status(500).json(
+                formatoRespuesta({
+                    ok: false,
+                    message: messageError,
+                    error: errorName,
+                    data: null,
+                })
+            );
         }
     }
 
@@ -47,6 +64,11 @@ export class BibliotecaBooksController {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body;
+
+            if (campos?.categories) {
+                validarCategorias(campos.categories);
+            }
+
             const { data } = await bibliotecaModel.updateBibliotecaBooks(id, campos);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido actualizado`, error: null, data }));
