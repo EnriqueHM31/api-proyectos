@@ -22,7 +22,10 @@ export class BibliotecaBooksController {
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido encontrado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener el libro", error: error as string, data: null }));
+
+            const { messageError, errorName } = extraerDatosError(error);
+
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     }
 
@@ -34,7 +37,9 @@ export class BibliotecaBooksController {
             console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al crear el libro", error: error as string, data: null }));
+            const { messageError, errorName } = extraerDatosError(error);
+
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     }
 
@@ -46,7 +51,9 @@ export class BibliotecaBooksController {
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido actualizado`, error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al actualizar el libro", error: error as string, data: null }));
+            const { messageError, errorName } = extraerDatosError(error);
+
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     }
 
@@ -61,14 +68,7 @@ export class BibliotecaBooksController {
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
 
-            res.status(500).json(
-                formatoRespuesta({
-                    ok: false,
-                    message: messageError,
-                    error: errorName,
-                    data: null,
-                })
-            );
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     }
 }
