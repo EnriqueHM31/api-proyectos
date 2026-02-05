@@ -1,32 +1,74 @@
 import type { NextFunction, Request, Response } from "express";
-import { validarPartialBibliotecaBooksCampos } from "../../utils/Biblioteca/schemaBook.js";
+import type { ZodError } from "zod";
+
+import {
+  validarBibliotecaBooksCreate,
+  validarBibliotecaBooksUpdate,
+  validarBibliotecaBooksId,
+} from "../../utils/Biblioteca/schemaBook.js";
+
 import { middlewareError } from "../../utils/middleware.js";
 
-export function middlewareBibliotecaBooksCreate(req: Request, res: Response, next: NextFunction) {
-    const data = req.body;
+/* =========================
+   CREATE (POST)
+   ➜ NO recibe id
+========================= */
+export function middlewareBibliotecaBooksCreate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const result = validarBibliotecaBooksCreate(req.body);
 
-    const result = validarPartialBibliotecaBooksCampos(data);
-    console.log(result);
+    const { volumeInfo } = result;
 
-    if (!result.success) {
-        middlewareError(result.error, res);
-        return;
-    }
-    const { id, volumeInfo } = result.data;
-    req.body = { id, volumeInfo };
+    req.body = { volumeInfo };
     next();
+  } catch (error) {
+    middlewareError(error as ZodError, res);
+  }
 }
 
-export function middlewareBibliotecaBooksId(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params as { id: string };
+/* =========================
+   UPDATE (PUT / PATCH)
+   ➜ parcial pero NO vacío
+========================= */
+export function middlewareBibliotecaBooksUpdate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const result = validarBibliotecaBooksUpdate(req.body);
 
-    const result = validarPartialBibliotecaBooksCampos({ id });
+  if (!result.success) {
+    middlewareError(result.error, res);
+    return;
+  }
 
-    if (!result.success) {
-        middlewareError(result.error, res);
-        return;
-    }
-    const { id: idParam } = result.data as { id: string };
-    req.params = { id: idParam.toString() };
-    next();
+  req.body = result.data;
+  next();
+}
+
+/* =========================
+   ID PARAM (GET / DELETE)
+   ➜ solo UUID
+========================= */
+export function middlewareBibliotecaBooksId(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const result = validarBibliotecaBooksId(req.params);
+
+  if (!result.success) {
+    middlewareError(result.error, res);
+    return;
+  }
+
+  req.params = {
+    id: result.data.id,
+  };
+
+  next();
 }
