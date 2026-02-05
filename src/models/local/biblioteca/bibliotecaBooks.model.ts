@@ -12,7 +12,6 @@ export class BibliotecaBooksModel {
 
         if (!items) throw new Error("No se encontró ningún libro");
         return { data: items };
-
     }
 
     async getBibliotecaBooksById(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
@@ -21,7 +20,6 @@ export class BibliotecaBooksModel {
 
         if (!data) throw new Error("No se encontró el libro");
         return { data };
-
     }
 
     async createBibliotecaBooks(data: GoogleBook): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
@@ -81,7 +79,6 @@ export class BibliotecaBooksModel {
         fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
 
         return { data: updatedItem };
-
     }
 
     async deleteBibliotecaBooks(id: string): Promise<{ data?: GoogleBook; error?: { code: number; message: string } }> {
