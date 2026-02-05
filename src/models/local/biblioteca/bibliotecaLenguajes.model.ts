@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import dataBibliotecaLenguajes from "../../../data/lenguajes.json" with { type: "json" };
 
 export class BibliotecaLenguajesModel {
-    async getBibliotecaLenguajes(): Promise<{ data?: { Id: string; Nombre: string; Abreviacion: string }[] }> {
+    async getBibliotecaLenguajes(): Promise<{ data?: { id: string; nombre: string; abreviacion: string }[] }> {
 
         const { Items } = dataBibliotecaLenguajes;
 
@@ -11,16 +11,16 @@ export class BibliotecaLenguajesModel {
         return { data: Items };
     }
 
-    async getBibliotecaLenguajesById(id: string): Promise<{ data?: { Id: string; Nombre: string; Abreviacion: string } }> {
+    async getBibliotecaLenguajesById(id: string): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
 
-        const data = dataBibliotecaLenguajes.Items.find((item) => item.Id === id);
+        const data = dataBibliotecaLenguajes.Items.find((item) => item.id === id);
 
         if (!data) throw new Error("No se encontró el lenguaje");
 
         return { data };
     }
 
-    async createBibliotecaLenguajes(data: { Id: string; Nombre: string; Abreviacion: string }): Promise<{ data?: { Id: string; Nombre: string; Abreviacion: string } }> {
+    async createBibliotecaLenguajes(data: { id: string; nombre: string; abreviacion: string }): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
 
         const newItem: typeof data & { Id: string } = {
             ...data,
@@ -32,10 +32,10 @@ export class BibliotecaLenguajesModel {
         return { data: newItem };
     }
 
-    async updateBibliotecaLenguajes(id: string, data: Partial<{ Id: string; Nombre: string; Abreviacion: string }>): Promise<{ data?: { Id: string; Nombre: string; Abreviacion: string } }> {
+    async updateBibliotecaLenguajes(id: string, data: Partial<{ id: string; nombre: string; abreviacion: string }>): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
         const { Items } = dataBibliotecaLenguajes;
 
-        const index = Items.findIndex((item) => item.Id === id);
+        const index = Items.findIndex((item) => item.id === id);
 
         if (index === -1) {
             throw new Error("No se encontró el lenguaje");
@@ -47,24 +47,24 @@ export class BibliotecaLenguajesModel {
             throw new Error("No se encontró el lenguaje");
         }
 
-        const updatedItem: typeof data & { Id: string } = {
-            Id: currentItem.Id,
-            Nombre: currentItem.Nombre,
-            Abreviacion: currentItem.Abreviacion,
+        const updatedItem: typeof data & { id: string } = {
+            Id: currentItem.id,
+            Nombre: currentItem.nombre,
+            Abreviacion: currentItem.abreviacion,
             ...data,
-        } as { Id: string; Nombre: string; Abreviacion: string };
+        } as { id: string; nombre: string; abreviacion: string };
 
         console.log({ updatedItem });
 
-        Items[index] = updatedItem as { Id: string; Nombre: string; Abreviacion: string };
+        Items[index] = updatedItem as { id: string; nombre: string; abreviacion: string };
 
-        return { data: updatedItem as { Id: string; Nombre: string; Abreviacion: string } };
+        return { data: updatedItem as { id: string; nombre: string; abreviacion: string } };
     }
 
-    async deleteBibliotecaLenguajes(id: string): Promise<{ data?: { Id: string; Nombre: string; Abreviacion: string } }> {
+    async deleteBibliotecaLenguajes(id: string): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
         const { Items } = dataBibliotecaLenguajes;
 
-        const index = Items.findIndex((item) => item.Id === id);
+        const index = Items.findIndex((item) => item.id === id);
 
         console.log({ index });
         if (index < 0) {
