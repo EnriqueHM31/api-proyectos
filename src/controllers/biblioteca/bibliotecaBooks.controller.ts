@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { formatoRespuesta } from "../../utils/index.js";
+import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 import { BibliotecaBooksModel } from "../../models/local/biblioteca/bibliotecaBooks.model.js";
 
 const bibliotecaModel = new BibliotecaBooksModel();
@@ -55,9 +55,20 @@ export class BibliotecaBooksController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.deleteBibliotecaBooks(id);
 
-            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data }));
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al eliminar el libro", error: error as string, data: null }));
+
+            const { messageError, errorName } = extraerDatosError(error);
+
+            res.status(500).json(
+                formatoRespuesta({
+                    ok: false,
+                    message: messageError,
+                    error: errorName,
+                    data: null,
+                })
+            );
         }
+
     }
 }
