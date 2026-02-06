@@ -10,23 +10,23 @@ const bibliotecaLenguajesSchema = z.object({
     abreviacion: z.string({ message: "La abreviación es requerida" }).min(1, { message: "La abreviación no puede ser vacía" }),
 });
 
-const bibliotecaLenguajesCreateSchema = bibliotecaLenguajesSchema.omit({
+const bibliotecaLenguajesCreareSchema = bibliotecaLenguajesSchema.omit({
     id: true,
 });
 
-export function validarBibliotecaLenguajesCreate(data: unknown) {
-    return bibliotecaLenguajesCreateSchema.parse(data);
+export function validarBibliotecaLenguajesCrear(data: unknown) {
+    return bibliotecaLenguajesCreareSchema.parse(data);
 }
 
-const bibliotecaLenguajesUpdateSchema = bibliotecaLenguajesSchema
+const bibliotecaLenguajesModificarSchema = bibliotecaLenguajesSchema
     .omit({ id: true })
     .partial()
     .refine((data) => Object.keys(data).length > 0, {
         message: "Debe enviar al menos un campo para actualizar",
     });
 
-export function validarBibliotecaLenguajesUpdate(data: unknown) {
-    return bibliotecaLenguajesUpdateSchema.safeParse(data);
+export function validarBibliotecaLenguajesModificar(data: unknown) {
+    return bibliotecaLenguajesModificarSchema.safeParse(data);
 }
 
 const bibliotecaLenguajesIdSchema = z.object({
