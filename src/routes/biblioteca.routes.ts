@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { bibliotecaBooksRouter } from "./biblioteca/bibliotecaBooks.routes.js";
-import { bibliotecaCategoriesRouter } from "./biblioteca/bibiliotecaCategories.routes.js";
+import { bibliotecaBooksRouter } from "./biblioteca/bibliotecaLibros.routes.js";
+import { bibliotecaCategoriesRouter } from "./biblioteca/bibiliotecaCategorias.routes.js";
 import { bibliotecaLenguajesRouter } from "./biblioteca/bibliotecaLenguajes.routes.js";
 
 export const bibliotecaRouter = Router();
