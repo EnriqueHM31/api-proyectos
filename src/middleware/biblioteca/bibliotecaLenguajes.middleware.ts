@@ -2,20 +2,20 @@ import type { NextFunction, Request, Response } from "express";
 import type { ZodError } from "zod";
 
 import {
-    validarBibliotecaLenguajesCreate,
-    validarBibliotecaLenguajesUpdate,
+    validarBibliotecaLenguajesCrear,
+    validarBibliotecaLenguajesModificar,
     validarBibliotecaLenguajesId,
 } from "../../utils/Biblioteca/schemaLenguajes.js";
 
 import { middlewareError } from "../../utils/middleware.js";
 
 /* =========================
-   CREATE (POST)
+   Crear (POST)
    ➜ NO recibe id
 ========================= */
-export function middlewareBibliotecaLenguajesCreate(req: Request, res: Response, next: NextFunction) {
+export function middlewareBibliotecaLenguajesCrear(req: Request, res: Response, next: NextFunction) {
     try {
-        const result = validarBibliotecaLenguajesCreate(req.body);
+        const result = validarBibliotecaLenguajesCrear(req.body);
 
         // solo nombre y descripcion
         const { nombre, abreviacion } = result;
@@ -28,11 +28,11 @@ export function middlewareBibliotecaLenguajesCreate(req: Request, res: Response,
 }
 
 /* =========================
-   UPDATE (PUT / PATCH)
+   Modificar (PUT / PATCH)
    ➜ todo opcional
 ========================= */
-export function middlewareBibliotecaLenguajesUpdate(req: Request, res: Response, next: NextFunction) {
-    const result = validarBibliotecaLenguajesUpdate(req.body);
+export function middlewareBibliotecaLenguajesModificar(req: Request, res: Response, next: NextFunction) {
+    const result = validarBibliotecaLenguajesModificar(req.body);
 
     if (!result.success) {
         middlewareError(result.error, res);
