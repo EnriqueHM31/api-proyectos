@@ -3,21 +3,21 @@ import { Router } from "express";
 import { BibliotecaCategoriasController } from "../../controllers/biblioteca/bibliotecaCategorias.controller.js";
 
 import {
-    middlewareBibliotecaCategoriesId,
-    middlewareBibliotecaCategoriesCreate,
-    middlewareBibliotecaCategoriesUpdate,
+    middlewareBibliotecaCategoriasId,
+    middlewareBibliotecaCategoriasCreate,
+    middlewareBibliotecaCategoriasUpdate,
 } from "../../middleware/biblioteca/bibliotecaCategorias.middleware.js";
 
-export const bibliotecaCategoriesRouter = Router();
+export const bibliotecaCategoriasRouter = Router();
 
 const bibliotecaCategoriasController = new BibliotecaCategoriasController();
 
-bibliotecaCategoriesRouter.get("/", bibliotecaCategoriasController.obtenerCategorias);
+bibliotecaCategoriasRouter.get("/", bibliotecaCategoriasController.obtenerCategorias);
 
-bibliotecaCategoriesRouter.get("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriasController.ObtenerUnaCategoria);
+bibliotecaCategoriasRouter.get("/:id", middlewareBibliotecaCategoriasId, bibliotecaCategoriasController.ObtenerUnaCategoria);
 
-bibliotecaCategoriesRouter.post("/", middlewareBibliotecaCategoriesCreate, bibliotecaCategoriasController.crearCategoria);
+bibliotecaCategoriasRouter.post("/", middlewareBibliotecaCategoriasCreate, bibliotecaCategoriasController.crearCategoria);
 
-bibliotecaCategoriesRouter.put("/:id", middlewareBibliotecaCategoriesUpdate, bibliotecaCategoriasController.modificarCategoria);
+bibliotecaCategoriasRouter.put("/:id", middlewareBibliotecaCategoriasUpdate, bibliotecaCategoriasController.modificarCategoria);
 
-bibliotecaCategoriesRouter.delete("/:id", middlewareBibliotecaCategoriesId, bibliotecaCategoriasController.eliminarCategoria);
+bibliotecaCategoriasRouter.delete("/:id", middlewareBibliotecaCategoriasId, bibliotecaCategoriasController.eliminarCategoria);
