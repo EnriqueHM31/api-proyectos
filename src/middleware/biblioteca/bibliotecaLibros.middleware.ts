@@ -1,17 +1,17 @@
 import type { NextFunction, Request, Response } from "express";
 import type { ZodError } from "zod";
 
-import { validarBibliotecaBooksCreate, validarBibliotecaBooksUpdate, validarBibliotecaBooksId } from "../../utils/Biblioteca/schemaLibro.js";
+import { validarBibliotecaLibrosCrear, validarBibliotecaLibrosModificar, validarBibliotecaLibrosId } from "../../utils/Biblioteca/schemaLibro.js";
 
 import { middlewareError } from "../../utils/middleware.js";
 
 /* =========================
-   CREATE (POST)
+   Crear (POST)
    ➜ NO recibe id
 ========================= */
-export function middlewareBibliotecaBooksCreate(req: Request, res: Response, next: NextFunction) {
+export function middlewareBibliotecaLibrosCrear(req: Request, res: Response, next: NextFunction) {
     try {
-        const result = validarBibliotecaBooksCreate(req.body);
+        const result = validarBibliotecaLibrosCrear(req.body);
 
         const { volumeInfo } = result;
 
@@ -23,11 +23,11 @@ export function middlewareBibliotecaBooksCreate(req: Request, res: Response, nex
 }
 
 /* =========================
-   UPDATE (PUT / PATCH)
+   Modificar (PUT / PATCH)
    ➜ parcial pero NO vacío
 ========================= */
-export function middlewareBibliotecaBooksUpdate(req: Request, res: Response, next: NextFunction) {
-    const result = validarBibliotecaBooksUpdate(req.body);
+export function middlewareBibliotecaLibrosModificar(req: Request, res: Response, next: NextFunction) {
+    const result = validarBibliotecaLibrosModificar(req.body);
 
     if (!result.success) {
         middlewareError(result.error, res);
@@ -42,8 +42,8 @@ export function middlewareBibliotecaBooksUpdate(req: Request, res: Response, nex
    ID PARAM (GET / DELETE)
    ➜ solo UUID
 ========================= */
-export function middlewareBibliotecaBooksId(req: Request, res: Response, next: NextFunction) {
-    const result = validarBibliotecaBooksId(req.params);
+export function middlewareBibliotecaLibrosId(req: Request, res: Response, next: NextFunction) {
+    const result = validarBibliotecaLibrosId(req.params);
 
     if (!result.success) {
         middlewareError(result.error, res);
