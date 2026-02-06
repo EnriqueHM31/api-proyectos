@@ -4,7 +4,7 @@ import { z } from "zod";
    BASE
 ========================= */
 
-const bibliotecaBookSchema = z.object({
+const bibliotecaLibrosSchema = z.object({
     id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
 
     volumeInfo: z.object(
@@ -31,38 +31,38 @@ const bibliotecaBookSchema = z.object({
    ➜ NO recibe id
 ========================= */
 
-const bibliotecaBookCreateSchema = bibliotecaBookSchema.omit({
+const bibliotecaLibrosCreateSchema = bibliotecaLibrosSchema.omit({
     id: true,
 });
 
-export function validarBibliotecaBooksCreate(data: unknown) {
-    return bibliotecaBookCreateSchema.parse(data);
+export function validarBibliotecaLibrosCrear(data: unknown) {
+    return bibliotecaLibrosCreateSchema.parse(data);
 }
 
 /* =========================
-   UPDATE
+   Modificar
    ➜ parcial pero NO vacío
 ========================= */
 
-const bibliotecaBookUpdateSchema = bibliotecaBookSchema
+const bibliotecaLibrosModificarSchema = bibliotecaLibrosSchema
     .omit({ id: true })
     .partial()
     .refine((data) => Object.keys(data).length > 0, {
         message: "Debe enviar al menos un campo para actualizar",
     });
 
-export function validarBibliotecaBooksUpdate(data: unknown) {
-    return bibliotecaBookUpdateSchema.safeParse(data);
+export function validarBibliotecaLibrosModificar(data: unknown) {
+    return bibliotecaLibrosModificarSchema.safeParse(data);
 }
 
 /* =========================
    ID PARAM
 ========================= */
 
-const bibliotecaBookIdSchema = z.object({
+const bibliotecaLibrosIdSchema = z.object({
     id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
 });
 
-export function validarBibliotecaBooksId(data: unknown) {
-    return bibliotecaBookIdSchema.safeParse(data);
+export function validarBibliotecaLibrosId(data: unknown) {
+    return bibliotecaLibrosIdSchema.safeParse(data);
 }
