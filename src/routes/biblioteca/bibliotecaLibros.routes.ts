@@ -1,18 +1,18 @@
 import { Router } from "express";
 
-import { BibliotecaBooksController } from "../../controllers/biblioteca/bibliotecaLibros.controller.js";
-import { middlewareBibliotecaBooksId, middlewareBibliotecaBooksCreate } from "../../middleware/biblioteca/bibliotecaLibros.middleware.js";
+import { BibliotecaLibrosController } from "../../controllers/biblioteca/bibliotecaLibros.controller.js";
+import { middlewareBibliotecaLibrosCrear, middlewareBibliotecaLibrosModificar, middlewareBibliotecaLibrosId } from "../../middleware/biblioteca/bibliotecaLibros.middleware.js";
 
-export const bibliotecaBooksRouter = Router();
+export const bibliotecaLibrosRouter = Router();
 
-const bibliotecaBooksController = new BibliotecaBooksController();
+const bibliotecaLibrosController = new BibliotecaLibrosController();
 
-bibliotecaBooksRouter.get("/", bibliotecaBooksController.getAll);
+bibliotecaLibrosRouter.get("/", bibliotecaLibrosController.getAll);
 
-bibliotecaBooksRouter.get("/:id", middlewareBibliotecaBooksId, bibliotecaBooksController.getBook);
+bibliotecaLibrosRouter.get("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.getBook);
 
-bibliotecaBooksRouter.post("/", middlewareBibliotecaBooksCreate, bibliotecaBooksController.create);
+bibliotecaLibrosRouter.post("/", middlewareBibliotecaLibrosCrear, bibliotecaLibrosController.create);
 
-bibliotecaBooksRouter.put("/:id", middlewareBibliotecaBooksId, bibliotecaBooksController.update);
+bibliotecaLibrosRouter.put("/:id", middlewareBibliotecaLibrosId, middlewareBibliotecaLibrosModificar, bibliotecaLibrosController.update);
 
-bibliotecaBooksRouter.delete("/:id", middlewareBibliotecaBooksId, bibliotecaBooksController.delete);
+bibliotecaLibrosRouter.delete("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.delete);
