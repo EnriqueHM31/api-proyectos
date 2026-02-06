@@ -1,15 +1,15 @@
 import type { Request, Response } from "express";
-import { BibliotecaBooksModel } from "../../models/local/biblioteca/bibliotecaLibros.model.js";
+import { BibliotecaLibrosModel } from "../../models/local/biblioteca/bibliotecaLibros.model.js";
 import type { GoogleBook } from "../../types/libro.js";
 import { validarCategorias } from "../../utils/Biblioteca/validaciones.js";
 import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 
-const bibliotecaModel = new BibliotecaBooksModel();
+const bibliotecaLibrosModel = new BibliotecaLibrosModel();
 
-export class BibliotecaBooksController {
-    async getAll(req: Request, res: Response) {
+export class BibliotecaLibrosController {
+    async getAll(_req: Request, res: Response) {
         try {
-            const { data } = await bibliotecaModel.getBibliotecaBooks();
+            const { data } = await bibliotecaLibrosModel.ObtenerBibliotecaLibros();
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Libros encontrados", error: null, data }));
         } catch (error) {
@@ -20,7 +20,7 @@ export class BibliotecaBooksController {
     async getBook(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaModel.getBibliotecaBooksById(id);
+            const { data } = await bibliotecaLibrosModel.ObtenerBibliotecaLibrosById(id);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido encontrado`, error: null, data }));
         } catch (error) {
@@ -36,7 +36,7 @@ export class BibliotecaBooksController {
 
             validarCategorias(dataBody.volumeInfo.categories);
 
-            const { data } = await bibliotecaModel.createBibliotecaBooks(dataBody);
+            const { data } = await bibliotecaLibrosModel.crearBibliotecaLibros(dataBody);
 
             res.status(200).json(
                 formatoRespuesta({
@@ -69,7 +69,7 @@ export class BibliotecaBooksController {
                 validarCategorias(campos.categories);
             }
 
-            const { data } = await bibliotecaModel.updateBibliotecaBooks(id, campos);
+            const { data } = await bibliotecaLibrosModel.modificarBibliotecaLibros(id, campos);
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido actualizado`, error: null, data }));
         } catch (error) {
@@ -82,7 +82,7 @@ export class BibliotecaBooksController {
     async delete(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
-            const { data } = await bibliotecaModel.deleteBibliotecaBooks(id);
+            const { data } = await bibliotecaLibrosModel.eliminarBibliotecaLibros(id);
 
             res.status(200).json(
                 formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data })
