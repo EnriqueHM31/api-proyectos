@@ -6,15 +6,15 @@ import type { GoogleBook } from "../../../types/libro.js";
 
 const filePath = path.resolve("src/data/biblioteca.json");
 
-export class BibliotecaBooksModel {
-    async getBibliotecaBooks(): Promise<{ data?: GoogleBook[] }> {
+export class BibliotecaLibrosModel {
+    async ObtenerBibliotecaLibros(): Promise<{ data?: GoogleBook[] }> {
         const { items } = dataBiblioteca;
 
         if (!items) throw new Error("No se encontró ningún libro");
         return { data: items };
     }
 
-    async getBibliotecaBooksById(id: string): Promise<{ data?: GoogleBook }> {
+    async ObtenerBibliotecaLibrosById(id: string): Promise<{ data?: GoogleBook }> {
         const { items } = dataBiblioteca;
         const data = items.find((item) => item.id === id);
 
@@ -22,7 +22,7 @@ export class BibliotecaBooksModel {
         return { data };
     }
 
-    async createBibliotecaBooks(data: GoogleBook): Promise<{ data?: GoogleBook }> {
+    async crearBibliotecaLibros(data: GoogleBook): Promise<{ data?: GoogleBook }> {
         // 1️⃣ Leer archivo JSON
         const file = await fs.readFile(filePath, "utf-8");
         const dataBiblioteca = JSON.parse(file);
@@ -47,7 +47,7 @@ export class BibliotecaBooksModel {
         return { data: newItem };
     }
 
-    async updateBibliotecaBooks(id: string, data: Partial<GoogleBook>): Promise<{ data?: GoogleBook }> {
+    async modificarBibliotecaLibros(id: string, data: Partial<GoogleBook>): Promise<{ data?: GoogleBook }> {
         const { items } = dataBiblioteca;
 
         const index = items.findIndex((item) => item.id === id);
@@ -82,7 +82,7 @@ export class BibliotecaBooksModel {
         return { data: updatedItem };
     }
 
-    async deleteBibliotecaBooks(id: string): Promise<{ data?: GoogleBook }> {
+    async eliminarBibliotecaLibros(id: string): Promise<{ data?: GoogleBook }> {
         const { items } = dataBiblioteca;
 
         const index = items.findIndex((item) => item.id === id);
