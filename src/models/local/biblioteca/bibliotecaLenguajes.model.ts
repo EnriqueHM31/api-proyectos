@@ -1,86 +1,194 @@
 import { randomUUID } from "node:crypto";
-import dataBibliotecaLenguajes from "../../../data/lenguajes.json" with { type: "json" };
+import fs from "node:fs/promises";
+import path from "node:path";
+
+interface Lenguaje {
+    id: string;
+    nombre: string;
+    abreviacion: string;
+}
+
+const filePath = path.resolve("src/data/lenguajes.json") as string;
 
 export class BibliotecaLenguajesModel {
-    async getBibliotecaLenguajes(): Promise<{ data?: { id: string; nombre: string; abreviacion: string }[] }> {
 
-        const { Items } = dataBibliotecaLenguajes;
+    /* =========================
+       GET ALL
+    ========================= */
+    async getBibliotecaLenguajes(): Promise<{ data?: Lenguaje[]; error?: { code: number; message: string } }> {
+        try {
+            const file = await fs.readFile(filePath, "utf-8");
+            console.log({ file });
+            const json = JSON.parse(file);
 
-        if (!Items) throw new Error("No se encontró ningún lenguaje");
+            console.log({ json });
+            if (!Array.isArray(json.items)) {
+                return { data: [] };
+            }
 
-        return { data: Items };
-    }
+            console.log({ json: json.items });
 
-    async getBibliotecaLenguajesById(id: string): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
-
-        const data = dataBibliotecaLenguajes.Items.find((item) => item.id === id);
-
-        if (!data) throw new Error("No se encontró el lenguaje");
-
-        return { data };
-    }
-
-    async createBibliotecaLenguajes(data: { id: string; nombre: string; abreviacion: string }): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
-
-        const newItem: typeof data & { Id: string } = {
-            ...data,
-            Id: randomUUID(),
-        };
-
-        dataBibliotecaLenguajes.Items.push(newItem);
-
-        return { data: newItem };
-    }
-
-    async updateBibliotecaLenguajes(id: string, data: Partial<{ id: string; nombre: string; abreviacion: string }>): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
-        const { Items } = dataBibliotecaLenguajes;
-
-        const index = Items.findIndex((item) => item.id === id);
-
-        if (index === -1) {
-            throw new Error("No se encontró el lenguaje");
+            return { data: json.items };
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al obtener lenguajes",
+                },
+            };
         }
-
-        const currentItem = Items[index];
-
-        if (!currentItem) {
-            throw new Error("No se encontró el lenguaje");
-        }
-
-        const updatedItem: typeof data & { id: string } = {
-            Id: currentItem.id,
-            Nombre: currentItem.nombre,
-            Abreviacion: currentItem.abreviacion,
-            ...data,
-        } as { id: string; nombre: string; abreviacion: string };
-
-        console.log({ updatedItem });
-
-        Items[index] = updatedItem as { id: string; nombre: string; abreviacion: string };
-
-        return { data: updatedItem as { id: string; nombre: string; abreviacion: string } };
     }
 
-    async deleteBibliotecaLenguajes(id: string): Promise<{ data?: { id: string; nombre: string; abreviacion: string } }> {
-        const { Items } = dataBibliotecaLenguajes;
+    /* =========================
+       GET BY ID
+    ========================= */
+    async getBibliotecaLenguajesById(id: string): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
+        try {
+            const file = await fs.readFile(filePath, "utf-8");
+            const json = JSON.parse(file);
 
-        const index = Items.findIndex((item) => item.id === id);
+            const item = json.items.find((i: Lenguaje) => i.id === id);
 
-        console.log({ index });
-        if (index < 0) {
-            throw new Error("No se encontró el libro");
+            if (!item) {
+                return {
+                    error: {
+                        code: 404,
+                        message: "Lenguaje no encontrado",
+                    },
+                };
+            }
+
+            return { data: item };
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al obtener lenguaje",
+                },
+            };
         }
-
-        // 🧠 Guardamos el libro antes de eliminarlo
-        const deletedItem = Items[index];
-
-        // 🗑 Eliminamos
-        Items.splice(index, 1);
-
-        if (!deletedItem) {
-            throw new Error("Ocurrio un error al eliminar el libro");
-        }
-
-        return { data: deletedItem };
     }
-}       
+
+    /* =========================
+       CREATE
+    ========================= */
+    async createBibliotecaLenguajes(
+        data: Omit<Lenguaje, "id">
+    ): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
+        try {
+            const file = await fs.readFile(filePath, "utf-8");
+            const json = JSON.parse(file);
+
+            const newItem: Lenguaje = {
+                id: randomUUID(),
+                nombre: data.nombre,
+                abreviacion: data.abreviacion,
+            };
+
+            if (!Array.isArray(json.items)) {
+                json.items = [];
+            }
+
+            json.items.push(newItem);
+
+            await fs.writeFile(filePath, JSON.stringify(json, null, 2), "utf-8");
+
+            return { data: newItem };
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al crear lenguaje",
+                },
+            };
+        }
+    }
+
+    /* =========================
+       UPDATE
+    ========================= */
+    async updateBibliotecaLenguajes(
+        id: string,
+        data: Partial<Omit<Lenguaje, "id">>
+    ): Promise<{ data?: Partial<Lenguaje>; error?: { code: number; message: string } }> {
+        try {
+            const file = await fs.readFile(filePath, "utf-8");
+            const json = JSON.parse(file);
+
+            const index = json.items.findIndex((i: Lenguaje) => i.id === id);
+
+            if (index === -1) {
+                return {
+                    error: {
+                        code: 404,
+                        message: "Lenguaje no encontrado",
+                    },
+                };
+            }
+
+            const current = json.items[index];
+
+            const updated: Lenguaje = {
+                id: current.id,
+                nombre: data.nombre ?? current.nombre,
+                abreviacion: data.abreviacion ?? current.abreviacion,
+            };
+
+            json.items[index] = updated;
+
+            await fs.writeFile(filePath, JSON.stringify(json, null, 2), "utf-8");
+
+            const response: Partial<Lenguaje> = { id };
+
+            if ("nombre" in data) response.nombre = updated.nombre;
+            if ("abreviacion" in data) response.abreviacion = updated.abreviacion;
+
+            return { data: response };
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al actualizar lenguaje",
+                },
+            };
+        }
+    }
+
+    /* =========================
+       DELETE
+    ========================= */
+    async deleteBibliotecaLenguajes(
+        id: string
+    ): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
+        try {
+            const file = await fs.readFile(filePath, "utf-8");
+            const json = JSON.parse(file);
+
+            const index = json.items.findIndex((i: Lenguaje) => i.id === id);
+
+            if (index === -1) {
+                return {
+                    error: {
+                        code: 404,
+                        message: "Lenguaje no encontrado",
+                    },
+                };
+            }
+
+            const deleted = json.items[index];
+
+            json.items.splice(index, 1);
+
+            await fs.writeFile(filePath, JSON.stringify(json, null, 2), "utf-8");
+
+            return { data: deleted };
+        } catch {
+            return {
+                error: {
+                    code: 500,
+                    message: "Error al eliminar lenguaje",
+                },
+            };
+        }
+    }
+}
