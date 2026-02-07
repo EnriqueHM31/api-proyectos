@@ -8,7 +8,7 @@ interface Lenguaje {
     abreviacion: string;
 }
 
-const filePath = path.resolve("src/data/lenguajes.json") as string;
+const filePath = path.resolve("src/data/biblioteca/lenguajes.json") as string;
 
 export class BibliotecaLenguajesModel {
 
