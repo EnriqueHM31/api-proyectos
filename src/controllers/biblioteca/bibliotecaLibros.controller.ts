@@ -13,7 +13,9 @@ export class BibliotecaLibrosController {
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Libros encontrados", error: null, data }));
         } catch (error) {
-            res.status(500).json(formatoRespuesta({ ok: false, message: "Ocurrio un error al obtener los libros", error: error as string, data: null }));
+
+            const { messageError, errorName } = extraerDatosError(error);
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     }
 
@@ -39,25 +41,11 @@ export class BibliotecaLibrosController {
 
             const { data } = await bibliotecaLibrosModel.crearBibliotecaLibros(dataBody);
 
-            res.status(200).json(
-                formatoRespuesta({
-                    ok: true,
-                    message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`,
-                    error: null,
-                    data,
-                })
-            );
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido creado`, error: null, data, }));
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
 
-            res.status(500).json(
-                formatoRespuesta({
-                    ok: false,
-                    message: messageError,
-                    error: errorName,
-                    data: null,
-                })
-            );
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null, }));
         }
     }
 
@@ -68,6 +56,10 @@ export class BibliotecaLibrosController {
 
             if (campos?.categories) {
                 validarCategorias(campos.categories);
+            }
+
+            if (campos?.language) {
+                validarLenguaje(campos.language);
             }
 
             const { data } = await bibliotecaLibrosModel.modificarBibliotecaLibros(id, campos);
@@ -85,9 +77,7 @@ export class BibliotecaLibrosController {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaLibrosModel.eliminarBibliotecaLibros(id);
 
-            res.status(200).json(
-                formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data })
-            );
+            res.status(200).json(formatoRespuesta({ ok: true, message: `El libro ${data?.volumeInfo?.title ?? ""} ha sido eliminado`, error: null, data: data }));
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
 
