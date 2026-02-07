@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import { BibliotecaLibrosModel } from "../../models/local/biblioteca/bibliotecaLibros.model.js";
 import type { GoogleBook } from "../../types/libro.js";
-import { validarCategorias } from "../../utils/Biblioteca/validaciones.js";
+import { validarCategorias, validarLenguaje } from "../../utils/Biblioteca/validaciones.js";
 import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 
 const bibliotecaLibrosModel = new BibliotecaLibrosModel();
 
 export class BibliotecaLibrosController {
-    async getAll(_req: Request, res: Response) {
+    async ObtenerLibros(_req: Request, res: Response) {
         try {
             const { data } = await bibliotecaLibrosModel.ObtenerBibliotecaLibros();
 
@@ -17,7 +17,7 @@ export class BibliotecaLibrosController {
         }
     }
 
-    async getBook(req: Request, res: Response) {
+    async ObtenerUnLibro(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaLibrosModel.ObtenerBibliotecaLibrosById(id);
@@ -30,11 +30,12 @@ export class BibliotecaLibrosController {
         }
     }
 
-    async create(req: Request, res: Response) {
+    async crearLibro(req: Request, res: Response) {
         try {
             const dataBody = req.body as GoogleBook;
 
             validarCategorias(dataBody.volumeInfo.categories);
+            validarLenguaje(dataBody.volumeInfo.language);
 
             const { data } = await bibliotecaLibrosModel.crearBibliotecaLibros(dataBody);
 
@@ -60,7 +61,7 @@ export class BibliotecaLibrosController {
         }
     }
 
-    async update(req: Request, res: Response) {
+    async modificarLibro(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body;
@@ -79,7 +80,7 @@ export class BibliotecaLibrosController {
         }
     }
 
-    async delete(req: Request, res: Response) {
+    async eliminarLibro(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaLibrosModel.eliminarBibliotecaLibros(id);
