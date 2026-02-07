@@ -7,6 +7,6 @@ export const bibliotecaRouter = Router();
 
 bibliotecaRouter.use("/libro", bibliotecaLibrosRouter);
 
-bibliotecaRouter.use("/categorias", bibliotecaCategoriasRouter);
+bibliotecaRouter.use("/categoria", bibliotecaCategoriasRouter);
 
 bibliotecaRouter.use("/lenguaje", bibliotecaLenguajesRouter);
