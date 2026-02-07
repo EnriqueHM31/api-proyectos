@@ -46,7 +46,6 @@ export class BibliotecaLenguajesController {
 
             res.status(200).json(formatoRespuesta({ ok: true, message: `El lenguaje ${data?.nombre ?? ""} ha sido actualizado`, error: null, data }));
         } catch (error) {
-
             const { messageError, errorName } = extraerDatosError(error);
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
