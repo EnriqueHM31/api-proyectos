@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
-import dataCategorias from "../../../data/categorias.json" with { type: "json" };
+import dataCategorias from "../../../data/biblioteca/categorias.json" with { type: "json" };
 import path from "node:path";
 interface Categorias {
     id: string;
@@ -8,7 +8,7 @@ interface Categorias {
     descripcion: string;
 }
 
-const filePath = path.resolve("src/data/categorias.json");
+const filePath = path.resolve("src/data/biblioteca/categorias.json");
 
 export class BibliotecaCategoriasModel {
     async obtenerBibliotecaCategorias(): Promise<{ data?: Categorias[]; error?: { code: number; message: string } }> {
