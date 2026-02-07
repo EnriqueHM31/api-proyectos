@@ -4,7 +4,7 @@ import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 
 const bibliotecaModel = new BibliotecaLenguajesModel();
 export class BibliotecaLenguajesController {
-    async getAll(_req: Request, res: Response) {
+    async ObtenerLenguajes(_req: Request, res: Response) {
         try {
             const { data } = await bibliotecaModel.getBibliotecaLenguajes();
 
@@ -15,7 +15,7 @@ export class BibliotecaLenguajesController {
         }
     }
 
-    async getLenguaje(req: Request, res: Response) {
+    async ObtenerUnLenguaje(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.getBibliotecaLenguajesById(id);
@@ -27,7 +27,7 @@ export class BibliotecaLenguajesController {
         }
     }
 
-    async create(req: Request, res: Response) {
+    async crearLenguaje(req: Request, res: Response) {
         try {
             const { data } = await bibliotecaModel.createBibliotecaLenguajes(req.body);
 
@@ -38,7 +38,7 @@ export class BibliotecaLenguajesController {
         }
     }
 
-    async update(req: Request, res: Response) {
+    async modificarLenguaje(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const campos = req.body;
@@ -52,7 +52,7 @@ export class BibliotecaLenguajesController {
         }
     }
 
-    async delete(req: Request, res: Response) {
+    async eliminarLenguaje(req: Request, res: Response) {
         try {
             const { id } = req.params as { id: string };
             const { data } = await bibliotecaModel.deleteBibliotecaLenguajes(id);
