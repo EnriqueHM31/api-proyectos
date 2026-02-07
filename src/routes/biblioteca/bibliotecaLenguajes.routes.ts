@@ -6,12 +6,12 @@ const bibliotecaLenguajesController = new BibliotecaLenguajesController();
 
 export const bibliotecaLenguajesRouter = Router();
 
-bibliotecaLenguajesRouter.get("/", bibliotecaLenguajesController.getAll);
+bibliotecaLenguajesRouter.get("/", bibliotecaLenguajesController.ObtenerLenguajes);
 
-bibliotecaLenguajesRouter.get("/:id", middlewareBibliotecaLenguajesId, bibliotecaLenguajesController.getLenguaje);
+bibliotecaLenguajesRouter.get("/:id", middlewareBibliotecaLenguajesId, bibliotecaLenguajesController.ObtenerUnLenguaje);
 
-bibliotecaLenguajesRouter.post("/", middlewareBibliotecaLenguajesCrear, bibliotecaLenguajesController.create);
+bibliotecaLenguajesRouter.post("/", middlewareBibliotecaLenguajesCrear, bibliotecaLenguajesController.crearLenguaje);
 
-bibliotecaLenguajesRouter.put("/:id", middlewareBibliotecaLenguajesId, middlewareBibliotecaLenguajesModificar, bibliotecaLenguajesController.update);
+bibliotecaLenguajesRouter.put("/:id", middlewareBibliotecaLenguajesId, middlewareBibliotecaLenguajesModificar, bibliotecaLenguajesController.modificarLenguaje);
 
-bibliotecaLenguajesRouter.delete("/:id", middlewareBibliotecaLenguajesId, bibliotecaLenguajesController.delete);
+bibliotecaLenguajesRouter.delete("/:id", middlewareBibliotecaLenguajesId, bibliotecaLenguajesController.eliminarLenguaje);
