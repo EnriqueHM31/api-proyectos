@@ -7,12 +7,12 @@ export const bibliotecaLibrosRouter = Router();
 
 const bibliotecaLibrosController = new BibliotecaLibrosController();
 
-bibliotecaLibrosRouter.get("/", bibliotecaLibrosController.getAll);
+bibliotecaLibrosRouter.get("/", bibliotecaLibrosController.ObtenerLibros);
 
-bibliotecaLibrosRouter.get("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.getBook);
+bibliotecaLibrosRouter.get("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.ObtenerUnLibro);
 
-bibliotecaLibrosRouter.post("/", middlewareBibliotecaLibrosCrear, bibliotecaLibrosController.create);
+bibliotecaLibrosRouter.post("/", middlewareBibliotecaLibrosCrear, bibliotecaLibrosController.crearLibro);
 
-bibliotecaLibrosRouter.put("/:id", middlewareBibliotecaLibrosId, middlewareBibliotecaLibrosModificar, bibliotecaLibrosController.update);
+bibliotecaLibrosRouter.put("/:id", middlewareBibliotecaLibrosId, middlewareBibliotecaLibrosModificar, bibliotecaLibrosController.modificarLibro);
 
-bibliotecaLibrosRouter.delete("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.delete);
+bibliotecaLibrosRouter.delete("/:id", middlewareBibliotecaLibrosId, bibliotecaLibrosController.eliminarLibro);
