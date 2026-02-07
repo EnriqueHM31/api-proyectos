@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "id": "b1a7c8e4-3f4d-4f9b-9d8a-1c9a3f1a2e01",
+      "nombre": "Computadoras",
+      "descripcion": "Libros relacionados con informática, programación, sistemas operativos, redes y tecnología."
+    },
+    {
+      "id": "e2c9a5f1-8d6b-4a3e-9f21-7a8c4b2d9e10",
+      "nombre": "Ciencia",
+      "descripcion": "Obras que abordan temas científicos como física, química, biología y divulgación científica."
+    },
+    {
+      "id": "f9b3d2a4-1c8e-4f5a-9b6d-0a7e2c1d3f11",
+      "nombre": "Acción",
+      "descripcion": "Libros con tramas dinámicas, conflictos intensos, aventuras y ritmo acelerado."
+    },
+    {
+      "id": "a7d1e9c3-5f2b-4c8a-9e6d-3b1f0a2c4d12",
+      "nombre": "Drama",
+      "descripcion": "Historias centradas en conflictos emocionales, relaciones humanas y situaciones realistas."
+    },
+    {
+      "id": "c4e8a1d2-9b6f-4a3c-8d7e-5f0b1a2c9e13",
+      "nombre": "Amor",
+      "descripcion": "Libros románticos que exploran relaciones sentimentales, emociones y vínculos afectivos."
+    },
+    {
+      "id": "d2f3a9b1-6e8c-4d5a-9b7e-1c0f4a2e3d14",
+      "nombre": "Suspenso",
+      "descripcion": "Obras que mantienen la tensión narrativa mediante misterio, giros inesperados y peligro."
+    },
+    {
+      "id": "e1a4c2f8-9d6b-4e5a-8c7f-3b0a1d2e9f15",
+      "nombre": "Terror",
+      "descripcion": "Libros diseñados para provocar miedo, abordando temas sobrenaturales o psicológicos."
+    },
+    {
+      "id": "f3a1d9b2-4e8c-4b6a-9f7d-2c1a0e5b6d21",
+      "nombre": "Historia",
+      "descripcion": "Libros que narran acontecimientos históricos, civilizaciones, biografías y procesos sociales del pasado."
+    },
+    {
+      "id": "a9c2f7e1-6b4d-4a8e-9c5f-3d2b1e0a4f22",
+      "nombre": "Fantasía",
+      "descripcion": "Obras ambientadas en mundos imaginarios con elementos mágicos, criaturas fantásticas y mitologías."
+    },
+    {
+      "id": "b6e8a4f2-9c1d-4d5b-8a7f-0e3c2a1b9f23",
+      "nombre": "Ciencia Ficción",
+      "descripcion": "Libros que exploran avances tecnológicos, viajes espaciales, futuros alternativos y realidades distópicas."
+    },
+    {
+      "id": "c1d4a9f8-7e2b-4f5a-8c6d-0b3e1a2f9e24",
+      "nombre": "Biografía",
+      "descripcion": "Relatos de la vida de personas relevantes, destacando sus logros, experiencias y legado."
+    },
+    {
+      "id": "d8a2f1c9-4e7b-4b6f-9a5c-3e0d1a2b6f25",
+      "nombre": "Autoayuda",
+      "descripcion": "Libros orientados al desarrollo personal, motivación, hábitos y crecimiento emocional."
+    },
+    {
+      "id": "e4b9c1a2-8f6d-4a7e-9b5c-0d3f2e1a6b26",
+      "nombre": "Educación",
+      "descripcion": "Materiales didácticos y académicos enfocados en el aprendizaje, la enseñanza y la formación profesional."
+    },
+    {
+      "nombre": "Empleo",
+      "descripcion": "Libros enfocados en el mundo laboral, búsqueda de trabajo, desarrollo profesional, habilidades para el empleo y crecimiento en la carrera.",
+      "id": "bb45ed00-f3fa-44e6-98ef-8d659480864f"
+    },
+    {
+      "nombre": "Economía",
+      "descripcion": "Obras que abordan temas económicos como mercados, finanzas, políticas económicas, desarrollo económico y análisis del sistema financiero.\n",
+      "id": "11b24cb9-780c-4633-9b8a-0e2b977fcb70"
+    }
+  ]
+}
