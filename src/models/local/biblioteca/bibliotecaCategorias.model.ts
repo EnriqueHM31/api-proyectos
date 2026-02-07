@@ -8,7 +8,7 @@ interface Categorias {
     descripcion: string;
 }
 
-const filePath = path.resolve("src/data/Categorias.json");
+const filePath = path.resolve("src/data/categorias.json");
 
 export class BibliotecaCategoriasModel {
     async obtenerBibliotecaCategorias(): Promise<{ data?: Categorias[]; error?: { code: number; message: string } }> {
