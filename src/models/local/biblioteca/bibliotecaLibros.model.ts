@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import dataBiblioteca from "../../../data/biblioteca.json" with { type: "json" };
+import dataBiblioteca from "../../../data/biblioteca/libros.json" with { type: "json" };
 import type { GoogleBook } from "../../../types/libro.js";
 
-const filePath = path.resolve("src/data/biblioteca.json");
+const filePath = path.resolve("src/data/biblioteca/libros.json");
 
 export class BibliotecaLibrosModel {
     async ObtenerBibliotecaLibros(): Promise<{ data?: GoogleBook[] }> {
