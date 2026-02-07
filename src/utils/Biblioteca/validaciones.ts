@@ -1,5 +1,5 @@
-import categorias from "../../data/categorias.json" with { type: "json" };
-import lenguajes from "../../data/lenguajes.json" with { type: "json" };
+import categorias from "../../data/biblioteca/categorias.json" with { type: "json" };
+import lenguajes from "../../data/biblioteca/lenguajes.json" with { type: "json" };
 
 export function validarCategorias(categoriasBook: string[]) {
     if (!categoriasBook || categoriasBook.length === 0) {
