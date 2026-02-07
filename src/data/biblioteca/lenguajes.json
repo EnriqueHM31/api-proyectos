@@ -1,0 +1,54 @@
+{
+    "items": [
+        {
+            "id": "a1f3c7d2-6e4b-4c1a-9f20-3b8d5e7a1c11",
+            "nombre": "Español",
+            "abreviacion": "es"
+        },
+        {
+            "id": "b2e4d8a1-9c33-4f6e-a2d1-8f0c7b6e2a22",
+            "nombre": "Inglés",
+            "abreviacion": "en"
+        },
+        {
+            "id": "c3a5e9b2-1d44-4a8b-b3c2-9e1f6d7c3b33",
+            "nombre": "Francés",
+            "abreviacion": "fr"
+        },
+        {
+            "id": "d4b6f1c3-2e55-4b9c-c4d3-0a2b7e8d4c44",
+            "nombre": "Alemán",
+            "abreviacion": "de"
+        },
+        {
+            "id": "e5c7a2d4-3f66-4cab-d5e4-1b3c8f9e5d55",
+            "nombre": "Italiano",
+            "abreviacion": "it"
+        },
+        {
+            "id": "f6d8b3e5-4a77-4dbc-e6f5-2c4d9a0f6e66",
+            "nombre": "Portugués",
+            "abreviacion": "pt"
+        },
+        {
+            "id": "07e9c4f6-5b88-4ecd-f7a6-3d5e0b1a7f77",
+            "nombre": "Chino",
+            "abreviacion": "zh"
+        },
+        {
+            "id": "18fa05a7-6c99-4fde-a8b7-4e6f1c2b8a88",
+            "nombre": "Japonés",
+            "abreviacion": "ja"
+        },
+        {
+            "id": "29ab16b8-7daa-4aef-b9c8-5f702d3c9b99",
+            "nombre": "Coreano",
+            "abreviacion": "ko"
+        },
+        {
+            "id": "3abc27c9-8ebb-4bfa-cad9-6g813e4dab10",
+            "nombre": "Ruso",
+            "abreviacion": "ru"
+        }
+    ]
+}

@@ -1,0 +1,215 @@
+{
+  "items": [
+    {
+      "id": "5a7c3e1b-0f9d-4b8a-a2c3-6e7f9d1c2b44",
+      "volumeInfo": {
+        "title": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+        "subtitle": "Diseño de páginas Web con XHTML, JavaScript y CSS. 3ª edición",
+        "authors": [
+          "Juan Carlos Orós Cabello"
+        ],
+        "publisher": "Ra-Ma Editorial",
+        "publishedDate": "2010-11-03",
+        "description": "XHTML es el lenguaje nacido para sustituir al HTML como estándar para la programación de páginas web...",
+        "pageCount": 376,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=aaa6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "c9e2a0d7-5b4f-4c3d-9a1e-8b7f6a2c4d55",
+      "volumeInfo": {
+        "title": "Javascript Práctico - Vol.2",
+        "subtitle": "Javascript Práctico - Vol.2",
+        "authors": [
+          "Román Arenas"
+        ],
+        "publisher": "RedUSERS",
+        "publishedDate": "2024-01-23",
+        "description": "En este volumen profundizarás en el uso de JavaScript para crear aplicaciones web completas.",
+        "pageCount": 108,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=4ezvEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "a4b1d2c3-9f6e-4a7b-8c11-5e3d9a7c2f88",
+      "volumeInfo": {
+        "title": "La Guia Básica de JavaScript",
+        "subtitle": "La Guia Básica de JavaScript",
+        "authors": [
+          "Miguel A. Arias"
+        ],
+        "publisher": "IT Campus Academy",
+        "publishedDate": "2013-08-29",
+        "description": "Libro introductorio para aprender JavaScript desde cero de forma sencilla.",
+        "pageCount": 78,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=B47tCgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "1f7d3b90-6c4e-4b9f-8d5e-3a0c7f9e2d77",
+      "volumeInfo": {
+        "title": "Domine JavaScript 4ª Edición",
+        "subtitle": "Domine JavaScript 4ª Edición",
+        "authors": [
+          "Pablo Enrique Fernández Casado"
+        ],
+        "publisher": "Ra-Ma Editorial",
+        "publishedDate": "2020-02-13",
+        "description": "Guía completa para dominar JavaScript desde nivel básico hasta avanzado.",
+        "pageCount": 319,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=1c-4EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "7e1a9c2f-3b6d-4f5e-9a22-0b8d7e3c6a90",
+      "volumeInfo": {
+        "title": "Aprender a desarrollar con JavaScript",
+        "subtitle": "Aprender a desarrollar con JavaScript",
+        "authors": [
+          "Christian Vigouroux"
+        ],
+        "publisher": "Ediciones ENI",
+        "publishedDate": "2017",
+        "description": "Manual extenso para aprender JavaScript de forma profesional.",
+        "pageCount": 742,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=nDNwM_5IDLIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "3d8c0b44-5f1e-4a0a-8e6c-77a9c4b2d111",
+      "volumeInfo": {
+        "title": "La programación JavaScript",
+        "subtitle": "La programación JavaScript",
+        "authors": [
+          "Preston Prescott"
+        ],
+        "publisher": "Babelcube Inc.",
+        "publishedDate": "2017-02-01",
+        "description": "Introducción práctica al lenguaje JavaScript para principiantes.",
+        "pageCount": 72,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=DADnDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "f2a3d0a1-8e2b-4c7a-b6f1-4c0d9f7a1b2e",
+      "volumeInfo": {
+        "title": "Programación JavaScript",
+        "subtitle": "Programación JavaScript",
+        "authors": [
+          "John Bach"
+        ],
+        "publisher": "",
+        "publishedDate": "2021-03-03",
+        "description": "Libro para principiantes que explica la evolución y fundamentos de JavaScript.",
+        "pageCount": 240,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=f4NGzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "6c9d7f10-2b44-4a3a-9b0a-9a8e1e4c7f55",
+      "volumeInfo": {
+        "title": "JavaScript - Aprende a programar en el lenguaje de la web",
+        "subtitle": "JavaScript - Aprende a programar en el lenguaje de la web",
+        "authors": [
+          "Fernando Luna"
+        ],
+        "publisher": "RedUsers",
+        "publishedDate": "2019-07-23",
+        "description": "Guía introductoria para comenzar a programar en JavaScript.",
+        "pageCount": 146,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=SqikDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "0e3a2c5d-1b2f-4d9a-8a7f-2c3f7a9cbb21",
+      "volumeInfo": {
+        "title": "Los API JavaScript de HTML5",
+        "subtitle": "Los API JavaScript de HTML5",
+        "authors": [
+          "Luc Van Lancker"
+        ],
+        "publisher": "Ediciones ENI",
+        "publishedDate": "2013",
+        "description": "Guía avanzada sobre las APIs JavaScript disponibles en HTML5.",
+        "pageCount": 520,
+        "categories": [
+          "Computadoras"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=77RyxBl1tCAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "es"
+      }
+    },
+    {
+      "id": "9b4f6c8e-7b9b-4e64-a6a5-6f4d4b0c9c12",
+      "volumeInfo": {
+        "title": "JavaScript y jQuery",
+        "subtitle": "JavaScript y jQuery",
+        "authors": [
+          "David Sawyer McFarland"
+        ],
+        "publisher": "",
+        "publishedDate": "2012-03",
+        "description": "Manual para aprender JavaScript con énfasis en jQuery.",
+        "pageCount": 560,
+        "categories": [
+          "Empleo",
+          "Economía"
+        ],
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=rpGutgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "es"
+      }
+    }
+  ]
+}
