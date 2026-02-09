@@ -216,12 +216,17 @@
       "volumeInfo": {
         "title": "Introducción a la Programación en Python",
         "subtitle": "Fundamentos prácticos",
-        "authors": ["Laura Gómez"],
+        "authors": [
+          "Laura Gómez"
+        ],
         "publisher": "TechBooks",
         "publishedDate": "2019",
         "description": "Guía práctica para aprender Python desde cero con ejercicios.",
         "pageCount": 420,
-        "categories": ["Computadoras", "Educación"],
+        "categories": [
+          "Computadoras",
+          "Educación"
+        ],
         "imageLinks": {
           "thumbnail": "https://storage-aws-production.publica.la/editorial-ra-ma/issues/2024/02/sTrfIaPN3yPvOBWA/1708335416_cover.jpg"
         },
@@ -233,12 +238,17 @@
       "volumeInfo": {
         "title": "Clean Code",
         "subtitle": "A Handbook of Agile Software Craftsmanship",
-        "authors": ["Robert C. Martin"],
+        "authors": [
+          "Robert C. Martin"
+        ],
         "publisher": "Prentice Hall",
         "publishedDate": "2008",
         "description": "Best practices for writing clean and maintainable code.",
         "pageCount": 464,
-        "categories": ["Computadoras", "Empleo"],
+        "categories": [
+          "Computadoras",
+          "Empleo"
+        ],
         "imageLinks": {
           "thumbnail": "https://m.media-amazon.com/images/I/71T7aD3EOTL._UF1000,1000_QL80_.jpg"
         },
@@ -250,30 +260,39 @@
       "volumeInfo": {
         "title": "Redes Informáticas",
         "subtitle": "Conceptos y configuración",
-        "authors": ["Carlos Méndez"],
+        "authors": [
+          "Carlos Méndez"
+        ],
         "publisher": "Alfaomega",
         "publishedDate": "2020",
         "description": "Introducción a redes, protocolos y configuración básica.",
         "pageCount": 390,
-        "categories": ["Computadoras", "Educación"],
+        "categories": [
+          "Computadoras",
+          "Educación"
+        ],
         "imageLinks": {
           "thumbnail": "https://m.media-amazon.com/images/I/71PRIkKXEjL._UF1000,1000_QL80_.jpg"
         },
         "language": "es"
       }
     },
-  
     {
       "id": "4c2d3e4f-4444-4a1a-9c1a-444444444444",
       "volumeInfo": {
         "title": "Física para Todos",
         "subtitle": "Conceptos esenciales",
-        "authors": ["Ana Ruiz"],
+        "authors": [
+          "Ana Ruiz"
+        ],
         "publisher": "Ciencia Viva",
         "publishedDate": "2018",
         "description": "Explicación sencilla de los principios fundamentales de la física.",
         "pageCount": 300,
-        "categories": ["Ciencia", "Educación"],
+        "categories": [
+          "Ciencia",
+          "Educación"
+        ],
         "imageLinks": {
           "thumbnail": "https://m.media-amazon.com/images/I/61LE5JwB0sL._AC_UF1000,1000_QL80_.jpg"
         },
@@ -285,30 +304,38 @@
       "volumeInfo": {
         "title": "The Cosmos Explained",
         "subtitle": "Understanding the Universe",
-        "authors": ["Neil Carter"],
+        "authors": [
+          "Neil Carter"
+        ],
         "publisher": "SciencePress",
         "publishedDate": "2021",
         "description": "Exploration of astronomy and the structure of the universe.",
         "pageCount": 350,
-        "categories": ["Ciencia"],
+        "categories": [
+          "Ciencia"
+        ],
         "imageLinks": {
           "thumbnail": "https://m.media-amazon.com/images/I/A1TAVngpCaL._UF1000,1000_QL80_.jpg"
         },
         "language": "en"
       }
     },
-  
     {
       "id": "6c2d3e4f-6666-4a1a-9c1a-666666666666",
       "volumeInfo": {
         "title": "Historias de la Revolución",
         "subtitle": "Relatos del cambio social",
-        "authors": ["Miguel Torres"],
+        "authors": [
+          "Miguel Torres"
+        ],
         "publisher": "Historia Viva",
         "publishedDate": "2015",
         "description": "Análisis narrativo de revoluciones históricas importantes.",
         "pageCount": 280,
-        "categories": ["Historia", "Drama"],
+        "categories": [
+          "Historia",
+          "Drama"
+        ],
         "imageLinks": {
           "thumbnail": "https://libros.colmex.mx/wp-content/uploads/2023/03/H469-1.jpg"
         },
@@ -320,32 +347,40 @@
       "volumeInfo": {
         "title": "World War II",
         "subtitle": "A Complete History",
-        "authors": ["John Keegan"],
+        "authors": [
+          "John Keegan"
+        ],
         "publisher": "Penguin",
         "publishedDate": "2012",
         "description": "Comprehensive history of World War II events.",
         "pageCount": 520,
-        "categories": ["Historia"],
+        "categories": [
+          "Historia"
+        ],
         "imageLinks": {
           "thumbnail": "https://images.cdn2.buscalibre.com/fit-in/360x360/01/04/0104a1508498659b79c17d9a95b63236.jpg"
         },
         "language": "en"
       }
     },
-  
     {
       "id": "8c2d3e4f-8888-4a1a-9c1a-888888888888",
       "volumeInfo": {
         "title": "Amor en Tiempos Modernos",
         "subtitle": "Relatos románticos",
-        "authors": ["Lucía Fernández"],
+        "authors": [
+          "Lucía Fernández"
+        ],
         "publisher": "Romance House",
         "publishedDate": "2022",
         "description": "Colección de historias románticas contemporáneas.",
         "pageCount": 250,
-        "categories": ["Amor", "Drama"],
+        "categories": [
+          "Amor",
+          "Drama"
+        ],
         "imageLinks": {
-          "thumbnail": "https://via.placeholder.com/128x190?text=Amor"
+          "thumbnail": "https://hotmart.s3.amazonaws.com/product_pictures/db05238e-261e-4186-9df3-650e423eb1ed/amorentiemposmodernos.png"
         },
         "language": "es"
       }
@@ -355,32 +390,40 @@
       "volumeInfo": {
         "title": "El amor en los tiempos del coleras",
         "subtitle": "Stories of Love",
-        "authors": ["Gabriel Garcia Marquez"],
+        "authors": [
+          "Gabriel Garcia Marquez"
+        ],
         "publisher": "LoveBooks",
         "publishedDate": "2017",
         "description": "Short romantic stories set in modern cities.",
         "pageCount": 464,
-        "categories": ["Amor"],
+        "categories": [
+          "Amor"
+        ],
         "imageLinks": {
           "thumbnail": "https://www.correosclic.gob.mx/images/thumbs/0009905_el-amor-en-los-tiempos-del-colera-libro-gabriel-garcia-marquez.jpeg"
         },
         "language": "es"
       }
     },
-  
     {
       "id": "10c2d3e4f-aaaa-4a1a-9c1a-aaaaaaaaaaaa",
       "volumeInfo": {
         "title": "Hábitos Atómicos",
         "subtitle": "Cambios pequeños, resultados extraordinarios",
-        "authors": ["James Clear"],
+        "authors": [
+          "James Clear"
+        ],
         "publisher": "Planeta",
         "publishedDate": "2018",
         "description": "Guía para mejorar hábitos y productividad personal.",
         "pageCount": 320,
-        "categories": ["Autoayuda", "Empleo"],
+        "categories": [
+          "Autoayuda",
+          "Empleo"
+        ],
         "imageLinks": {
-          "thumbnail": "https://images.cdn1.buscalibre.com/fit-in/360x360/04/ff/04ff3ab661bfe2a05ab2ac69125c8a3e.jpgs"
+          "thumbnail": "https://images.cdn1.buscalibre.com/fit-in/360x360/04/ff/04ff3ab661bfe2a05ab2ac69125c8a3e.jpg"
         },
         "language": "es"
       }
@@ -390,12 +433,17 @@
       "volumeInfo": {
         "title": "Deep Work",
         "subtitle": "Rules for Focused Success",
-        "authors": ["Cal Newport"],
+        "authors": [
+          "Cal Newport"
+        ],
         "publisher": "Grand Central",
         "publishedDate": "2016",
         "description": "Strategies to improve focus and productivity.",
         "pageCount": 296,
-        "categories": ["Autoayuda", "Empleo"],
+        "categories": [
+          "Autoayuda",
+          "Empleo"
+        ],
         "imageLinks": {
           "thumbnail": "https://imgv2-2-f.scribdassets.com/img/document/742580635/original/52783233fa/1?v=1"
         },
