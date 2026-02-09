@@ -28,9 +28,7 @@ export function validarLenguaje(language: string) {
     }
 
     // obtener lista válida
-    const lenguajesValidos = new Set(
-        lenguajes.items.map((l) => l.abreviacion.toLowerCase())
-    );
+    const lenguajesValidos = new Set(lenguajes.items.map((l) => l.abreviacion.toLowerCase()));
 
     if (!lenguajesValidos.has(lang)) {
         throw new Error(`Lenguaje no válido: ${lang}`);
