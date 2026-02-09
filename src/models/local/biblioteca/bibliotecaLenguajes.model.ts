@@ -11,7 +11,6 @@ interface Lenguaje {
 const filePath = path.resolve("src/data/biblioteca/lenguajes.json") as string;
 
 export class BibliotecaLenguajesModel {
-
     /* =========================
        GET ALL
     ========================= */
@@ -72,9 +71,7 @@ export class BibliotecaLenguajesModel {
     /* =========================
        CREATE
     ========================= */
-    async createBibliotecaLenguajes(
-        data: Omit<Lenguaje, "id">
-    ): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
+    async createBibliotecaLenguajes(data: Omit<Lenguaje, "id">): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
         try {
             const file = await fs.readFile(filePath, "utf-8");
             const json = JSON.parse(file);
@@ -157,9 +154,7 @@ export class BibliotecaLenguajesModel {
     /* =========================
        DELETE
     ========================= */
-    async deleteBibliotecaLenguajes(
-        id: string
-    ): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
+    async deleteBibliotecaLenguajes(id: string): Promise<{ data?: Lenguaje; error?: { code: number; message: string } }> {
         try {
             const file = await fs.readFile(filePath, "utf-8");
             const json = JSON.parse(file);
