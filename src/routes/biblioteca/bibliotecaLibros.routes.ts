@@ -1,7 +1,11 @@
 import { Router } from "express";
 
 import { BibliotecaLibrosController } from "../../controllers/biblioteca/bibliotecaLibros.controller.js";
-import { middlewareBibliotecaLibrosCrear, middlewareBibliotecaLibrosModificar, middlewareBibliotecaLibrosId } from "../../middleware/biblioteca/bibliotecaLibros.middleware.js";
+import {
+    middlewareBibliotecaLibrosCrear,
+    middlewareBibliotecaLibrosModificar,
+    middlewareBibliotecaLibrosId,
+} from "../../middleware/biblioteca/bibliotecaLibros.middleware.js";
 
 export const bibliotecaLibrosRouter = Router();
 
