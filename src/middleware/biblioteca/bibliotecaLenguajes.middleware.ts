@@ -5,7 +5,6 @@ import { validarBibliotecaLenguajesCrear, validarBibliotecaLenguajesModificar, v
 
 import { middlewareError } from "../../utils/middleware.js";
 
-
 export function middlewareBibliotecaLenguajesCrear(req: Request, res: Response, next: NextFunction) {
     try {
         const result = validarBibliotecaLenguajesCrear(req.body);
@@ -18,7 +17,6 @@ export function middlewareBibliotecaLenguajesCrear(req: Request, res: Response, 
         middlewareError(error as ZodError, res);
     }
 }
-
 
 export function middlewareBibliotecaLenguajesModificar(req: Request, res: Response, next: NextFunction) {
     const result = validarBibliotecaLenguajesModificar(req.body);
