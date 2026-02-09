@@ -1,9 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import type { ZodError } from "zod";
 
-import { validarBibliotecaCategoriasCreate, validarBibliotecaCategoriasUpdate, validarBibliotecaCategoriasId } from "../../utils/Biblioteca/schemaCategorias.js";
+import {
+    validarBibliotecaCategoriasCreate,
+    validarBibliotecaCategoriasUpdate,
+    validarBibliotecaCategoriasId,
+} from "../../utils/Biblioteca/schemaCategorias.js";
 import { middlewareError } from "../../utils/middleware.js";
-
 
 export function middlewareBibliotecaCategoriasCreate(req: Request, res: Response, next: NextFunction) {
     try {
