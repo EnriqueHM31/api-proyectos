@@ -4,7 +4,6 @@ import type { ZodError } from "zod";
 import { validarBibliotecaLibrosCrear, validarBibliotecaLibrosModificar, validarBibliotecaLibrosId } from "../../utils/Biblioteca/schemaLibro.js";
 import { middlewareError } from "../../utils/middleware.js";
 
-
 export function middlewareBibliotecaLibrosCrear(req: Request, res: Response, next: NextFunction) {
     try {
         const result = validarBibliotecaLibrosCrear(req.body);
@@ -18,7 +17,6 @@ export function middlewareBibliotecaLibrosCrear(req: Request, res: Response, nex
     }
 }
 
-
 export function middlewareBibliotecaLibrosModificar(req: Request, res: Response, next: NextFunction) {
     const result = validarBibliotecaLibrosModificar(req.body);
 
@@ -31,7 +29,6 @@ export function middlewareBibliotecaLibrosModificar(req: Request, res: Response,
     next();
 }
 
-
 export function middlewareBibliotecaLibrosId(req: Request, res: Response, next: NextFunction) {
     const result = validarBibliotecaLibrosId(req.params);
 
@@ -40,7 +37,7 @@ export function middlewareBibliotecaLibrosId(req: Request, res: Response, next: 
         return;
     }
 
-    req.params = { id: result.data.id, };
+    req.params = { id: result.data.id };
 
     next();
 }
