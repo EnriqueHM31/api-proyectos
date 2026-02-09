@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-
-
 const bibliotecaLenguajesSchema = z.object({
     id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
 
