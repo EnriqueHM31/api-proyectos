@@ -46,7 +46,14 @@ export class BibliotecaLenguajesController {
 
             const CamposModificados = Object.keys(campos);
             const inicio = CamposModificados.length > 1 ? "Los campos" : "El campo";
-            res.status(200).json(formatoRespuesta({ ok: true, message: `${inicio}  ${CamposModificados.length > 0 ? CamposModificados.join(", ") : ""} ha sido actualizada`, error: null, data, }));
+            res.status(200).json(
+                formatoRespuesta({
+                    ok: true,
+                    message: `${inicio}  ${CamposModificados.length > 0 ? CamposModificados.join(", ") : ""} ha sido actualizada`,
+                    error: null,
+                    data,
+                })
+            );
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
