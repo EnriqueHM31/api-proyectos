@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { BibliotecaLenguajesController } from "../../controllers/biblioteca/bibliotecaLenguajes.controller.js";
-import { middlewareBibliotecaLenguajesCrear, middlewareBibliotecaLenguajesId, middlewareBibliotecaLenguajesModificar } from "../../middleware/biblioteca/bibliotecaLenguajes.middleware.js";
+import {
+    middlewareBibliotecaLenguajesCrear,
+    middlewareBibliotecaLenguajesId,
+    middlewareBibliotecaLenguajesModificar,
+} from "../../middleware/biblioteca/bibliotecaLenguajes.middleware.js";
 
 const bibliotecaLenguajesController = new BibliotecaLenguajesController();
 
