@@ -23,6 +23,24 @@
       "username": "luis1",
       "password": "$2b$10$XMG7oDqfttFQJFv01FrC7u8/mB2iydbFlMEOudzsRvjz1.zt62eim",
       "correo": "luis1@test.com"
+    },
+    {
+      "id": "897c675b-6ac8-487d-8468-42cae0c426d0",
+      "username": "xccxdsds",
+      "password": "$2b$10$vafqnhGulw3QDqptibzvd.wL7t2L.ULefbz6IddJ/hCnarJyDicJK",
+      "correo": "12345"
+    },
+    {
+      "id": "65a182a0-889a-49cc-90c1-cf5431638282",
+      "username": "dsdsds",
+      "password": "$2b$10$qB1L0jV3V/n3jwj0zgRuSu3lskii4ONtAhDlwPBK1URDAN0Hg4AGW",
+      "correo": "1234"
+    },
+    {
+      "id": "690ce65c-4eb5-4232-a1d7-a327b9b38939",
+      "username": "dassa",
+      "password": "$2b$10$alYlCM7IZqagmbZCcu15VuQaTq1K8OCRa4bztX1onorzjZpa0jX0C",
+      "correo": "dsnondsods"
     }
   ]
 }
