@@ -1,12 +1,8 @@
 import path from "node:path";
-import Usuarios from "../../../data/biblioteca/usuarios.json" with { type: "json" };
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
-import fs from "node:fs";
-import { hash } from "bcrypt";
-
-
+import fs from "node:fs/promises";
 
 interface Usuario {
     id: string;
@@ -14,71 +10,63 @@ interface Usuario {
     password: string;
     correo: string;
 }
-const filePath = path.resolve("src/data/biblioteca/usuarios.json");
+
+const filePath = path.join(process.cwd(), "src/data/biblioteca/usuarios.json");
 
 export class bibliotecaAuthModel {
+
     static async IniciarSesion({ username, password }: Omit<Usuario, "id" | "correo">) {
-        const { items } = Usuarios;
-        console.log(filePath);
+        const file = await fs.readFile(filePath, "utf-8");
+        const data = JSON.parse(file);
 
-        const usuario = items.find((item) => item.username === username);
+        const usuario = data.items.find((u: Usuario) => u.username === username);
+        if (!usuario) throw new Error("Usuario no encontrado");
 
-        if (!usuario) {
-            throw new Error("No se encontro un usuario con ese nombre");
-        }
-        const passwordCorrecto = await compare(password, usuario.password);
+        const ok = await compare(password, usuario.password);
+        if (!ok) throw new Error("Password incorrecto");
 
-        if (!passwordCorrecto) {
-            throw new Error("La contraseña es incorrecta");
-        }
+        const token = jwt.sign(
+            { id: usuario.id, username: usuario.username },
+            "secreto",
+            { expiresIn: "1h" }
+        );
 
-        const token = jwt.sign({ id: usuario.id, username: usuario.username }, "secreto", {
-            expiresIn: "1h",
-        });
-
-        return { token, data: { username: usuario.username, correo: usuario.correo } };
+        return {
+            token,
+            data: { username: usuario.username, correo: usuario.correo }
+        };
     }
 
     static async RegistrarUsuario({ username, password, correo }: Omit<Usuario, "id">) {
-        const { items } = Usuarios;
+        const file = await fs.readFile(filePath, "utf-8");
+        const data = JSON.parse(file);
 
-        const usuarioCorreo = items.find((item) => item.correo === correo);
+        const correoExiste = data.items.find((u: Usuario) => u.correo === correo);
+        if (correoExiste) throw new Error("Correo ya existe");
 
-        if (usuarioCorreo) {
-            throw new Error("El correo que trataste de registrar ya existe");
-        }
+        const userExiste = data.items.find((u: Usuario) => u.username === username);
+        if (userExiste) throw new Error("Username ya existe");
 
-        const usuarioUsername = items.find((item) => item.username === username);
-
-        if (usuarioUsername) {
-            throw new Error("El usuario que trataste de registrar ya existe");
-        }
-
-
-        const uuid = crypto.randomUUID();
-        const passwordHash = await hash(password, 10);
         const nuevoUsuario: Usuario = {
-            id: uuid,
+            id: crypto.randomUUID(),
             username,
-            password: passwordHash,
+            password: await hash(password, 10),
             correo,
         };
 
-        const fileWriter = fs.createWriteStream(filePath, { flags: "a" });
-        fileWriter.write(JSON.stringify(nuevoUsuario) + "\n");
+        data.items.push(nuevoUsuario);
 
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
 
-
+        return { data: nuevoUsuario };
     }
 
     static async ObtenerUsuario({ username }: Partial<Usuario>) {
-        const { items } = Usuarios;
+        const file = await fs.readFile(filePath, "utf-8");
+        const data = JSON.parse(file);
 
-        const usuario = items.find((item) => item.username === username);
-
-        if (!usuario) {
-            throw new Error("No se encontro un usuario con ese nombre");
-        }
+        const usuario = data.items.find((u: Usuario) => u.username === username);
+        if (!usuario) throw new Error("Usuario no encontrado");
 
         return { data: usuario };
     }
