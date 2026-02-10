@@ -42,10 +42,10 @@ export class bibliotecaAuthModel {
         const data = JSON.parse(file);
 
         const correoExiste = data.items.find((u: Usuario) => u.correo === correo);
-        if (correoExiste) throw new Error("Correo ya existe");
+        if (correoExiste) throw new Error("Ese correo ya esta vinculado a otro usuario");
 
         const userExiste = data.items.find((u: Usuario) => u.username === username);
-        if (userExiste) throw new Error("Username ya existe");
+        if (userExiste) throw new Error("El usuario con ese username ya existe");
 
         const nuevoUsuario: Usuario = {
             id: crypto.randomUUID(),
