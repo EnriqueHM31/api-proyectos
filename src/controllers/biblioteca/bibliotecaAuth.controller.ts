@@ -12,6 +12,8 @@ export const bibliotecaAuthController = {
 
             const { data, token } = await bibliotecaAuthModel.IniciarSesion({ username, password });
 
+            console.log({ token });
+
             res.cookie("token", token, { httpOnly: true, secure: true });
             res.status(200).json(formatoRespuesta({ ok: true, message: "Sesión iniciada", data, error: null }));
         } catch (error) {
