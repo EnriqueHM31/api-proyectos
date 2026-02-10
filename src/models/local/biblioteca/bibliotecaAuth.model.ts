@@ -1,5 +1,9 @@
 import path from "node:path";
 import Usuarios from "../../../data/biblioteca/usuarios.json" with { type: "json" };
+import { compare } from "bcrypt";
+import { hash } from "bcrypt";
+
+
 
 interface Usuario {
     id: string;
@@ -13,6 +17,17 @@ export class bibliotecaAuthModel {
     static async IniciarSesion({ username, password }: Partial<Usuario>) {
         const { items } = Usuarios;
 
+        const usuario = items.find((item) => item.username === username);
+
+        if (!usuario) {
+            throw new Error("No se encontro un usuario con ese nombre");
+        }
+
+        const passwordCorrecto = await bcrypt.compare(password, usuario.password);
+
+        if (!usuario) {
+            throw new Error("Usuario no encontrado");
+        }
     }
 
     static async RegistrarUsuario({ username, password, correo }: Partial<Usuario>) {
