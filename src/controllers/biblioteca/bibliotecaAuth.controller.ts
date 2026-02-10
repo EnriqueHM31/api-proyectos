@@ -8,11 +8,11 @@ export const bibliotecaAuthController = {
 
     IniciarSesion: async (req: Request, res: Response) => {
         try {
-            const { correo, password } = req.body;
+            const { username, password } = req.body;
 
-            const data = await bibliotecaAuthModel.IniciarSesion({ correo, password });
+            const { data, token } = await bibliotecaAuthModel.IniciarSesion({ username, password });
 
-
+            res.cookie("token", token, { httpOnly: true, secure: true });
             res.status(200).json(formatoRespuesta({ ok: true, message: "Sesión iniciada", data, error: null }));
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
