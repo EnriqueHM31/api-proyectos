@@ -16,6 +16,7 @@ const filePath = path.resolve("src/data/biblioteca/usuarios.json");
 export class bibliotecaAuthModel {
     static async IniciarSesion({ username, password }: Omit<Usuario, "id" | "correo">) {
         const { items } = Usuarios;
+        console.log(filePath);
 
         const usuario = items.find((item) => item.username === username);
 
@@ -53,7 +54,15 @@ export class bibliotecaAuthModel {
 
     }
 
-    static async ObtenerUsuario({ correo, username }: Partial<Usuario>) {
+    static async ObtenerUsuario({ username }: Partial<Usuario>) {
         const { items } = Usuarios;
+
+        const usuario = items.find((item) => item.username === username);
+
+        if (!usuario) {
+            throw new Error("No se encontro un usuario con ese nombre");
+        }
+
+        return { data: usuario };
     }
 }
