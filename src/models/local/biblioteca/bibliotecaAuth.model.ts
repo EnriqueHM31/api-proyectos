@@ -20,10 +20,10 @@ export class bibliotecaAuthModel {
         const data = JSON.parse(file);
 
         const usuario = data.items.find((u: Usuario) => u.username === username);
-        if (!usuario) throw new Error("Usuario no encontrado");
+        if (!usuario) throw new Error("No se encontro un usuario con ese username");
 
         const ok = await compare(password, usuario.password);
-        if (!ok) throw new Error("Password incorrecto");
+        if (!ok) throw new Error("La contraseña es incorrecta");
 
         const token = jwt.sign(
             { id: usuario.id, username: usuario.username },
@@ -58,7 +58,7 @@ export class bibliotecaAuthModel {
 
         await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
 
-        return { data: nuevoUsuario };
+        return { data: { username: nuevoUsuario.username, correo: nuevoUsuario.correo } };
     }
 
     static async ObtenerUsuario({ username }: Partial<Usuario>) {
