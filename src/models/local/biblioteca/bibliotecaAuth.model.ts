@@ -1,7 +1,7 @@
 import path from "node:path";
 import Usuarios from "../../../data/biblioteca/usuarios.json" with { type: "json" };
 import { compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 
 
@@ -29,7 +29,7 @@ export class bibliotecaAuthModel {
             throw new Error("La contraseña es incorrecta");
         }
 
-        const token = sign({ id: usuario.id, username: usuario.username }, "secreto", {
+        const token = jwt.sign({ id: usuario.id, username: usuario.username }, "secreto", {
             expiresIn: "1h",
         });
 
