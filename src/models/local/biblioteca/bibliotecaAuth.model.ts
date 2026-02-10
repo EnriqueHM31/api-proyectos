@@ -1,7 +1,7 @@
 import path from "node:path";
 import Usuarios from "../../../data/biblioteca/usuarios.json" with { type: "json" };
 import { compare } from "bcrypt";
-import { hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 
 
@@ -14,7 +14,7 @@ interface Usuario {
 const filePath = path.resolve("src/data/biblioteca/usuarios.json");
 
 export class bibliotecaAuthModel {
-    static async IniciarSesion({ username, password }: Partial<Usuario>) {
+    static async IniciarSesion({ username, password }: Omit<Usuario, "id" | "correo">) {
         const { items } = Usuarios;
 
         const usuario = items.find((item) => item.username === username);
@@ -22,12 +22,17 @@ export class bibliotecaAuthModel {
         if (!usuario) {
             throw new Error("No se encontro un usuario con ese nombre");
         }
+        const passwordCorrecto = await compare(password, usuario.password);
 
-        const passwordCorrecto = await bcrypt.compare(password, usuario.password);
-
-        if (!usuario) {
-            throw new Error("Usuario no encontrado");
+        if (!passwordCorrecto) {
+            throw new Error("La contraseña es incorrecta");
         }
+
+        const token = sign({ id: usuario.id, username: usuario.username }, "secreto", {
+            expiresIn: "1h",
+        });
+
+        return { token, data: { username: usuario.username, correo: usuario.correo } };
     }
 
     static async RegistrarUsuario({ username, password, correo }: Partial<Usuario>) {
