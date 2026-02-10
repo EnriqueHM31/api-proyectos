@@ -3,6 +3,7 @@ import { compare, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
+import { SECRETO } from "../../../config/index.js";
 
 interface Usuario {
     id: string;
@@ -16,6 +17,8 @@ const filePath = path.join(process.cwd(), "src/data/biblioteca/usuarios.json");
 export class bibliotecaAuthModel {
 
     static async IniciarSesion({ username, password }: Omit<Usuario, "id" | "correo">) {
+
+        if (SECRETO === undefined) throw new Error("Falta el secreto");
         const file = await fs.readFile(filePath, "utf-8");
         const data = JSON.parse(file);
 
@@ -26,9 +29,8 @@ export class bibliotecaAuthModel {
         if (!ok) throw new Error("La contraseña es incorrecta");
 
         const token = jwt.sign(
-            { id: usuario.id, username: usuario.username },
-            "secreto",
-            { expiresIn: "1h" }
+            { id: usuario.id, username: usuario.username }, SECRETO,
+            { expiresIn: "2m" }
         );
 
         return {
