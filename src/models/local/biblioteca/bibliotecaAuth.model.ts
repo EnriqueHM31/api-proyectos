@@ -52,7 +52,7 @@ export class bibliotecaAuthModel {
         const nuevoUsuario: Usuario = {
             id: crypto.randomUUID(),
             username,
-            password: await hash(password, 10),
+            password: await hash(password, 15),
             correo,
         };
 
