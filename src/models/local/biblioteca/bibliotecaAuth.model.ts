@@ -2,6 +2,9 @@ import path from "node:path";
 import Usuarios from "../../../data/biblioteca/usuarios.json" with { type: "json" };
 import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import { hash } from "bcrypt";
 
 
 
@@ -36,7 +39,7 @@ export class bibliotecaAuthModel {
         return { token, data: { username: usuario.username, correo: usuario.correo } };
     }
 
-    static async RegistrarUsuario({ username, password, correo }: Partial<Usuario>) {
+    static async RegistrarUsuario({ username, password, correo }: Omit<Usuario, "id">) {
         const { items } = Usuarios;
 
         const usuarioCorreo = items.find((item) => item.correo === correo);
@@ -50,6 +53,20 @@ export class bibliotecaAuthModel {
         if (usuarioUsername) {
             throw new Error("El usuario que trataste de registrar ya existe");
         }
+
+
+        const uuid = crypto.randomUUID();
+        const passwordHash = await hash(password, 10);
+        const nuevoUsuario: Usuario = {
+            id: uuid,
+            username,
+            password: passwordHash,
+            correo,
+        };
+
+        const fileWriter = fs.createWriteStream(filePath, { flags: "a" });
+        fileWriter.write(JSON.stringify(nuevoUsuario) + "\n");
+
 
 
     }
