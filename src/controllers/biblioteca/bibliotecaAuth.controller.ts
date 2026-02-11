@@ -34,9 +34,12 @@ export const bibliotecaAuthController = {
 
     ObtenerUsuario: async (req: Request, res: Response) => {
         try {
-            const { correo } = req.body;
 
-            const data = await bibliotecaAuthModel.ObtenerUsuario({ correo });
+            const token = req.cookies.token;
+            if (!token) {
+                res.status(401).json(formatoRespuesta({ ok: false, message: "No se ha iniciado sesión", data: null, error: null }));
+            }
+            const data = await bibliotecaAuthModel.ObtenerUsuario({ token });
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Usuario obtenido", data, error: null }));
         } catch (error) {
