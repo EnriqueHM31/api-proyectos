@@ -31,7 +31,7 @@ export class bibliotecaAuthModel {
         const ok = await compare(password, usuario.password);
         if (!ok) throw new Error("La contraseña es incorrecta");
 
-        const token = jwt.sign({ id: usuario.id, username: usuario.username }, SECRETO, { expiresIn: "2m" });
+        const token = jwt.sign({ id: usuario.id, username: usuario.username }, SECRETO, { expiresIn: "1h" });
 
         return {
             token,
