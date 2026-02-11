@@ -65,7 +65,6 @@ export class bibliotecaAuthModel {
     }
 
     static async ObtenerUsuario({ token }: { token: string }) {
-
         if (SECRETO === undefined) throw new Error("Falta el secreto");
         const decoded = jwt.verify(token, SECRETO) as unknown as TokenPayload;
         const { id, username } = decoded;
