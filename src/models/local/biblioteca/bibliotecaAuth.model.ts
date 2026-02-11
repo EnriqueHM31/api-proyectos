@@ -64,9 +64,18 @@ export class bibliotecaAuthModel {
         return { data: { username: nuevoUsuario.username, correo: nuevoUsuario.correo } };
     }
 
-    static async ObtenerUsuario({ username }: Partial<Usuario>) {
+    static async ObtenerUsuario({ token }: { token: string }) {
+
+        if (SECRETO === undefined) throw new Error("Falta el secreto");
+        const decoded = jwt.verify(token, SECRETO) as unknown as TokenPayload;
+        const { id, username } = decoded;
         const file = await fs.readFile(filePath, "utf-8");
         const data = JSON.parse(file);
+
+        const usuarioE = data.items.find((u: Usuario) => u.id === id);
+        if (!usuarioE) throw new Error("Usuario no encontrado");
+
+        if (usuarioE.username !== username) throw new Error("No se puede cerrar sesión de otro usuario");
 
         const usuario = data.items.find((u: Usuario) => u.username === username);
         if (!usuario) throw new Error("Usuario no encontrado");
