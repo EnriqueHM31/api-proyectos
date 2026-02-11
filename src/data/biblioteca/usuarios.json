@@ -5,6 +5,12 @@
       "username": "luis2",
       "password": "$2b$15$H0.7KsXuwBhF77bODUh1zef5/nExLYtwG2nsVFBXw75YtfddZPXia",
       "correo": "123456"
+    },
+    {
+      "id": "a8e41e08-87c5-4c48-a947-b7389d1b4c58",
+      "username": "luis1",
+      "password": "$2b$15$JILeCwWFK.zToDjexxuaX.E0JmlX0p.poOb1i7DDh3fwfoJtzcH6u",
+      "correo": "luis1@gmail.com"
     }
   ]
 }
