@@ -41,8 +41,6 @@ export const bibliotecaAuthController = {
         try {
             const token = req.cookies.token;
 
-            console.log({ token });
-
             if (!token) {
                 res.status(401).json(formatoRespuesta({ ok: false, message: "No se ha iniciado sesión", data: null, error: null }));
                 return;
@@ -61,9 +59,10 @@ export const bibliotecaAuthController = {
             const token = req.cookies.token;
 
             if (!token) {
-                res.status(401).json(formatoRespuesta({ ok: false, message: "No se ha iniciado sesión", data: null, error: null }));
+                res.status(200).json(formatoRespuesta({ ok: false, message: "No se ha iniciado sesión", data: null, error: null }));
                 return;
             }
+
             await bibliotecaAuthModel.CerrarSesion({ token });
 
             res.clearCookie("token");
