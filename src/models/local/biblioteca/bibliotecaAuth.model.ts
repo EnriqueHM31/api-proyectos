@@ -17,7 +17,6 @@ interface TokenPayload {
     username: string;
 }
 
-
 const filePath = path.join(process.cwd(), "src/data/biblioteca/usuarios.json");
 
 export class bibliotecaAuthModel {
@@ -75,9 +74,7 @@ export class bibliotecaAuthModel {
         return { data: usuario };
     }
 
-
     static async CerrarSesion({ token }: { token: string }) {
-
         if (SECRETO === undefined) throw new Error("Falta el secreto");
         const decoded = jwt.verify(token, SECRETO) as unknown as TokenPayload;
         const { id, username } = decoded;
