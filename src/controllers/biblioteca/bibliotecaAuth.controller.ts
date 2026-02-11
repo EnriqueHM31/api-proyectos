@@ -2,10 +2,7 @@ import type { Request, Response } from "express";
 import { extraerDatosError, formatoRespuesta } from "../../utils/index.js";
 import { bibliotecaAuthModel } from "../../models/local/biblioteca/bibliotecaAuth.model.js";
 
-
-
 export const bibliotecaAuthController = {
-
     IniciarSesion: async (req: Request, res: Response) => {
         try {
             const { username, password } = req.body;
@@ -39,13 +36,12 @@ export const bibliotecaAuthController = {
         try {
             const { correo } = req.body;
 
-            const data = await bibliotecaAuthModel.ObtenerUsuario({ correo, });
+            const data = await bibliotecaAuthModel.ObtenerUsuario({ correo });
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Usuario obtenido", data, error: null }));
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
-
         }
-    }
-}
+    },
+};
