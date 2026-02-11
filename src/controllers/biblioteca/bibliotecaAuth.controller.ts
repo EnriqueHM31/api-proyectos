@@ -44,4 +44,21 @@ export const bibliotecaAuthController = {
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     },
+
+    CerrarSesion: async (req: Request, res: Response) => {
+        try {
+            const { token } = req.cookies;
+
+            if (!token) {
+                res.status(401).json(formatoRespuesta({ ok: false, message: "No se ha iniciado sesión", data: null, error: null }));
+            }
+            await bibliotecaAuthModel.CerrarSesion({ token });
+
+            res.clearCookie("token");
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Sesión cerrada", data: null, error: null }));
+        } catch (error) {
+            const { messageError, errorName } = extraerDatosError(error);
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
+        }
+    },
 };
