@@ -1,46 +1,10 @@
 {
   "items": [
     {
-      "id": "3f6c2e9a-7c41-4c2e-9a9e-1a3d9f0b6a11",
-      "username": "luis",
-      "correo": "luis@test.com",
-      "password": "123456"
-    },
-    {
-      "id": "8b1d5f72-2c9a-4c1b-8f44-5a2e1d7c9e33",
-      "username": "ana",
-      "correo": "ana@test.com",
-      "password": "abc123"
-    },
-    {
-      "id": "c5a9e2d1-6f8b-4e1c-9d77-2b4a8c0f5d90",
-      "username": "mario",
-      "correo": "mario@test.com",
-      "password": "password"
-    },
-    {
-      "id": "7591606b-cc27-4162-8048-15a30328d245",
-      "username": "luis1",
-      "password": "$2b$10$XMG7oDqfttFQJFv01FrC7u8/mB2iydbFlMEOudzsRvjz1.zt62eim",
-      "correo": "luis1@test.com"
-    },
-    {
-      "id": "897c675b-6ac8-487d-8468-42cae0c426d0",
-      "username": "xccxdsds",
-      "password": "$2b$10$vafqnhGulw3QDqptibzvd.wL7t2L.ULefbz6IddJ/hCnarJyDicJK",
-      "correo": "12345"
-    },
-    {
-      "id": "65a182a0-889a-49cc-90c1-cf5431638282",
-      "username": "dsdsds",
-      "password": "$2b$10$qB1L0jV3V/n3jwj0zgRuSu3lskii4ONtAhDlwPBK1URDAN0Hg4AGW",
-      "correo": "1234"
-    },
-    {
-      "id": "690ce65c-4eb5-4232-a1d7-a327b9b38939",
-      "username": "dassa",
-      "password": "$2b$10$alYlCM7IZqagmbZCcu15VuQaTq1K8OCRa4bztX1onorzjZpa0jX0C",
-      "correo": "dsnondsods"
+      "id": "8b8e47df-c2e4-47ee-8aea-3a6e2483404d",
+      "username": "luis2",
+      "password": "$2b$15$H0.7KsXuwBhF77bODUh1zef5/nExLYtwG2nsVFBXw75YtfddZPXia",
+      "correo": "123456"
     }
   ]
 }
