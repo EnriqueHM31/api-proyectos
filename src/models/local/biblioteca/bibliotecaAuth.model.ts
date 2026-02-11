@@ -15,9 +15,7 @@ interface Usuario {
 const filePath = path.join(process.cwd(), "src/data/biblioteca/usuarios.json");
 
 export class bibliotecaAuthModel {
-
     static async IniciarSesion({ username, password }: Omit<Usuario, "id" | "correo">) {
-
         if (SECRETO === undefined) throw new Error("Falta el secreto");
         const file = await fs.readFile(filePath, "utf-8");
         const data = JSON.parse(file);
@@ -28,14 +26,11 @@ export class bibliotecaAuthModel {
         const ok = await compare(password, usuario.password);
         if (!ok) throw new Error("La contraseña es incorrecta");
 
-        const token = jwt.sign(
-            { id: usuario.id, username: usuario.username }, SECRETO,
-            { expiresIn: "2m" }
-        );
+        const token = jwt.sign({ id: usuario.id, username: usuario.username }, SECRETO, { expiresIn: "2m" });
 
         return {
             token,
-            data: { username: usuario.username, correo: usuario.correo }
+            data: { username: usuario.username, correo: usuario.correo },
         };
     }
 
