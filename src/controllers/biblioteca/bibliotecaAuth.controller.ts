@@ -9,13 +9,12 @@ export const bibliotecaAuthController = {
 
             const { data, token } = await bibliotecaAuthModel.IniciarSesion({ username, password });
 
-
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
                 sameSite: "lax",
                 path: "/",
-                maxAge: 1000 * 60 * 60 * 24 * 7 // 7 días
+                maxAge: 1000 * 60 * 60 * 24 * 7, // 7 días
             });
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Sesión iniciada", data, error: null }));
@@ -40,7 +39,6 @@ export const bibliotecaAuthController = {
 
     ObtenerUsuario: async (req: Request, res: Response) => {
         try {
-
             const token = req.cookies.token;
 
             console.log({ token });
