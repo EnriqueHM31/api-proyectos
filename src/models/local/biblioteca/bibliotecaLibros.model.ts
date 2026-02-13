@@ -70,7 +70,6 @@ export class BibliotecaLibrosModel {
             },
         };
 
-
         items[index] = updatedItem;
 
         fs.writeFile(filePath, JSON.stringify({ items }, null, 2), "utf-8");
