@@ -23,8 +23,6 @@ export class BibliotecaLenguajesModel {
                 return { data: [] };
             }
 
-            console.log({ json: json.items });
-
             return { data: json.items };
         } catch {
             return {
