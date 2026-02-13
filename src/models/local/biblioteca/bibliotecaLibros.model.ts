@@ -83,7 +83,6 @@ export class BibliotecaLibrosModel {
 
         const index = items.findIndex((item) => item.id === id);
 
-        console.log({ index });
         if (index < 0) {
             throw new Error("No se encontró el libro");
         }
