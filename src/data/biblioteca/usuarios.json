@@ -11,6 +11,12 @@
       "username": "luis3",
       "password": "$2b$15$kPMHm1XWWBylS4FziKrFoej0WAj2dFXKAICZtEoLZ2emhjB67axB.",
       "correo": "luis3@gmail.com"
+    },
+    {
+      "id": "ef423d7e-003a-4932-b7cd-c5a47008a43e",
+      "username": "hola",
+      "password": "$2b$15$cRi45eXxhEpnvQ7jk3y.LeNLG.Lad0s8WeynnHCq2DWvSQk1tN.Au",
+      "correo": "luis@gmail.com"
     }
   ]
 }
