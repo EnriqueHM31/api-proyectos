@@ -44,7 +44,6 @@ export class bibliotecaAuthModel {
         const data = JSON.parse(file);
 
         const correoExiste = data.items.find((u: Usuario) => u.correo === correo);
-        console.log({ correoExiste });
         if (correoExiste) throw new Error("Ese correo ya esta vinculado a otro usuario");
 
         const userExiste = data.items.find((u: Usuario) => u.username === username);
