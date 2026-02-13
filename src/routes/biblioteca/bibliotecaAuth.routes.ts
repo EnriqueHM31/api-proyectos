@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { bibliotecaAuthController } from "../../controllers/biblioteca/bibliotecaAuth.controller.js";
-import { middlewareBibliotecaUsuarioCrear, middlewareBibliotecaUsuarioId } from "../../middleware/biblioteca/bibliotecaUsuarios.middleware.js";
+import { middlewareBibliotecaUsuarioCrear } from "../../middleware/biblioteca/bibliotecaUsuarios.middleware.js";
 export const bibliotecaAuthRoutes = Router();
 
 bibliotecaAuthRoutes.post("/iniciar-sesion", bibliotecaAuthController.IniciarSesion);
