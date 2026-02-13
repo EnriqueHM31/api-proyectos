@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const schemaUsuario = z.object({
     id: z.string({ message: "El id es requerido" }).uuid({ message: "El id debe ser un UUID válido" }),
-    username: z.string({ message: "El nombre de usuario es requerido" }).min(3, { message: "El nombre de usuario debe tener al menos 3 caracteres" }).max(20, { message: "El nombre de usuario debe tener al menos 3 caracteres" }),
+    username: z.string({ message: "El username es requerido" }).min(3, { message: "El username debe tener al menos 3 caracteres" }).max(20, { message: "El username debe tener al menos 3 caracteres" }),
     password: z.string({ message: "La contraseña es requerida" }).min(8, { message: "La contraseña debe tener al menos 8 caracteres" }).max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
     correo: z.string({ message: "El correo es requerido" }).email({ message: "El correo debe ser un correo válido" }),
 });
