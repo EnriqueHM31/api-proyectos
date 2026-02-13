@@ -12,8 +12,17 @@ const bibliotecaUsuarioCreareSchema = schemaUsuario.omit({
     id: true,
 });
 
+const bibliotecaUsuarioLoginSchema = schemaUsuario.omit({
+    id: true,
+    correo: true,
+});
+
 export function validarBibliotecaUsuarioCrear(data: unknown) {
     return bibliotecaUsuarioCreareSchema.parse(data);
+}
+
+export function validarBibliotecaUsuarioLogin(data: unknown) {
+    return bibliotecaUsuarioLoginSchema.parse(data);
 }
 
 const bibliotecaUsuarioModificarSchema = schemaUsuario
