@@ -62,7 +62,6 @@ export class BibliotecaLibrosModel {
             throw new Error("Libro no encontrado");
         }
 
-        console.log({ volumenInfo: data.volumeInfo });
         const updatedItem: GoogleBook = {
             id: currentItem.id,
             volumeInfo: {
