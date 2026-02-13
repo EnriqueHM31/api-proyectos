@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { formatoRespuesta } from "../../utils/index.js";
 
-export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+export const middlewareAuth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies?.token;
 
     if (!token) {
