@@ -30,10 +30,7 @@ export class BibliotecaCategoriasController {
 
     async crearCategoria(req: Request, res: Response) {
         try {
-            console.log(req.body);
             const { data } = await bibliotecaCategoriasModel.crearBibliotecaCategorias(req.body);
-
-            console.log(data);
             res.status(200).json(formatoRespuesta({ ok: true, message: `La categoría ${data?.nombre ?? ""} ha sido creada`, error: null, data }));
         } catch (error) {
             const { messageError, errorName } = extraerDatosError(error);
