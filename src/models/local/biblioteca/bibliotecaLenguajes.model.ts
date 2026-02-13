@@ -17,10 +17,8 @@ export class BibliotecaLenguajesModel {
     async getBibliotecaLenguajes(): Promise<{ data?: Lenguaje[]; error?: { code: number; message: string } }> {
         try {
             const file = await fs.readFile(filePath, "utf-8");
-            console.log({ file });
             const json = JSON.parse(file);
 
-            console.log({ json });
             if (!Array.isArray(json.items)) {
                 return { data: [] };
             }
