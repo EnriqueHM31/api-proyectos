@@ -13,7 +13,7 @@ export const middlewareAuth = (req: Request, res: Response, next: NextFunction) 
                 error: null,
             })
         );
-        return
+        return;
     }
 
     // opcional: adjuntar token al request para uso posterior
