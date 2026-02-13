@@ -70,7 +70,6 @@ export class BibliotecaLibrosModel {
             },
         };
 
-        console.log({ updatedItem });
 
         items[index] = updatedItem;
 
