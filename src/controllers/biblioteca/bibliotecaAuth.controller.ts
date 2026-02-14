@@ -61,4 +61,17 @@ export const bibliotecaAuthController = {
             res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
         }
     },
+
+    CambiarContrasena: async (req: Request, res: Response) => {
+        try {
+            const { Newpassword, currentpassword } = req.body;
+
+            const { data } = await bibliotecaAuthModel.CambiarContrasena({ Newpassword, currentpassword });
+
+            res.status(200).json(formatoRespuesta({ ok: true, message: "Contraseña cambiada", data, error: null }));
+        } catch (error) {
+            const { messageError, errorName } = extraerDatosError(error);
+            res.status(500).json(formatoRespuesta({ ok: false, message: messageError, error: errorName, data: null }));
+        }
+    },
 };
