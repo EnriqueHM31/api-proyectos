@@ -8,4 +8,4 @@ bibliotecaAuthRoutes.post("/iniciar-sesion", middlewareBibliotecaUsuarioLogin, b
 bibliotecaAuthRoutes.post("/registrar-usuario", middlewareBibliotecaUsuarioCrear, bibliotecaAuthController.RegistrarUsuario);
 bibliotecaAuthRoutes.get("/usuario", bibliotecaAuthController.ObtenerUsuario);
 bibliotecaAuthRoutes.post("/cerrar-sesion", middlewareAuth, bibliotecaAuthController.CerrarSesion);
-bibliotecaAuthRoutes.post("/cambiar-cfontrasena", middlewareAuth, bibliotecaAuthController.CambiarContrasena);
+bibliotecaAuthRoutes.post("/cambiar-contrasena", middlewareAuth, bibliotecaAuthController.CambiarContrasena);
