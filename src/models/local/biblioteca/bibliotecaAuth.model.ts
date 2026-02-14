@@ -96,7 +96,7 @@ export class bibliotecaAuthModel {
         return { data: usuario };
     }
 
-    static async CambiarContrasena({ newPassword, currentPassword, username }: { newPassword: string; currentPassword: string, username: string }) {
+    static async CambiarContrasena({ newPassword, currentPassword, username }: { newPassword: string; currentPassword: string; username: string }) {
         if (SECRETO === undefined) throw new Error("Falta el secreto");
         const file = await fs.readFile(filePath, "utf-8");
         const data = JSON.parse(file);
