@@ -17,6 +17,18 @@
       "username": "hola",
       "password": "$2b$15$cRi45eXxhEpnvQ7jk3y.LeNLG.Lad0s8WeynnHCq2DWvSQk1tN.Au",
       "correo": "luis@gmail.com"
+    },
+    {
+      "id": "dee3d73a-a8fb-47a6-adff-a24f68d15e2e",
+      "username": "luis4",
+      "password": "$2b$15$JJs6wcLjvIleG7zD1mQQ0uwzjIS8Bcn189fV2MvoerBhm4LZoB51u",
+      "correo": "luis4@gmail.com"
+    },
+    {
+      "id": "a3beecbb-b57a-490c-b849-a4bae3039081",
+      "username": "luis5",
+      "password": "$2b$15$UzEo8arlSswv1MeLZgLZouE/qsKgMsfPNvtPMcx/UC06kjsfDT5ui",
+      "correo": "luis5@gmail.com"
     }
   ]
 }
