@@ -6,6 +6,7 @@ import {
     validarBibliotecaUsuarioModificar,
     validarBibliotecaUsuarioId,
     validarBibliotecaUsuarioLogin,
+    validarBibliotecaPassword,
 } from "../../utils/Biblioteca/schemaUsuario.js";
 import { middlewareError } from "../../utils/middleware.js";
 
@@ -58,3 +59,21 @@ export function middlewareBibliotecaUsuarioId(req: Request, res: Response, next:
 
     next();
 }
+
+
+export const middlewareBibliotecaPassword = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = validarBibliotecaPassword(req.body);
+
+        if (!result.success) {
+            middlewareError(result.error, res);
+            return;
+        }
+
+        const { newPassword, currentPassword } = result.data;
+        req.body = { newPassword, currentPassword };
+        next();
+    } catch (error) {
+        middlewareError(error as ZodError, res);
+    }
+};
