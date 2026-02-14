@@ -95,4 +95,27 @@ export class bibliotecaAuthModel {
 
         return { data: usuario };
     }
+
+    static async CambiarContrasena({ Newpassword, currentpassword }: { Newpassword: string; currentpassword: string }) {
+        if (SECRETO === undefined) throw new Error("Falta el secreto");
+        const file = await fs.readFile(filePath, "utf-8");
+        const data = JSON.parse(file);
+
+        const usuario = data.items.find((u: Usuario) => u.password === currentpassword);
+        if (!usuario) throw new Error("No se encontro un usuario con ese username");
+
+        const ok = await compare(currentpassword, usuario.password);
+        if (!ok) throw new Error("La contraseña es incorrecta");
+
+        const nuevoUsuario = {
+            ...usuario,
+            password: await hash(Newpassword, 15),
+        };
+
+        data.items = data.items.map((u: Usuario) => (u.id === usuario.id ? nuevoUsuario : u));
+
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+
+        return { data: { username: nuevoUsuario.username, correo: nuevoUsuario.correo } };
+    }
 }
