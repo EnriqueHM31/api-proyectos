@@ -40,7 +40,7 @@ export const bibliotecaAuthController = {
     ObtenerUsuario: async (req: Request, res: Response) => {
         try {
             const { token } = req.cookies;
-            const {data} = await bibliotecaAuthModel.ObtenerUsuario({ token });
+            const { data } = await bibliotecaAuthModel.ObtenerUsuario({ token });
 
             res.status(200).json(formatoRespuesta({ ok: true, message: "Usuario obtenido", data, error: null }));
         } catch (error) {
