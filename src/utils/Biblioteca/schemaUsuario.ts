@@ -49,7 +49,6 @@ export function validarBibliotecaUsuarioId(data: unknown) {
     return bibliotecaUsuarioIdSchema.safeParse(data);
 }
 
-
 export const schemaPassword = z.object({
     newPassword: z
         .string({ message: "La contraseña es requerida" })
