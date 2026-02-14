@@ -58,6 +58,10 @@ export const schemaPassword = z.object({
         .string({ message: "La contraseña es requerida" })
         .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
         .max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
+    username: z
+        .string({ message: "El username es requerido" })
+        .min(3, { message: "El username debe tener al menos 3 caracteres" })
+        .max(20, { message: "El username debe tener al menos 3 caracteres" }),
 });
 
 export function validarBibliotecaPassword(data: unknown) {
