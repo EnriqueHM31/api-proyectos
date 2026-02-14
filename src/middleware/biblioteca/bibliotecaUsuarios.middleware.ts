@@ -60,7 +60,6 @@ export function middlewareBibliotecaUsuarioId(req: Request, res: Response, next:
     next();
 }
 
-
 export const middlewareBibliotecaPassword = (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = validarBibliotecaPassword(req.body);
