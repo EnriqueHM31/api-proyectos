@@ -51,11 +51,11 @@ export function validarBibliotecaUsuarioId(data: unknown) {
 
 
 export const schemaPassword = z.object({
-    password: z
+    newPassword: z
         .string({ message: "La contraseña es requerida" })
         .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
         .max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
-    currentpassword: z
+    currentPassword: z
         .string({ message: "La contraseña es requerida" })
         .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
         .max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
