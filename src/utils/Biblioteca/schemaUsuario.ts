@@ -48,3 +48,19 @@ const bibliotecaUsuarioIdSchema = z.object({
 export function validarBibliotecaUsuarioId(data: unknown) {
     return bibliotecaUsuarioIdSchema.safeParse(data);
 }
+
+
+export const schemaPassword = z.object({
+    password: z
+        .string({ message: "La contraseña es requerida" })
+        .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
+        .max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
+    currentpassword: z
+        .string({ message: "La contraseña es requerida" })
+        .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
+        .max(20, { message: "La contraseña debe tener al menos 8 caracteres" }),
+});
+
+export function validarBibliotecaPassword(data: unknown) {
+    return schemaPassword.safeParse(data);
+}
